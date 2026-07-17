@@ -1,0 +1,2192 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Tadbeer Alsultan — App Demo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.44.0/dist/tabler-icons.min.css">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+<style>
+.leaflet-control-attribution{font-size:9px !important;}
+</style>
+<style>
+:root{
+  --surface:#F8F4EA;
+  --surface-deep:#EFE9D8;
+  --card:#FFFFFF;
+  --ink:#182427;
+  --ink-muted:#59676A;
+  --ink-faint:#93A0A2;
+  --primary:#0B7D8C;
+  --primary-dark:#075B66;
+  --primary-tint:#DEF1F3;
+  --accent:#D9A441;
+  --accent-ink:#5C4413;
+  --accent-tint:#FBF0DA;
+  --rust:#B85C38;
+  --rust-tint:#F7E8E0;
+  --blue:#3E7CB1;
+  --blue-tint:#E3EDF5;
+  --sage:#4C7A52;
+  --sage-tint:#E7F0E5;
+  --line:#E6DFCC;
+  --line-soft:#EFEADC;
+  --radius-lg:22px;
+  --radius-md:14px;
+  --radius-sm:10px;
+  --font-display:'Fraunces', serif;
+  --font-body:'Plus Jakarta Sans', sans-serif;
+  --font-ar:'Cairo', sans-serif;
+}
+*{box-sizing:border-box; -webkit-tap-highlight-color:transparent;}
+html,body{margin:0;padding:0;}
+body{
+  background:var(--surface);
+  background-image:
+    radial-gradient(circle at 18% 8%, rgba(11,125,140,0.07), transparent 40%),
+    radial-gradient(circle at 85% 92%, rgba(217,164,65,0.08), transparent 45%);
+  font-family:var(--font-body);
+  color:var(--ink);
+  min-height:100vh;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+}
+@media (prefers-reduced-motion: reduce){
+  *{animation-duration:0.001ms !important; transition-duration:0.001ms !important;}
+}
+
+/* ---------- Tactile feedback & accessibility ---------- */
+.btn-primary, .btn-ghost, .chip, .inq-type, .service-tile, .svc-row,
+.order-card[onclick], .nav-btn, .icon-btn, .filter-chip, .stepper button,
+.worker-pick:not(.unavailable), .menu-row[onclick], .rebook-strip, .back-btn,
+.role-switch button, .lang-toggle button{
+  transition: transform .12s ease, opacity .12s ease, background-color .15s ease, border-color .15s ease;
+}
+.btn-primary:active, .btn-ghost:active, .chip:active, .inq-type:active,
+.service-tile:active, .svc-row:active, .order-card[onclick]:active,
+.icon-btn:active, .filter-chip:active, .stepper button:not(:disabled):active,
+.worker-pick:not(.unavailable):active, .rebook-strip:active, .back-btn:active{
+  transform: scale(0.96);
+}
+.nav-btn:active{ opacity:0.6; }
+a, button, select, input, textarea, [onclick], [tabindex]{
+  -webkit-tap-highlight-color: transparent;
+}
+button:focus-visible, a:focus-visible, select:focus-visible,
+input:focus-visible, textarea:focus-visible, [tabindex]:focus-visible{
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+}
+
+/* ---------- Demo toolbar ---------- */
+.demo-toolbar{
+  width:100%;
+  max-width:900px;
+  padding:20px 20px 6px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:10px;
+  text-align:center;
+}
+.demo-brand{
+  font-family:var(--font-display);
+  font-weight:600;
+  font-size:15px;
+  letter-spacing:0.14em;
+  text-transform:uppercase;
+  color:var(--primary-dark);
+}
+.demo-title{
+  font-family:var(--font-display);
+  font-weight:600;
+  font-size:26px;
+  color:var(--ink);
+  margin:0;
+}
+.demo-sub{
+  font-size:13.5px;
+  color:var(--ink-muted);
+  max-width:480px;
+  line-height:1.55;
+  margin:0 0 4px;
+}
+.controls-row{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  flex-wrap:wrap;
+  justify-content:center;
+}
+.role-switch{
+  display:flex;
+  background:var(--card);
+  border:1px solid var(--line);
+  border-radius:999px;
+  padding:4px;
+  gap:2px;
+  box-shadow:0 1px 2px rgba(27,36,31,0.04);
+}
+.role-switch button{
+  border:none;
+  background:transparent;
+  font-family:var(--font-body);
+  font-weight:600;
+  font-size:13px;
+  padding:8px 16px;
+  border-radius:999px;
+  cursor:pointer;
+  color:var(--ink-muted);
+  display:flex;
+  align-items:center;
+  gap:6px;
+  transition:background .18s ease, color .18s ease;
+}
+.role-switch button.active{
+  background:var(--primary);
+  color:#fff;
+}
+.lang-toggle{
+  display:flex;
+  background:var(--card);
+  border:1px solid var(--line);
+  border-radius:999px;
+  padding:4px;
+  gap:2px;
+  box-shadow:0 1px 2px rgba(27,36,31,0.04);
+}
+.lang-toggle button{
+  border:none;
+  background:transparent;
+  font-weight:700;
+  font-size:12.5px;
+  padding:8px 14px;
+  border-radius:999px;
+  cursor:pointer;
+  color:var(--ink-muted);
+  transition:background .18s ease, color .18s ease;
+}
+.lang-toggle button.active{
+  background:var(--accent);
+  color:var(--accent-ink);
+}
+.demo-hint{
+  font-size:11.5px;
+  color:var(--ink-faint);
+  display:flex;
+  align-items:center;
+  gap:5px;
+  margin-top:2px;
+}
+
+/* ---------- Stage / phone frame ---------- */
+.stage{
+  flex:1;
+  width:100%;
+  display:flex;
+  justify-content:center;
+  align-items:flex-start;
+  padding:22px 16px 56px;
+}
+.phone-frame{
+  width:380px;
+  height:800px;
+  background:#0C0F0D;
+  border-radius:46px;
+  padding:14px;
+  box-shadow:0 30px 60px -20px rgba(20,30,25,0.35), 0 2px 8px rgba(20,30,25,0.12);
+  position:relative;
+  flex-shrink:0;
+}
+.phone-screen{
+  width:100%;
+  height:100%;
+  background:var(--surface);
+  border-radius:32px;
+  overflow:hidden;
+  position:relative;
+  display:flex;
+  flex-direction:column;
+}
+.notch{
+  position:absolute;
+  top:0; left:50%;
+  transform:translateX(-50%);
+  width:120px; height:26px;
+  background:#0C0F0D;
+  border-bottom-left-radius:16px;
+  border-bottom-right-radius:16px;
+  z-index:50;
+}
+.status-bar{
+  height:46px;
+  flex-shrink:0;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:0 26px;
+  font-size:13px;
+  font-weight:700;
+  color:var(--ink);
+  background:var(--surface);
+}
+.status-bar .sb-icons{display:flex; gap:5px; align-items:center; font-size:15px;}
+
+.app-viewport{
+  flex:1;
+  overflow-y:auto;
+  overflow-x:hidden;
+  position:relative;
+  -webkit-overflow-scrolling:touch;
+  scrollbar-width:none;
+}
+.app-viewport::-webkit-scrollbar{display:none;}
+
+.screen{
+  min-height:100%;
+  padding-bottom:14px;
+}
+.screen.push{animation:slideInRight .32s cubic-bezier(.32,.72,.35,1);}
+.screen.pop{animation:slideInLeft .32s cubic-bezier(.32,.72,.35,1);}
+.screen.fade{animation:screenFade .22s ease;}
+@keyframes slideInRight{
+  from{opacity:0; transform:translateX(28px);}
+  to{opacity:1; transform:translateX(0);}
+}
+@keyframes slideInLeft{
+  from{opacity:0; transform:translateX(-28px);}
+  to{opacity:1; transform:translateX(0);}
+}
+@keyframes screenFade{
+  from{opacity:0; transform:translateY(6px);}
+  to{opacity:1; transform:translateY(0);}
+}
+
+.bottom-nav{
+  flex-shrink:0;
+  display:flex;
+  position:relative;
+  background:rgba(255,255,255,0.82);
+  backdrop-filter:blur(20px) saturate(180%);
+  -webkit-backdrop-filter:blur(20px) saturate(180%);
+  border-top:1px solid var(--line);
+  padding:10px 6px calc(14px + env(safe-area-inset-bottom,0px));
+}
+.nav-btn{
+  flex:1;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:3px;
+  border:none;
+  background:transparent;
+  cursor:pointer;
+  font-family:var(--font-body);
+  color:var(--ink-faint);
+  font-size:10.5px;
+  font-weight:600;
+  padding:4px 2px;
+  position:relative;
+}
+.nav-icon-wrap{position:relative; display:inline-flex;}
+.nav-badge{
+  position:absolute; top:-4px; right:-7px;
+  min-width:14px; height:14px; padding:0 3px;
+  background:var(--rust); color:#fff;
+  border-radius:999px; font-size:9px; font-weight:800;
+  display:flex; align-items:center; justify-content:center;
+  line-height:1; border:1.5px solid var(--card);
+}
+.nav-btn i{font-size:21px;}
+.nav-btn.active{color:var(--primary);}
+
+/* ---------- Common UI bits ---------- */
+.topbar{
+  padding:18px 20px 12px;
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
+.topbar h1{
+  font-family:var(--font-display);
+  font-size:20px;
+  font-weight:600;
+  margin:0;
+  color:var(--ink);
+}
+.back-btn{
+  width:38px; height:38px;
+  border-radius:50%;
+  background:var(--card);
+  border:1px solid var(--line);
+  display:flex; align-items:center; justify-content:center;
+  cursor:pointer;
+  color:var(--ink);
+  font-size:22px;
+  font-weight:700;
+  line-height:1;
+  flex-shrink:0;
+}
+.px{padding-left:20px; padding-right:20px;}
+
+.search-bar{
+  margin:0 20px 18px;
+  background:var(--card);
+  border:1px solid var(--line);
+  border-radius:999px;
+  padding:12px 16px;
+  display:flex;
+  align-items:center;
+  gap:9px;
+  color:var(--ink-faint);
+  font-size:13.5px;
+}
+.search-bar i{font-size:16px; flex-shrink:0;}
+.search-bar input{
+  border:none; background:none; padding:0; flex:1;
+  font-family:var(--font-body); font-size:13.5px; color:var(--ink);
+  min-width:0;
+}
+.search-bar input::placeholder{color:var(--ink-faint);}
+.search-bar input:focus{outline:none;}
+.search-clear{
+  border:none; background:var(--surface-deep); color:var(--ink-muted);
+  width:20px; height:20px; border-radius:50%; font-size:15px; line-height:1;
+  display:flex; align-items:center; justify-content:center; cursor:pointer; flex-shrink:0; padding:0;
+}
+
+.rebook-strip{
+  margin:0 20px 16px; background:var(--accent-tint); border:1px solid #EFDBAA;
+  border-radius:var(--radius-md); padding:11px 14px;
+  display:flex; align-items:center; gap:12px; cursor:pointer;
+}
+.rebook-strip .svc-info b{color:var(--accent-ink);}
+
+.section-label{
+  font-size:11.5px;
+  font-weight:700;
+  letter-spacing:0.08em;
+  text-transform:uppercase;
+  color:var(--ink-faint);
+  margin:22px 20px 10px;
+}
+
+.service-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:12px;
+  padding:0 20px;
+}
+.service-tile{
+  background:var(--card);
+  border:1px solid var(--line);
+  border-radius:var(--radius-md);
+  padding:14px 8px 12px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:8px;
+  cursor:pointer;
+  text-align:center;
+}
+.service-tile .tile-icon{
+  width:42px; height:42px;
+  border-radius:12px;
+  background:var(--primary-tint);
+  color:var(--primary-dark);
+  display:flex; align-items:center; justify-content:center;
+  font-size:20px;
+}
+.service-tile span{font-size:11.5px; font-weight:600; line-height:1.3; color:var(--ink);}
+
+.promo-card{
+  margin:4px 20px 6px;
+  background:linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+  border-radius:var(--radius-lg);
+  padding:20px;
+  color:#fff;
+  position:relative;
+  overflow:hidden;
+}
+.promo-card::after{
+  content:"";
+  position:absolute; right:-30px; top:-30px;
+  width:120px; height:120px;
+  border-radius:50%;
+  background:rgba(255,255,255,0.08);
+}
+.promo-eyebrow{font-size:10.5px; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; opacity:0.75;}
+.promo-title{font-family:var(--font-display); font-size:19px; font-weight:600; margin:4px 0 3px;}
+.promo-sub{font-size:12.5px; opacity:0.88;}
+
+.card-list{padding:0 20px; display:flex; flex-direction:column; gap:12px;}
+.svc-row{
+  background:var(--card);
+  border:1px solid var(--line);
+  border-radius:var(--radius-md);
+  padding:13px 14px;
+  display:flex; align-items:center; gap:12px;
+  cursor:pointer;
+}
+.svc-row .tile-icon{width:40px; height:40px; border-radius:11px; background:var(--accent-tint); color:var(--accent-ink); display:flex; align-items:center; justify-content:center; font-size:18px; flex-shrink:0;}
+.svc-info{flex:1; min-width:0;}
+.svc-info b{display:block; font-size:13.5px; font-weight:700; color:var(--ink); margin-bottom:2px;}
+.svc-info span{font-size:11.5px; color:var(--ink-muted);}
+.svc-row .chev{color:var(--ink-faint); font-size:16px;}
+
+/* Booking detail */
+.hero-block{
+  margin:0 20px 4px;
+  background:var(--card);
+  border:1px solid var(--line);
+  border-radius:var(--radius-lg);
+  padding:20px;
+  text-align:center;
+}
+.hero-block.with-photo{padding:0; overflow:hidden;}
+.hero-photo{height:140px; background-size:cover; background-position:center; position:relative;}
+.hero-block.with-photo .hero-body{padding:18px 20px 20px;}
+.hero-block h2{font-family:var(--font-display); font-size:19px; margin:0 0 6px; font-weight:600;}
+.hero-block p{font-size:12.5px; color:var(--ink-muted); line-height:1.5; margin:0;}
+
+.field-group{padding:16px 20px 4px;}
+.field-label{font-size:12px; font-weight:700; color:var(--ink); margin-bottom:8px; display:block;}
+.field-label .req{color:var(--rust);}
+.input-error{border-color:var(--rust) !important; background:var(--rust-tint) !important;}
+.field-error{color:var(--rust); font-size:11px; margin:0 0 12px; display:flex; align-items:center; gap:4px; font-weight:600;}
+.select-wrap{position:relative; margin-bottom:14px;}
+select, .fake-input, textarea, input[type="text"], input[type="date"]{
+  width:100%;
+  font-family:var(--font-body);
+  background:var(--card);
+  border:1px solid var(--line);
+  border-radius:var(--radius-sm);
+  padding:12px 14px;
+  font-size:13.5px;
+  color:var(--ink);
+  appearance:none;
+}
+.select-wrap i{position:absolute; right:14px; top:50%; transform:translateY(-50%); color:var(--ink-faint); pointer-events:none;}
+textarea{resize:none; min-height:66px; font-family:var(--font-body);}
+.chip-row{display:flex; gap:8px; flex-wrap:wrap; margin-bottom:14px;}
+.chip{
+  border:1px solid var(--line);
+  background:var(--card);
+  border-radius:999px;
+  padding:9px 14px;
+  font-size:12.5px;
+  font-weight:600;
+  color:var(--ink-muted);
+  cursor:pointer;
+}
+.chip.active{background:var(--primary); border-color:var(--primary); color:#fff;}
+
+.stepper{display:flex; align-items:center; gap:16px; margin-bottom:14px;}
+.stepper button{
+  width:34px; height:34px; border-radius:50%;
+  border:1px solid var(--line); background:var(--card);
+  font-size:17px; font-weight:700; color:var(--primary-dark); cursor:pointer;
+  display:flex; align-items:center; justify-content:center; flex-shrink:0;
+}
+.stepper button:disabled{opacity:0.35; cursor:default;}
+.stepper .count{font-family:var(--font-display); font-size:17px; font-weight:600; min-width:20px; text-align:center;}
+.stepper .stepper-label{font-size:12.5px; color:var(--ink-muted); margin-left:2px;}
+
+.map-box{
+  height:160px; border-radius:var(--radius-md); overflow:hidden;
+  border:1px solid var(--line); margin-bottom:6px; background:var(--surface-deep);
+}
+.map-box.view{height:150px; margin:0 20px 12px;}
+
+.ops-map-wrap{margin:0 20px 20px;}
+.map-box.ops-map{height:190px; margin:0 0 10px; box-shadow:0 6px 20px -8px rgba(20,30,25,0.25);}
+.ops-legend{display:flex; gap:14px; flex-wrap:wrap;}
+.ops-legend span{display:flex; align-items:center; gap:5px; font-size:10.5px; color:var(--ink-muted); font-weight:600;}
+.dot-legend{width:8px; height:8px; border-radius:50%; display:inline-block;}
+.map-hint{font-size:11px; color:var(--ink-faint); margin:0 0 14px; display:flex; align-items:center; gap:5px;}
+.map-link{
+  display:flex; align-items:center; justify-content:center; gap:7px;
+  text-decoration:none; margin:0 20px 16px;
+}
+
+.rate-block{
+  margin:0 20px 16px; background:var(--card); border:1px solid var(--line);
+  border-radius:var(--radius-lg); padding:18px; text-align:center;
+}
+.rate-block h3{font-family:var(--font-display); font-size:15px; font-weight:600; margin:0 0 12px;}
+.star-row{display:flex; justify-content:center; gap:6px; margin-bottom:12px;}
+.star-row button{
+  background:none; border:none; cursor:pointer; padding:2px;
+  font-size:26px; color:var(--line); line-height:1;
+}
+.star-row button.filled{color:var(--accent);}
+.star-row.readonly button{cursor:default;}
+.rated-summary{display:flex; justify-content:center; gap:4px; margin-bottom:6px; font-size:20px; color:var(--accent);}
+
+.sla-badge{
+  display:inline-flex; align-items:center; gap:4px;
+  background:var(--rust-tint); color:var(--rust);
+  font-size:10px; font-weight:700; padding:4px 9px; border-radius:999px;
+  margin-top:6px;
+}
+.worker-stats{font-size:11px; color:var(--ink-muted); margin-top:1px; display:flex; align-items:center; gap:4px;}
+.worker-stats i{font-size:12px; color:var(--accent);}
+
+.pipeline-track{
+  position:relative; height:34px;
+  margin:14px 0 4px; padding-top:12px;
+  border-top:1px solid var(--line-soft);
+}
+.pipeline-track-bg{position:absolute; top:17px; left:0; right:0; height:3px; background:var(--line-soft); border-radius:2px;}
+.pipeline-track-fill{position:absolute; top:17px; left:0; height:3px; background:var(--primary); border-radius:2px; transition:width .5s cubic-bezier(.4,0,.2,1);}
+.pipeline-marker{position:absolute; top:8px; display:flex; flex-direction:column; align-items:center; gap:7px;}
+.pipeline-marker-dot{
+  width:9px; height:9px; border-radius:50%;
+  background:var(--card); border:2.5px solid var(--line-soft);
+}
+.pipeline-marker.done .pipeline-marker-dot{background:var(--primary); border-color:var(--primary);}
+.pipeline-marker.current .pipeline-marker-dot{
+  width:11px; height:11px; background:var(--accent); border-color:var(--accent);
+  box-shadow:0 0 0 4px var(--accent-tint);
+}
+.pipeline-marker-label{font-size:9px; font-weight:600; color:var(--ink-faint); white-space:nowrap;}
+.pipeline-marker.done .pipeline-marker-label{color:var(--ink-muted);}
+.pipeline-marker.current .pipeline-marker-label{color:var(--accent-ink); font-weight:800;}
+
+.price-band{
+  margin:6px 20px 18px;
+  background:var(--sage-tint);
+  border:1px solid #D6E5D3;
+  border-radius:var(--radius-md);
+  padding:13px 16px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+}
+.price-band.quote{background:var(--accent-tint); border-color:#EFDBAA;}
+.price-band .pl{font-size:11.5px; color:var(--ink-muted); font-weight:600;}
+.price-band .pv{font-family:var(--font-display); font-size:18px; font-weight:600; color:var(--sage);}
+.price-band.quote .pv{color:var(--accent-ink); font-size:13.5px;}
+
+.sticky-cta{
+  position:sticky; bottom:0;
+  background:linear-gradient(to top, var(--surface) 60%, transparent);
+  padding:16px 20px 4px;
+}
+.btn-primary{
+  width:100%;
+  background:var(--primary);
+  color:#fff;
+  border:none;
+  border-radius:var(--radius-sm);
+  padding:15px;
+  font-family:var(--font-body);
+  font-weight:700;
+  font-size:14.5px;
+  cursor:pointer;
+  display:flex; align-items:center; justify-content:center; gap:8px;
+}
+.btn-primary:active{background:var(--primary-dark);}
+.btn-ghost{
+  width:100%;
+  background:transparent;
+  color:var(--primary-dark);
+  border:1.5px solid var(--primary);
+  border-radius:var(--radius-sm);
+  padding:13px;
+  font-family:var(--font-body);
+  font-weight:700;
+  font-size:13.5px;
+  cursor:pointer;
+}
+
+/* Confirmation */
+.confirm-wrap{padding:40px 24px; text-align:center; display:flex; flex-direction:column; align-items:center;}
+.confirm-tick{
+  width:76px; height:76px; border-radius:50%;
+  background:var(--sage-tint); color:var(--sage);
+  display:flex; align-items:center; justify-content:center;
+  font-size:38px; margin-bottom:18px;
+  animation:pop .4s cubic-bezier(.34,1.56,.64,1);
+}
+@keyframes pop{from{transform:scale(0.5); opacity:0;} to{transform:scale(1); opacity:1;}}
+.confirm-wrap h2{font-family:var(--font-display); font-size:21px; margin:0 0 8px;}
+.confirm-wrap p{font-size:13px; color:var(--ink-muted); line-height:1.55; margin:0 0 22px; max-width:280px;}
+.confirm-id{
+  background:var(--card); border:1px dashed var(--line); border-radius:var(--radius-md);
+  padding:12px 20px; font-family:var(--font-display); font-size:16px; font-weight:600;
+  letter-spacing:0.04em; margin-bottom:26px; color:var(--primary-dark);
+}
+
+/* Bookings list & status */
+.order-card{
+  background:var(--card); border:1px solid var(--line); border-radius:var(--radius-md);
+  padding:14px; margin-bottom:12px; cursor:pointer;
+}
+.order-top{display:flex; justify-content:space-between; align-items:flex-start; gap:8px; margin-bottom:8px;}
+.order-top b{font-size:13.5px; font-weight:700;}
+.order-meta{font-size:11.5px; color:var(--ink-muted); display:flex; align-items:center; gap:5px; margin-bottom:2px;}
+.status-pill{
+  font-size:10.5px; font-weight:700; padding:5px 10px; border-radius:999px; white-space:nowrap;
+}
+.status-pending{background:var(--accent-tint); color:var(--accent-ink);}
+.status-confirmed{background:var(--blue-tint); color:var(--blue);}
+.status-assigned{background:var(--primary-tint); color:var(--primary-dark);}
+.status-progress{background:var(--rust-tint); color:var(--rust);}
+.status-completed{background:var(--sage-tint); color:var(--sage);}
+.status-cancelled{background:var(--rust-tint); color:var(--rust);}
+
+/* Tracking timeline */
+.timeline{padding:6px 20px 8px;}
+.tl-item{display:flex; gap:14px; position:relative;}
+.tl-item .tl-dot-col{display:flex; flex-direction:column; align-items:center;}
+.tl-dot{
+  width:26px; height:26px; border-radius:50%;
+  display:flex; align-items:center; justify-content:center;
+  font-size:13px; flex-shrink:0; z-index:2;
+  background:var(--line-soft); color:var(--ink-faint);
+}
+.tl-dot.done{background:var(--primary); color:#fff;}
+.tl-dot.current{background:var(--accent); color:var(--accent-ink);}
+.tl-line{width:2px; flex:1; background:var(--line); margin:2px 0;}
+.tl-line.done{background:var(--primary);}
+.tl-item .tl-body{padding-bottom:26px; flex:1;}
+.tl-body b{display:block; font-size:13px; font-weight:700; color:var(--ink); margin-bottom:2px;}
+.tl-body span{font-size:11.5px; color:var(--ink-muted);}
+
+.worker-card{
+  margin:8px 20px 4px;
+  background:var(--primary-tint);
+  border-radius:var(--radius-md);
+  padding:14px;
+  display:flex; align-items:center; gap:12px;
+}
+.avatar{
+  width:44px; height:44px; border-radius:50%;
+  background:var(--primary); color:#fff;
+  display:flex; align-items:center; justify-content:center;
+  font-weight:700; font-size:14px; flex-shrink:0;
+  overflow:hidden;
+}
+.avatar img{width:100%; height:100%; object-fit:cover; display:block;}
+.avatar.lg{width:56px; height:56px; font-size:18px;}
+.tile-photo{
+  width:42px; height:42px; border-radius:12px;
+  background-size:cover; background-position:center;
+  position:relative; flex-shrink:0;
+  border:1px solid var(--line);
+}
+.tile-photo.lg{width:48px; height:48px; border-radius:13px;}
+.tile-photo.xl{width:100%; height:120px; border-radius:16px;}
+.worker-card .wc-info{flex:1;}
+.worker-card .wc-info b{display:block; font-size:13px;}
+.worker-card .wc-info span{font-size:11px; color:var(--ink-muted);}
+.icon-btn{
+  width:40px; height:40px; border-radius:50%;
+  background:var(--primary); color:#fff; border:none;
+  display:flex; align-items:center; justify-content:center; font-size:16px; cursor:pointer;
+}
+
+.empty-state{padding:60px 30px; text-align:center; color:var(--ink-muted);}
+.empty-state i{font-size:34px; color:var(--ink-faint); margin-bottom:10px; display:block;}
+.empty-state b{display:block; font-size:14px; color:var(--ink); margin-bottom:4px;}
+.empty-state span{font-size:12.5px; line-height:1.5;}
+
+/* Inquiries */
+.inquiry-type-row{display:grid; grid-template-columns:repeat(3,1fr); gap:10px; padding:0 20px 4px;}
+.inq-type{
+  background:var(--card); border:1px solid var(--line); border-radius:var(--radius-md);
+  padding:10px 8px 10px; text-align:center; cursor:pointer;
+}
+.inq-type .tile-photo{width:100%; height:56px; border-radius:10px; margin-bottom:8px;}
+.inq-type span{font-size:11.5px; font-weight:700;}
+.inq-type.active{border-color:var(--primary); background:var(--primary-tint);}
+
+/* Profile */
+.profile-head{padding:24px 20px 18px; display:flex; align-items:center; gap:14px;}
+.profile-head .avatar{width:56px; height:56px; font-size:18px;}
+.profile-head h2{font-family:var(--font-display); font-size:18px; margin:0 0 2px;}
+.profile-head span{font-size:12px; color:var(--ink-muted);}
+.menu-row{
+  display:flex; align-items:center; gap:13px;
+  padding:14px 20px; border-bottom:1px solid var(--line-soft); cursor:pointer;
+}
+.menu-row i:first-child{font-size:18px; color:var(--primary-dark); width:22px;}
+.menu-row .mr-label{flex:1; font-size:13.5px; font-weight:600;}
+.menu-row .mr-sub{font-size:11px; color:var(--ink-faint);}
+.menu-row i:last-child{color:var(--ink-faint); font-size:16px;}
+
+/* Admin */
+.stat-grid{display:grid; grid-template-columns:1fr 1fr; gap:10px; padding:0 20px;}
+.stat-card{background:var(--card); border:1px solid var(--line); border-radius:var(--radius-md); padding:14px;}
+.stat-card .sv{font-family:var(--font-display); font-size:22px; font-weight:600; color:var(--primary-dark);}
+.stat-card .sl{font-size:11px; color:var(--ink-muted); font-weight:600; margin-top:2px;}
+
+.chart-block{padding:0 20px 8px;}
+.chart-row{margin-bottom:16px;}
+.chart-row-top{display:flex; justify-content:space-between; align-items:baseline; font-size:12.5px; margin-bottom:7px;}
+.chart-row-top b{font-weight:700; color:var(--ink);}
+.chart-row-top span{color:var(--ink-muted); font-weight:600; font-size:11px;}
+.chart-bar-track{height:10px; background:var(--line-soft); border-radius:999px; overflow:hidden; margin-bottom:5px;}
+.chart-bar-fill{
+  height:100%; background:linear-gradient(90deg, var(--primary) 0%, var(--accent) 100%);
+  border-radius:999px; width:0; animation:growBar 1s cubic-bezier(.16,1,.3,1) forwards; animation-delay:.15s;
+}
+@keyframes growBar{ to{width:var(--w);} }
+.chart-row-value{font-size:11px; color:var(--ink-muted); font-weight:700; text-align:right;}
+
+.filter-row{display:flex; gap:8px; padding:2px 20px 14px; overflow-x:auto;}
+.filter-chip{
+  flex-shrink:0; border:1px solid var(--line); background:var(--card); border-radius:999px;
+  padding:7px 13px; font-size:11.5px; font-weight:700; color:var(--ink-muted); cursor:pointer; white-space:nowrap;
+}
+.filter-chip.active{background:var(--ink); color:#fff; border-color:var(--ink);}
+
+.detail-block{margin:0 20px 14px; background:var(--card); border:1px solid var(--line); border-radius:var(--radius-md); padding:16px;}
+.detail-row{display:flex; justify-content:space-between; padding:8px 0; border-bottom:1px solid var(--line-soft); font-size:12.5px;}
+.detail-row:last-child{border-bottom:none;}
+.detail-row .dl{color:var(--ink-muted); font-weight:600;}
+.detail-row .dv{color:var(--ink); font-weight:700; text-align:right; max-width:60%;}
+
+.sheet-overlay{
+  position:absolute; inset:0; background:rgba(15,20,17,0.42); z-index:100;
+  display:flex; align-items:flex-end;
+  opacity:0; pointer-events:none; transition:opacity .22s ease;
+}
+.sheet-overlay.open{opacity:1; pointer-events:auto;}
+.sheet{
+  background:var(--surface); width:100%; border-radius:24px 24px 0 0;
+  padding:8px 20px calc(24px + env(safe-area-inset-bottom,0px));
+  max-height:78%; overflow-y:auto;
+  transform:translateY(100%); transition:transform .28s cubic-bezier(.32,.72,.35,1);
+}
+.sheet-overlay.open .sheet{transform:translateY(0);}
+.sheet-handle{width:36px; height:4px; background:var(--line); border-radius:2px; margin:10px auto 16px;}
+.sheet h3{font-family:var(--font-display); font-size:17px; margin:0 0 14px;}
+.worker-pick{
+  display:flex; align-items:center; gap:12px; padding:11px; border:1px solid var(--line);
+  border-radius:var(--radius-md); margin-bottom:9px; cursor:pointer;
+}
+.worker-pick.unavailable{opacity:0.45; pointer-events:none;}
+.worker-pick .wp-info{flex:1;}
+.worker-pick .wp-info b{display:block; font-size:13px;}
+.worker-pick .wp-info span{font-size:11px; color:var(--ink-muted);}
+.dot{width:8px; height:8px; border-radius:50%; background:var(--sage); flex-shrink:0;}
+.dot.off{background:var(--ink-faint);}
+
+.toast{
+  position:absolute; top:56px; left:50%; transform:translateX(-50%) translateY(-14px);
+  background:var(--ink); color:#fff; padding:11px 18px; border-radius:999px; font-size:12.5px; font-weight:600;
+  z-index:200; opacity:0; pointer-events:none; transition:all .25s ease; display:flex; align-items:center; gap:7px;
+  white-space:nowrap;
+}
+.toast.show{opacity:1; transform:translateX(-50%) translateY(0);}
+
+.splash{
+  position:absolute; inset:0; z-index:999;
+  background:linear-gradient(160deg, var(--primary) 0%, var(--primary-dark) 100%);
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+  transition:opacity .5s ease, visibility .5s ease;
+}
+.splash.hide{opacity:0; visibility:hidden; pointer-events:none;}
+.splash-mark{font-family:var(--font-display); font-weight:600; font-size:24px; color:#fff; text-align:center; padding:0 30px;}
+.splash-mark-ar{font-family:var(--font-ar); font-size:19px; color:rgba(255,255,255,0.82); margin-top:6px;}
+.splash-spinner{
+  width:26px; height:26px; border-radius:50%;
+  border:3px solid rgba(255,255,255,0.28); border-top-color:#fff;
+  animation:splashSpin 0.8s linear infinite; margin-top:26px;
+}
+@keyframes splashSpin{ to{transform:rotate(360deg);} }
+
+.confetti-layer{
+  position:absolute; inset:0; pointer-events:none; overflow:hidden; z-index:150;
+}
+.confetti-piece{
+  position:absolute; top:-12px; width:8px; height:8px; opacity:0.95;
+  animation-name:confettiFall; animation-timing-function:cubic-bezier(.25,.46,.45,.94); animation-fill-mode:forwards;
+}
+@keyframes confettiFall{
+  0%{transform:translateY(0) rotate(0deg); opacity:1;}
+  85%{opacity:1;}
+  100%{transform:translateY(340px) rotate(540deg); opacity:0;}
+}
+
+/* RTL */
+html[dir="rtl"] body{font-family:var(--font-ar);}
+html[dir="rtl"] .demo-brand, html[dir="rtl"] h1, html[dir="rtl"] h2, html[dir="rtl"] .promo-title, html[dir="rtl"] .confirm-id{font-family:var(--font-ar);}
+html[dir="rtl"] .back-btn{transform:scaleX(-1);}
+
+@media (max-width: 480px){
+  .demo-toolbar{padding:12px 16px 4px;}
+  .demo-brand{font-size:12px;}
+  .demo-title{font-size:19px; margin:2px 0;}
+  .demo-sub{display:none;}
+  .demo-hint{display:none;}
+  .controls-row{margin-top:2px;}
+  .stage{padding:10px 0 0; align-items:stretch;}
+  .phone-frame{
+    width:100%; height:100dvh; min-height:560px;
+    border-radius:0; padding:0; box-shadow:none;
+  }
+  .phone-screen{border-radius:0;}
+  .notch{display:none;}
+  .status-bar{padding:10px 22px 4px; height:auto;}
+}
+</style>
+</head>
+<body>
+
+<div class="demo-toolbar">
+  <div class="demo-brand">Go Ai PH &nbsp;·&nbsp; Prototype</div>
+  <h1 class="demo-title" id="t-title">Tadbeer Alsultan</h1>
+  <p class="demo-sub" id="t-sub">Interactive walkthrough of the customer booking flow and the admin dispatch view. Nothing here is live — actions update this demo's memory only.</p>
+  <div class="controls-row">
+    <div class="role-switch">
+      <button class="active" id="role-customer" onclick="setRole('customer')"><i class="ti ti-smart-home"></i> Customer app</button>
+      <button id="role-worker" onclick="setRole('worker')"><i class="ti ti-briefcase"></i> Worker app</button>
+      <button id="role-admin" onclick="setRole('admin')"><i class="ti ti-layout-dashboard"></i> Admin app</button>
+    </div>
+    <div class="lang-toggle">
+      <button class="active" id="lang-en" onclick="setLang('en')">EN</button>
+      <button id="lang-ar" onclick="setLang('ar')">ع</button>
+    </div>
+  </div>
+  <div class="demo-hint" id="t-hint"><i class="ti ti-hand-click"></i> Tap around — this is a fully clickable prototype, not a video.</div>
+</div>
+
+<div class="stage">
+  <div class="phone-frame">
+    <div class="phone-screen">
+      <div class="notch"></div>
+      <div class="status-bar">
+        <span id="clock">9:41</span>
+        <span class="sb-icons"><i class="ti ti-antenna-bars-5"></i><i class="ti ti-wifi"></i><i class="ti ti-battery-4"></i></span>
+      </div>
+      <div class="app-viewport" id="viewport"></div>
+      <div class="bottom-nav" id="bottomnav"></div>
+      <div class="sheet-overlay" id="sheetOverlay" onclick="if(event.target===this) closeSheet()">
+        <div class="sheet" id="sheet"></div>
+      </div>
+      <div class="toast" id="toast"></div>
+      <div class="confetti-layer" id="confettiLayer"></div>
+      <div class="splash" id="splash">
+        <div class="splash-mark">Tadbeer Alsultan</div>
+        <div class="splash-mark-ar">تدبير السلطان</div>
+        <div class="splash-spinner"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script>
+/* ======================= MAP HELPERS ======================= */
+let activeMap = null;
+function destroyActiveMap(){
+  if(activeMap){ try{ activeMap.remove(); }catch(e){} activeMap = null; }
+}
+function addOsmTiles(map){
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    maxZoom: 19,
+    attribution: '&copy; OpenStreetMap'
+  }).addTo(map);
+}
+function initBookingMap(){
+  destroyActiveMap();
+  const el = document.getElementById('booking-map');
+  if(!el || typeof L === 'undefined') return;
+  const c = cityById(state.draft.city);
+  const lat = state.draft.lat ?? c.lat;
+  const lng = state.draft.lng ?? c.lng;
+  activeMap = L.map('booking-map', {zoomControl:false, attributionControl:false}).setView([lat,lng], 13);
+  addOsmTiles(activeMap);
+  setTimeout(()=>{ if(activeMap) activeMap.invalidateSize(); }, 120);
+  const marker = L.marker([lat,lng], {draggable:true}).addTo(activeMap);
+  marker.on('dragend', ()=>{
+    const pos = marker.getLatLng();
+    state.draft.lat = pos.lat; state.draft.lng = pos.lng;
+  });
+  activeMap.on('click', (e)=>{
+    marker.setLatLng(e.latlng);
+    state.draft.lat = e.latlng.lat; state.draft.lng = e.latlng.lng;
+  });
+}
+function initViewMap(containerId, lat, lng){
+  destroyActiveMap();
+  const el = document.getElementById(containerId);
+  if(!el || typeof L === 'undefined') return;
+  activeMap = L.map(containerId, {zoomControl:false, attributionControl:false, dragging:false, scrollWheelZoom:false, tap:false}).setView([lat,lng], 15);
+  addOsmTiles(activeMap);
+  setTimeout(()=>{ if(activeMap) activeMap.invalidateSize(); }, 120);
+  L.marker([lat,lng]).addTo(activeMap);
+}
+function opsPinColor(status){
+  if(status==='pending') return '#D9A441';
+  if(status==='confirmed' || status==='assigned') return '#0B7D8C';
+  if(status==='progress') return '#B85C38';
+  return '#8B9A93';
+}
+function initOpsMap(){
+  destroyActiveMap();
+  const el = document.getElementById('ops-map');
+  if(!el || typeof L === 'undefined') return;
+  const active = orders.filter(o=>o.status!=='completed' && o.status!=='cancelled');
+  if(active.length===0){
+    activeMap = L.map('ops-map', {zoomControl:false, attributionControl:false, dragging:false, scrollWheelZoom:false, tap:false}).setView([28,50], 5);
+    addOsmTiles(activeMap);
+    setTimeout(()=>{ if(activeMap) activeMap.invalidateSize(); }, 120);
+    return;
+  }
+  activeMap = L.map('ops-map', {zoomControl:false, attributionControl:false, dragging:true, scrollWheelZoom:false, tap:false});
+  addOsmTiles(activeMap);
+  const markers = [];
+  active.forEach(o=>{
+    const m = L.circleMarker([o.lat, o.lng], {
+      radius:9, fillColor:opsPinColor(o.status), color:'#fff', weight:2, fillOpacity:0.95
+    }).addTo(activeMap);
+    m.on('click', ()=>{ openAdminOrder(o.id); });
+    markers.push(m);
+  });
+  const group = L.featureGroup(markers);
+  activeMap.fitBounds(group.getBounds(), {padding:[28,28], maxZoom:8});
+  setTimeout(()=>{ if(activeMap) activeMap.invalidateSize(); }, 120);
+}
+/* ======================= DATA ======================= */
+const CITIES = [
+  {id:'dubai', name:'Dubai', nameAr:'دبي', country:'UAE', currency:'AED', lat:25.2048, lng:55.2708},
+  {id:'abudhabi', name:'Abu Dhabi', nameAr:'أبوظبي', country:'UAE', currency:'AED', lat:24.4539, lng:54.3773},
+  {id:'sharjah', name:'Sharjah', nameAr:'الشارقة', country:'UAE', currency:'AED', lat:25.3463, lng:55.4209},
+  {id:'baghdad', name:'Baghdad', nameAr:'بغداد', country:'Iraq', currency:'IQD', lat:33.3152, lng:44.3661},
+  {id:'erbil', name:'Erbil', nameAr:'أربيل', country:'Iraq', currency:'IQD', lat:36.1911, lng:44.0092},
+];
+
+const SERVICES = [
+  {id:'cleaning', name:'Home cleaning', nameAr:'تنظيف المنزل', icon:'ti-wash', desc:'Standard cleaning for apartments and villas — kitchen, bathrooms, living areas.', fixed:true, priceAED:120, priceIQD:65000, photo:'https://images.pexels.com/photos/8055198/pexels-photo-8055198.jpeg?auto=compress&cs=tinysrgb&w=400&h=400&fit=crop'},
+  {id:'deep-cleaning', name:'Deep cleaning', nameAr:'تنظيف عميق', icon:'ti-sparkles', desc:'A thorough top-to-bottom clean, including inside cabinets and appliances.', fixed:true, priceAED:280, priceIQD:150000, photo:'https://images.pexels.com/photos/8055825/pexels-photo-8055825.jpeg?auto=compress&cs=tinysrgb&w=400&h=400&fit=crop'},
+  {id:'pest', name:'Pest control', nameAr:'مكافحة الحشرات', icon:'ti-bug', desc:'General pest treatment for common household insects, applied by a licensed technician.', fixed:true, priceAED:180, priceIQD:95000, photo:'https://images.pexels.com/photos/32055757/pexels-photo-32055757.jpeg?auto=compress&cs=tinysrgb&w=400&h=400&fit=crop'},
+  {id:'ac', name:'AC service', nameAr:'خدمة التكييف', icon:'ti-air-conditioning', desc:'AC cleaning, gas top-up, and general maintenance for split or central units.', fixed:true, priceAED:150, priceIQD:80000, photo:'https://images.pexels.com/photos/5463575/pexels-photo-5463575.jpeg?auto=compress&cs=tinysrgb&w=400&h=400&fit=crop'},
+  {id:'handyman', name:'Handyman', nameAr:'صيانة عامة', icon:'ti-tools', desc:'Small repairs, mounting, and fixes. Our team reviews your job and confirms a price.', fixed:false, photo:'https://images.pexels.com/photos/1249612/pexels-photo-1249612.jpeg?auto=compress&cs=tinysrgb&w=400&h=400&fit=crop'},
+  {id:'sofa', name:'Sofa & carpet', nameAr:'تنظيف الأثاث', icon:'ti-armchair', desc:'Steam cleaning for sofas, carpets, and mattresses.', fixed:true, priceAED:160, priceIQD:85000, photo:'https://images.pexels.com/photos/8055456/pexels-photo-8055456.jpeg?auto=compress&cs=tinysrgb&w=400&h=400&fit=crop'},
+];
+
+const PLACEMENTS = [
+  {id:'nanny', name:'Nanny', nameAr:'مربية أطفال', icon:'ti-baby-carriage', feeAED:8000, feeIQD:4200000, showLiveOption:true, photo:'https://images.pexels.com/photos/7302874/pexels-photo-7302874.jpeg?auto=compress&cs=tinysrgb&w=400&h=400&fit=crop'},
+  {id:'cook', name:'Cook', nameAr:'طاهي منزلي', icon:'ti-chef-hat', feeAED:7000, feeIQD:3700000, showLiveOption:true, photo:'https://images.pexels.com/photos/2544829/pexels-photo-2544829.jpeg?auto=compress&cs=tinysrgb&w=400&h=400&fit=crop'},
+  {id:'driver', name:'Driver', nameAr:'سائق خاص', icon:'ti-steering-wheel', feeAED:6000, feeIQD:3200000, showLiveOption:false, photo:'https://images.pexels.com/photos/10245007/pexels-photo-10245007.jpeg?auto=compress&cs=tinysrgb&w=400&h=400&fit=crop'},
+  {id:'housemaid', name:'Housemaid', nameAr:'خادمة منزلية', icon:'ti-shirt', feeAED:7000, feeIQD:3700000, showLiveOption:true, photo:'https://images.pexels.com/photos/7282793/pexels-photo-7282793.jpeg?auto=compress&cs=tinysrgb&w=400&h=400&fit=crop'},
+  {id:'caregiver', name:'Elderly caregiver', nameAr:'مقدم رعاية لكبار السن', icon:'ti-heart-handshake', feeAED:8500, feeIQD:4500000, showLiveOption:true, photo:'https://images.pexels.com/photos/18459198/pexels-photo-18459198.jpeg?auto=compress&cs=tinysrgb&w=400&h=400&fit=crop'},
+  {id:'gardener', name:'Gardener', nameAr:'بستاني', icon:'ti-plant-2', feeAED:5000, feeIQD:2600000, showLiveOption:false, photo:'https://images.pexels.com/photos/24595769/pexels-photo-24595769.jpeg?auto=compress&cs=tinysrgb&w=400&h=400&fit=crop'},
+  {id:'guard', name:'Security guard', nameAr:'حارس أمن', icon:'ti-shield-check', feeAED:6500, feeIQD:3400000, showLiveOption:false, photo:'https://images.pexels.com/photos/18166929/pexels-photo-18166929.jpeg?auto=compress&cs=tinysrgb&w=400&h=400&fit=crop'},
+];
+
+const DURATIONS = [
+  {id:'1y', label:'1 year', labelAr:'سنة واحدة', multiplier:0.65},
+  {id:'2y', label:'2 years', labelAr:'سنتان', multiplier:1},
+  {id:'3y', label:'3 years', labelAr:'3 سنوات', multiplier:1.4},
+];
+
+const WORKERS = [
+  {id:'w1', name:'Maria Santos', skill:'cleaning', available:true, photo:'https://randomuser.me/api/portraits/women/65.jpg'},
+  {id:'w2', name:'Josephine Cruz', skill:'cleaning', available:true, photo:'https://randomuser.me/api/portraits/women/68.jpg'},
+  {id:'w3', name:'Ramon Dela Cruz', skill:'pest', available:false, photo:'https://randomuser.me/api/portraits/men/32.jpg'},
+  {id:'w4', name:'Ahmed Al-Farsi', skill:'ac', available:true, photo:'https://randomuser.me/api/portraits/men/76.jpg'},
+  {id:'w5', name:'Grace Lim', skill:'handyman', available:true, photo:'https://randomuser.me/api/portraits/women/50.jpg'},
+];
+const CUSTOMER_PHOTO = 'https://randomuser.me/api/portraits/women/33.jpg';
+const HERO_PHOTO = 'https://images.pexels.com/photos/6238679/pexels-photo-6238679.jpeg?auto=compress&cs=tinysrgb&w=800&h=500&fit=crop';
+
+const STATUS_STEPS = ['pending','confirmed','assigned','progress','completed'];
+const STATUS_LABEL = {pending:'Order received', confirmed:'Confirmed', assigned:'Worker assigned', progress:'In progress', completed:'Completed', cancelled:'Cancelled'};
+const STATUS_LABEL_AR = {pending:'تم استلام الطلب', confirmed:'تم التأكيد', assigned:'تم تعيين الموظف', progress:'قيد التنفيذ', completed:'مكتمل', cancelled:'ملغى'};
+const SLA_MINUTES = 15;
+
+const INQUIRY_STEPS = ['new','review','contacted','placed'];
+const INQUIRY_LABEL = {new:'New', review:'In review', contacted:'Contacted', placed:'Placed'};
+const INQUIRY_LABEL_AR = {new:'جديد', review:'قيد المراجعة', contacted:'تم التواصل', placed:'تم التوظيف'};
+const INQUIRY_PILL_CLASS = {new:'status-pending', review:'status-confirmed', contacted:'status-assigned', placed:'status-completed'};
+
+let orders = [
+  {id:1039, service:'cleaning', customer:'Aaliyah R.', city:'dubai', address:'Villa 12, Al Wasl Road, Jumeirah 1', lat:25.2110, lng:55.2631, date:'Jul 12', time:'10:00 AM', status:'completed', workerId:'w1', rating:5, createdAt:Date.now()-5*86400000},
+  {id:1040, service:'ac', customer:'Aaliyah R.', city:'baghdad', address:'Apartment 4B, Karrada Street', lat:33.3095, lng:44.4275, date:'Jul 15', time:'2:00 PM', status:'progress', workerId:'w4', createdAt:Date.now()-2*86400000},
+  {id:1041, service:'pest', customer:'Aaliyah R.', city:'sharjah', address:'Building 7, Al Majaz 2', lat:25.3298, lng:55.3852, date:'Jul 17', time:'11:30 AM', status:'assigned', workerId:'w3', createdAt:Date.now()-3600000},
+  {id:1042, service:'deep-cleaning', customer:'Aaliyah R.', city:'erbil', address:'House 22, Italian Village', lat:36.1755, lng:44.0475, date:'Jul 18', time:'9:00 AM', status:'pending', workerId:null, createdAt:Date.now()-40*60000},
+];
+let inquiries = [
+  {id:501, type:'nanny', customer:'Aaliyah R.', notes:'Full-time, live-in, one toddler', status:'review', city:'dubai', workers:1, duration:'2y', liveType:'live-in', startDate:'Aug 1'},
+  {id:502, type:'driver', customer:'Yusuf K.', notes:'Part-time, school runs, Dubai Marina', status:'new', city:'dubai', workers:1, duration:'1y', liveType:'live-out', startDate:'Aug 15'},
+  {id:503, type:'cook', customer:'Farah S.', notes:'Full-time, Levantine cuisine experience', status:'contacted', city:'baghdad', workers:1, duration:'2y', liveType:'live-in', startDate:'Jul 28'},
+];
+let nextOrderId = 1043;
+let nextInquiryId = 502;
+
+/* ======================= STATE ======================= */
+let state = {
+  role:'customer',
+  lang:'en',
+  customerTab:'home',
+  adminTab:'queue',
+  workerTab:'jobs',
+  currentWorkerId:'w4',
+  activeWorkerJob:null,
+  screen:'home',
+  activeService:null,
+  activeOrder:null,
+  activeInquiryType:'nanny',
+  placementDraft:{city:'dubai', workers:1, duration:'2y', liveType:'live-in', startDate:'', notes:''},
+  draft:{city:'dubai', date:'', time:'', notes:'', address:'', lat:null, lng:null},
+  adminFilter:'all',
+  activeAdminOrder:null,
+  ratingDraft:{stars:0, comment:''},
+  rescheduleDraft:{date:'', time:''},
+  searchQuery:'',
+  navDirection:'none',
+  bookingErrors:{},
+  placementErrors:{},
+};
+
+const T = {
+  en:{
+    greeting:'Good morning, Aaliyah', book:'Book a service', popular:'Popular services', allServices:'All services',
+    home:'Home', bookings:'Bookings', inquiries:'Placements', profile:'Profile',
+    queue:'Queue', dashboard:'Overview', workers:'Workers',
+    bookNow:'Book now', getQuote:'Request a quote', chooseCity:'City', date:'Preferred date', time:'Time slot', notes:'Notes for the team (optional)',
+    address:'Delivery address', addressPlaceholder:'e.g. Villa 12, Al Wasl Road', mapHint:'Drag the pin or tap the map to set the exact location', openMaps:'Open in Maps', location:'Location',
+    estimate:'Estimated price', quoteNote:'Our team confirms the price after reviewing your job',
+    submit:'Submit booking', myBookings:'My bookings', noBookings:'No bookings yet', noBookingsSub:'Services you book will show up here.',
+    trackOrder:'Track order', received:'Order received', confirmed:'Confirmed', assigned:'Worker assigned', progress:'In progress', completed:'Completed',
+    yourWorker:'Your assigned worker', inquiryTitle:'Placements', inquirySub:'Looking for a nanny, cook, or driver on a long-term contract? Fill in the details below and our team will follow up with final terms.',
+    startInquiry:'Send inquiry', requirements:'Anything else we should know? (optional)', submitInquiry:'Request placement',
+    savedAddresses:'Saved addresses', paymentMethods:'Payment methods', language:'Language', support:'Contact support', logout:'Log out',
+    jobs:'Jobs', myJobs:"Today's jobs", noJobs:'No jobs right now', noJobsSub:'Jobs assigned to you will show up here.',
+    startJob:'Start job', markComplete:'Mark complete', jobStarted:'Job started', jobCompleted:'Job marked complete',
+    loggedInAs:'Logged in as', switchWorker:'Switch demo worker', availability:'Availability', recentlyCompleted:'Recently completed',
+    pipelineStage:'Advance stage', placementRequests:'Placement requests',
+    financials:'Financials', bookingsRevenue:'Bookings revenue', collected:'Collected', pending:'Pending', revenueByService:'Revenue by service',
+    placementFees:'Placement fees', realized:'Realized', pipelineVal:'In pipeline', financialsNote:'Collected = completed bookings and placed candidates. Pending/Pipeline = active bookings and open placement requests, valued at current estimated pricing. AED and IQD are shown separately rather than combined into one total.',
+    noRevenueYet:'No completed bookings yet',
+    rateService:'Rate this service', howWasIt:'How was your experience?', addComment:'Add a comment (optional)', submitRating:'Submit rating', thanksRating:'Thanks for your feedback',
+    reschedule:'Reschedule', cancelBooking:'Cancel booking', confirmCancelTitle:'Cancel this booking?', confirmCancelBody:"This can't be undone. The team will be notified.", keepBooking:'Keep booking', yesCancelBooking:'Yes, cancel booking',
+    bookingCancelled:'Booking cancelled', bookAgain:'Book again', newTime:'New date and time', confirmReschedule:'Confirm new time', rescheduled:'Booking rescheduled',
+    needsAttention:'Needs attention', jobsCompleted:'Jobs completed', avgRating:'avg rating', noRatingsYet:'No ratings yet', exportCsv:'Export CSV',
+    requiredField:'This field is required', fixErrors:'Please fill in the required fields',
+    opsMap:'Live operations map', needsAssign:'Needs assignment', dispatched:'Dispatched', inProgressLegend:'In progress',
+    numWorkers:'Number of workers needed', duration:'Contract duration', liveType:'Arrangement', liveIn:'Live-in', liveOut:'Live-out',
+    startDate:'Preferred start date', estimatedFee:'Estimated placement fee', feeNote:'Confirmed by our team based on final candidate and terms',
+  },
+  ar:{
+    greeting:'صباح الخير، عالية', book:'احجز خدمة', popular:'الخدمات الأكثر طلباً', allServices:'جميع الخدمات',
+    home:'الرئيسية', bookings:'حجوزاتي', inquiries:'التوظيف', profile:'حسابي',
+    queue:'الطلبات', dashboard:'نظرة عامة', workers:'الموظفون',
+    bookNow:'احجز الآن', getQuote:'اطلب عرض سعر', chooseCity:'المدينة', date:'التاريخ المفضل', time:'الوقت', notes:'ملاحظات (اختياري)',
+    address:'عنوان التوصيل', addressPlaceholder:'مثال: فيلا 12، شارع الوصل', mapHint:'اسحب الدبوس أو انقر على الخريطة لتحديد الموقع بدقة', openMaps:'فتح في الخرائط', location:'الموقع',
+    estimate:'السعر التقديري', quoteNote:'سيؤكد فريقنا السعر بعد مراجعة الطلب',
+    submit:'إرسال الحجز', myBookings:'حجوزاتي', noBookings:'لا توجد حجوزات بعد', noBookingsSub:'ستظهر هنا الخدمات التي تحجزها.',
+    trackOrder:'تتبع الطلب', received:'تم الاستلام', confirmed:'تم التأكيد', assigned:'تم التعيين', progress:'قيد التنفيذ', completed:'مكتمل',
+    yourWorker:'الموظف المعين', inquiryTitle:'التوظيف طويل الأمد', inquirySub:'تبحث عن مربية أو طاهي أو سائق بعقد طويل؟ املأ التفاصيل أدناه وسيتواصل معك فريقنا بالشروط النهائية.',
+    startInquiry:'إرسال استفسار', requirements:'هل هناك تفاصيل إضافية؟ (اختياري)', submitInquiry:'طلب التوظيف',
+    savedAddresses:'العناوين المحفوظة', paymentMethods:'طرق الدفع', language:'اللغة', support:'تواصل مع الدعم', logout:'تسجيل الخروج',
+    jobs:'المهام', myJobs:'مهام اليوم', noJobs:'لا توجد مهام حالياً', noJobsSub:'ستظهر هنا المهام المسندة إليك.',
+    startJob:'بدء المهمة', markComplete:'تحديد كمكتملة', jobStarted:'تم بدء المهمة', jobCompleted:'تم إنجاز المهمة',
+    loggedInAs:'مسجل الدخول باسم', switchWorker:'تبديل الموظف التجريبي', availability:'الحالة', recentlyCompleted:'أُنجزت مؤخراً',
+    pipelineStage:'الانتقال للمرحلة التالية', placementRequests:'طلبات التوظيف',
+    financials:'الملخص المالي', bookingsRevenue:'إيرادات الحجوزات', collected:'محصّل', pending:'قيد الانتظار', revenueByService:'الإيرادات حسب الخدمة',
+    placementFees:'رسوم التوظيف', realized:'محقق', pipelineVal:'قيد التوظيف', financialsNote:'المحصّل = الحجوزات المكتملة والمرشحون الذين تم توظيفهم. قيد الانتظار = الحجوزات النشطة وطلبات التوظيف المفتوحة، بالتسعير التقديري الحالي. تُعرض الدرهم الإماراتي والدينار العراقي بشكل منفصل وليس كمجموع واحد.',
+    noRevenueYet:'لا توجد حجوزات مكتملة بعد',
+    rateService:'قيّم هذه الخدمة', howWasIt:'كيف كانت تجربتك؟', addComment:'أضف تعليقاً (اختياري)', submitRating:'إرسال التقييم', thanksRating:'شكراً على ملاحظاتك',
+    reschedule:'إعادة الجدولة', cancelBooking:'إلغاء الحجز', confirmCancelTitle:'إلغاء هذا الحجز؟', confirmCancelBody:'لا يمكن التراجع عن هذا. سيتم إخطار الفريق.', keepBooking:'الاحتفاظ بالحجز', yesCancelBooking:'نعم، إلغاء الحجز',
+    bookingCancelled:'تم إلغاء الحجز', bookAgain:'احجز مرة أخرى', newTime:'التاريخ والوقت الجديد', confirmReschedule:'تأكيد الموعد الجديد', rescheduled:'تمت إعادة جدولة الحجز',
+    needsAttention:'يحتاج إلى انتباه', jobsCompleted:'المهام المكتملة', avgRating:'متوسط التقييم', noRatingsYet:'لا توجد تقييمات بعد', exportCsv:'تصدير CSV',
+    requiredField:'هذا الحقل مطلوب', fixErrors:'يرجى تعبئة الحقول المطلوبة',
+    opsMap:'خريطة العمليات المباشرة', needsAssign:'يحتاج تعيين', dispatched:'تم الإرسال', inProgressLegend:'قيد التنفيذ',
+    numWorkers:'عدد العمال المطلوبين', duration:'مدة العقد', liveType:'طبيعة الإقامة', liveIn:'إقامة كاملة', liveOut:'بدون إقامة',
+    startDate:'تاريخ البدء المفضل', estimatedFee:'رسوم التوظيف التقديرية', feeNote:'يؤكدها فريقنا بناءً على المرشح النهائي والشروط',
+  }
+};
+function t(key){ return T[state.lang][key] || key; }
+function svcName(s){ return state.lang==='ar' ? s.nameAr : s.name; }
+function cityName(c){ return state.lang==='ar' ? c.nameAr : c.name; }
+
+/* ======================= HELPERS ======================= */
+function cityById(id){ return CITIES.find(c=>c.id===id); }
+function serviceById(id){ return SERVICES.find(s=>s.id===id); }
+function workerById(id){ return WORKERS.find(w=>w.id===id); }
+function initials(name){ return name.split(' ').map(p=>p[0]).slice(0,2).join(''); }
+function todayISO(){ return new Date().toISOString().split('T')[0]; }
+function fmtDateLabel(iso){
+  if(!iso) return '';
+  const d = new Date(iso + 'T00:00:00');
+  if(isNaN(d)) return iso;
+  return d.toLocaleDateString('en-US', {month:'short', day:'numeric'});
+}
+function avatarImg(photoUrl, name, sizeClass){
+  const cls = sizeClass ? `avatar ${sizeClass}` : 'avatar';
+  return `<div class="${cls}"><img src="${photoUrl}" alt="${name}" loading="lazy" onerror="this.style.display='none'; this.parentElement.textContent='${initials(name)}';"></div>`;
+}
+function serviceAmount(service, cityId){
+  if(!service.fixed) return null;
+  const c = cityById(cityId);
+  return c.currency==='AED' ? service.priceAED : service.priceIQD;
+}
+function priceFor(service, cityId){
+  const amt = serviceAmount(service, cityId);
+  if(amt===null) return null;
+  const c = cityById(cityId);
+  return c.currency==='AED' ? `AED ${amt}` : `IQD ${amt.toLocaleString()}`;
+}
+function placementAmount(typeId, cityId, workers, durationId){
+  const type = PLACEMENTS.find(p=>p.id===typeId);
+  const c = cityById(cityId);
+  const dur = DURATIONS.find(d=>d.id===durationId);
+  const perWorker = c.currency==='AED' ? type.feeAED : type.feeIQD;
+  return Math.round(perWorker * dur.multiplier * workers);
+}
+function placementPrice(typeId, cityId, workers, durationId){
+  const c = cityById(cityId);
+  const amt = placementAmount(typeId, cityId, workers, durationId);
+  return `${c.currency} ${amt.toLocaleString()}`;
+}
+function isSlaBreach(o){
+  return o.status==='pending' && (Date.now() - o.createdAt) > SLA_MINUTES*60000;
+}
+function burstConfetti(){
+  const layer = document.getElementById('confettiLayer');
+  if(!layer) return;
+  const colors = ['#0B7D8C','#D9A441','#B85C38','#4C7A52','#3E7CB1'];
+  const count = 40;
+  for(let i=0;i<count;i++){
+    const piece = document.createElement('div');
+    piece.className = 'confetti-piece';
+    const color = colors[i % colors.length];
+    const isCircle = i % 2 === 0;
+    piece.style.left = (Math.random()*100) + '%';
+    piece.style.background = color;
+    piece.style.borderRadius = isCircle ? '50%' : '2px';
+    piece.style.width = (5 + Math.random()*5) + 'px';
+    piece.style.height = piece.style.width;
+    piece.style.animationDuration = (900 + Math.random()*700) + 'ms';
+    piece.style.animationDelay = (Math.random()*180) + 'ms';
+    layer.appendChild(piece);
+  }
+  setTimeout(()=>{ layer.innerHTML = ''; }, 2000);
+}
+function showToast(msg, icon){
+  const el = document.getElementById('toast');
+  el.innerHTML = `<i class="ti ${icon||'ti-check'}"></i> ${msg}`;
+  el.classList.add('show');
+  clearTimeout(window._toastT);
+  window._toastT = setTimeout(()=>el.classList.remove('show'), 2200);
+}
+function go(screen){ state.navDirection = state.navDirection==='back' ? 'back' : 'forward'; state.screen = screen; render(); document.getElementById('viewport').scrollTop = 0; }
+
+/* ======================= ROLE / LANG ======================= */
+function setRole(r){
+  state.navDirection = 'none';
+  state.role = r;
+  document.getElementById('role-customer').classList.toggle('active', r==='customer');
+  document.getElementById('role-worker').classList.toggle('active', r==='worker');
+  document.getElementById('role-admin').classList.toggle('active', r==='admin');
+  state.screen = r==='customer' ? 'home' : r==='worker' ? 'worker-jobs' : 'admin-queue';
+  render();
+}
+function setLang(l){
+  state.lang = l;
+  document.documentElement.setAttribute('dir', l==='ar' ? 'rtl':'ltr');
+  document.documentElement.setAttribute('lang', l==='ar' ? 'ar':'en');
+  document.getElementById('lang-en').classList.toggle('active', l==='en');
+  document.getElementById('lang-ar').classList.toggle('active', l==='ar');
+  const strings = {
+    en:{title:'Tadbeer Alsultan', sub:"Interactive walkthrough of the customer booking flow and the admin dispatch view. Nothing here is live — actions update this demo's memory only.", hint:'Tap around — this is a fully clickable prototype, not a video.'},
+    ar:{title:'تدبير السلطان', sub:'استعراض تفاعلي لتجربة حجز العميل ولوحة تحكم المشرف. لا يوجد اتصال حقيقي — التغييرات تُحفظ في هذا العرض فقط.', hint:'انقر واستكشف — هذا نموذج تفاعلي كامل وليس فيديو تجريبي.'}
+  };
+  document.getElementById('t-title').textContent = strings[l].title;
+  document.getElementById('t-sub').textContent = strings[l].sub;
+  document.getElementById('t-hint').innerHTML = `<i class="ti ti-hand-click"></i> ${strings[l].hint}`;
+  render();
+}
+
+/* ======================= SHEET ======================= */
+function openSheet(html){
+  document.getElementById('sheet').innerHTML = html;
+  document.getElementById('sheetOverlay').classList.add('open');
+}
+function closeSheet(){ document.getElementById('sheetOverlay').classList.remove('open'); }
+
+/* ======================= RENDER ROOT ======================= */
+let lastRenderedScreen = null;
+let lastRenderedRole = null;
+function render(){
+  renderNav();
+  const vp = document.getElementById('viewport');
+  const screenChanged = state.screen !== lastRenderedScreen || state.role !== lastRenderedRole;
+  vp.innerHTML = state.role==='customer' ? renderCustomer() : state.role==='worker' ? renderWorker() : renderAdmin();
+  const screenEl = vp.querySelector('.screen');
+  if(screenEl && screenChanged){
+    screenEl.classList.add(state.navDirection==='back' ? 'pop' : state.navDirection==='forward' ? 'push' : 'fade');
+  }
+  lastRenderedScreen = state.screen;
+  lastRenderedRole = state.role;
+  state.navDirection = 'none';
+  requestAnimationFrame(initMapsForScreen);
+}
+function initMapsForScreen(){
+  if(state.role==='customer' && state.screen==='service-detail'){
+    initBookingMap();
+  } else if(state.role==='customer' && state.screen==='tracking'){
+    const o = orders.find(x=>x.id===state.activeOrder);
+    if(o) initViewMap('track-map', o.lat, o.lng); else destroyActiveMap();
+  } else if(state.role==='admin' && state.screen==='admin-order'){
+    const o = orders.find(x=>x.id===state.activeAdminOrder);
+    if(o) initViewMap('admin-map', o.lat, o.lng); else destroyActiveMap();
+  } else if(state.role==='worker' && state.screen==='worker-job-detail'){
+    const o = orders.find(x=>x.id===state.activeWorkerJob);
+    if(o) initViewMap('worker-map', o.lat, o.lng); else destroyActiveMap();
+  } else if(state.role==='admin' && state.screen==='admin-dashboard'){
+    initOpsMap();
+  } else {
+    destroyActiveMap();
+  }
+}
+
+function renderNav(){
+  const nav = document.getElementById('bottomnav');
+  if(state.role==='customer'){
+    nav.innerHTML = `
+      <button class="nav-btn ${state.customerTab==='home'?'active':''}" onclick="switchCustomerTab('home')"><i class="ti ti-home"></i>${t('home')}</button>
+      <button class="nav-btn ${state.customerTab==='bookings'?'active':''}" onclick="switchCustomerTab('bookings')"><i class="ti ti-calendar-event"></i>${t('bookings')}</button>
+      <button class="nav-btn ${state.customerTab==='inquiries'?'active':''}" onclick="switchCustomerTab('inquiries')"><i class="ti ti-users"></i>${t('inquiries')}</button>
+      <button class="nav-btn ${state.customerTab==='profile'?'active':''}" onclick="switchCustomerTab('profile')"><i class="ti ti-user-circle"></i>${t('profile')}</button>`;
+  } else if(state.role==='worker'){
+    const activeJobs = orders.filter(o=>o.workerId===state.currentWorkerId && (o.status==='assigned'||o.status==='progress')).length;
+    nav.innerHTML = `
+      <button class="nav-btn ${state.workerTab==='jobs'?'active':''}" onclick="switchWorkerTab('jobs')"><span class="nav-icon-wrap"><i class="ti ti-clipboard-list"></i>${activeJobs>0?`<span class="nav-badge">${activeJobs}</span>`:''}</span>${t('jobs')}</button>
+      <button class="nav-btn ${state.workerTab==='profile'?'active':''}" onclick="switchWorkerTab('profile')"><i class="ti ti-user-circle"></i>${t('profile')}</button>`;
+  } else {
+    const pendingCount = orders.filter(o=>o.status==='pending').length;
+    nav.innerHTML = `
+      <button class="nav-btn ${state.adminTab==='queue'?'active':''}" onclick="switchAdminTab('queue')"><span class="nav-icon-wrap"><i class="ti ti-list-details"></i>${pendingCount>0?`<span class="nav-badge">${pendingCount}</span>`:''}</span>${t('queue')}</button>
+      <button class="nav-btn ${state.adminTab==='inquiries'?'active':''}" onclick="switchAdminTab('inquiries')"><i class="ti ti-users"></i>${t('inquiries')}</button>
+      <button class="nav-btn ${state.adminTab==='dashboard'?'active':''}" onclick="switchAdminTab('dashboard')"><i class="ti ti-chart-bar"></i>${t('dashboard')}</button>
+      <button class="nav-btn ${state.adminTab==='financials'?'active':''}" onclick="switchAdminTab('financials')"><i class="ti ti-report-money"></i>${t('financials')}</button>
+      <button class="nav-btn ${state.adminTab==='workers'?'active':''}" onclick="switchAdminTab('workers')"><i class="ti ti-id-badge-2"></i>${t('workers')}</button>`;
+  }
+}
+function switchCustomerTab(tab){ state.navDirection = state.navDirection==='back' ? 'back' : 'none'; state.customerTab = tab; state.screen = tab==='home' ? 'home' : tab; render(); }
+function switchAdminTab(tab){ state.navDirection = state.navDirection==='back' ? 'back' : 'none'; state.adminTab = tab; state.screen = 'admin-'+tab; render(); }
+function switchWorkerTab(tab){ state.navDirection = state.navDirection==='back' ? 'back' : 'none'; state.workerTab = tab; state.screen = 'worker-'+tab; render(); }
+
+/* ======================= CUSTOMER SCREENS ======================= */
+function renderCustomer(){
+  if(state.screen==='service-detail') return screenServiceDetail();
+  if(state.screen==='confirmation') return screenConfirmation();
+  if(state.screen==='tracking') return screenTracking();
+  if(state.customerTab==='home') return screenHome();
+  if(state.customerTab==='bookings') return screenBookings();
+  if(state.customerTab==='inquiries') return screenInquiries();
+  if(state.customerTab==='profile') return screenProfile();
+  return screenHome();
+}
+
+function screenHome(){
+  const popular = SERVICES.slice(0,4);
+  const q = state.searchQuery.trim().toLowerCase();
+  const matches = q ? SERVICES.filter(s=>svcName(s).toLowerCase().includes(q) || s.name.toLowerCase().includes(q)) : [];
+  const lastCompleted = orders.find(o=>o.customer==='Aaliyah R.' && o.status==='completed');
+
+  if(q){
+    return `<div class="screen">
+      <div class="topbar"><h1>${t('greeting')}</h1></div>
+      <div class="search-bar">
+        <i class="ti ti-search"></i>
+        <input type="text" placeholder="Search services…" value="${state.searchQuery}" oninput="state.searchQuery=this.value; render();" autofocus>
+        <button class="search-clear" onclick="state.searchQuery=''; render();" aria-label="Clear search">&times;</button>
+      </div>
+      <div class="section-label">${matches.length} result${matches.length===1?'':'s'}</div>
+      ${matches.length ? `<div class="card-list">
+        ${matches.map(s=>`
+          <div class="svc-row" onclick="openService('${s.id}')">
+            <div class="tile-photo lg" style="background-image:url('${s.photo}')"></div>
+            <div class="svc-info"><b>${svcName(s)}</b><span>${s.fixed ? priceFor(s,'dubai')+' · fixed price' : 'Instant quote'}</span></div>
+            <i class="ti ti-chevron-right chev"></i>
+          </div>`).join('')}
+      </div>` : `<div class="empty-state"><i class="ti ti-search-off"></i><b>No services found</b><span>Try a different search term.</span></div>`}
+    </div>`;
+  }
+
+  return `<div class="screen">
+    <div class="topbar"><h1>${t('greeting')}</h1></div>
+    <div class="search-bar">
+      <i class="ti ti-search"></i>
+      <input type="text" placeholder="Search services…" value="${state.searchQuery}" oninput="state.searchQuery=this.value; render();">
+    </div>
+    ${lastCompleted ? `
+    <div class="rebook-strip" onclick="bookAgain(${lastCompleted.id})">
+      <div class="tile-photo" style="background-image:url('${serviceById(lastCompleted.service).photo}')"></div>
+      <div class="svc-info"><b>${t('bookAgain')}</b><span>${svcName(serviceById(lastCompleted.service))}</span></div>
+      <i class="ti ti-chevron-right chev"></i>
+    </div>` : ''}
+    <div class="promo-card" style="background:linear-gradient(135deg, rgba(11,125,140,0.90), rgba(7,91,102,0.94)), url('${HERO_PHOTO}') center/cover;">
+      <div class="promo-eyebrow">First booking</div>
+      <div class="promo-title">20% off your first service</div>
+      <div class="promo-sub">Applied automatically at checkout</div>
+    </div>
+    <div class="section-label">${t('allServices')}</div>
+    <div class="service-grid">
+      ${SERVICES.map(s=>`
+        <div class="service-tile" onclick="openService('${s.id}')">
+          <div class="tile-photo" style="background-image:url('${s.photo}')"></div>
+          <span>${svcName(s)}</span>
+        </div>`).join('')}
+    </div>
+    <div class="section-label">${t('popular')}</div>
+    <div class="card-list">
+      ${popular.map(s=>`
+        <div class="svc-row" onclick="openService('${s.id}')">
+          <div class="tile-photo lg" style="background-image:url('${s.photo}')"></div>
+          <div class="svc-info"><b>${svcName(s)}</b><span>${s.fixed ? priceFor(s,'dubai')+' · fixed price' : 'Instant quote'}</span></div>
+          <i class="ti ti-chevron-right chev"></i>
+        </div>`).join('')}
+    </div>
+  </div>`;
+}
+
+function openService(id){ state.activeService = id; state.draft = {city:'dubai', date:'', time:'', notes:'', address:'', lat:null, lng:null}; state.bookingErrors = {}; go('service-detail'); }
+function bookAgain(orderId){
+  const o = orders.find(x=>x.id===orderId);
+  state.activeService = o.service;
+  state.draft = {city:o.city, date:'', time:'', notes:'', address:o.address, lat:o.lat, lng:o.lng};
+  state.bookingErrors = {};
+  go('service-detail');
+}
+
+function screenServiceDetail(){
+  const s = serviceById(state.activeService);
+  const price = priceFor(s, state.draft.city);
+  const err = state.bookingErrors;
+  return `<div class="screen">
+    <div class="topbar"><button class="back-btn" onclick="state.navDirection='back'; go('home')">&lsaquo;</button><h1>${svcName(s)}</h1></div>
+    <div class="hero-block with-photo">
+      <div class="hero-photo" style="background-image:url('${s.photo}')"></div>
+      <div class="hero-body">
+        <h2>${svcName(s)}</h2>
+        <p>${s.desc}</p>
+      </div>
+    </div>
+    <div class="field-group">
+      <span class="field-label">${t('chooseCity')}</span>
+      <div class="select-wrap">
+        <select onchange="state.draft.city=this.value; state.draft.lat=null; state.draft.lng=null; render();">
+          ${CITIES.map(c=>`<option value="${c.id}" ${state.draft.city===c.id?'selected':''}>${cityName(c)} · ${c.country}</option>`).join('')}
+        </select>
+        <i class="ti ti-chevron-down"></i>
+      </div>
+      <span class="field-label">${t('address')} <span class="req">*</span></span>
+      <input type="text" class="${err.address?'input-error':''}" placeholder="${t('addressPlaceholder')}" value="${state.draft.address}" oninput="state.draft.address=this.value; state.bookingErrors.address=false;" style="margin-bottom:${err.address?'4px':'10px'};">
+      ${err.address ? `<div class="field-error"><i class="ti ti-alert-circle"></i> ${t('requiredField')}</div>` : ''}
+      <div class="map-box" id="booking-map"></div>
+      <div class="map-hint"><i class="ti ti-map-pin"></i> ${t('mapHint')}</div>
+      <span class="field-label">${t('date')} <span class="req">*</span></span>
+      <input type="date" class="${err.date?'input-error':''}" min="${todayISO()}" value="${state.draft.date}" onchange="state.draft.date=this.value; state.bookingErrors.date=false; render();" style="margin-bottom:${err.date?'4px':'14px'};">
+      ${err.date ? `<div class="field-error"><i class="ti ti-alert-circle"></i> ${t('requiredField')}</div>` : ''}
+      <span class="field-label">${t('time')} <span class="req">*</span></span>
+      <div class="chip-row">
+        ${['9:00 AM','11:30 AM','2:00 PM','4:30 PM'].map((tm,i)=>`<div class="chip ${state.draft.time===tm?'active':''}" onclick="pickTime('${tm}')">${tm}</div>`).join('')}
+      </div>
+      ${err.time ? `<div class="field-error" style="margin-top:-8px;"><i class="ti ti-alert-circle"></i> ${t('requiredField')}</div>` : ''}
+      <span class="field-label">${t('notes')}</span>
+      <textarea placeholder="e.g. two-bedroom apartment, please bring supplies" oninput="state.draft.notes=this.value">${state.draft.notes||''}</textarea>
+    </div>
+    <div class="price-band ${s.fixed?'':'quote'}">
+      <div><div class="pl">${t('estimate')}</div>${!s.fixed?`<div class="pv">${t('quoteNote')}</div>`:''}</div>
+      ${s.fixed ? `<div class="pv">${price}</div>` : ''}
+    </div>
+    <div class="sticky-cta">
+      <button class="btn-primary" onclick="submitBooking()"><i class="ti ${s.fixed?'ti-calendar-check':'ti-send'}"></i> ${s.fixed?t('bookNow'):t('getQuote')}</button>
+    </div>
+  </div>`;
+}
+function pickTime(tm){ state.draft.time = tm; state.bookingErrors.time = false; render(); }
+
+function validateBooking(){
+  const errs = {};
+  if(!state.draft.address.trim()) errs.address = true;
+  if(!state.draft.date) errs.date = true;
+  if(!state.draft.time) errs.time = true;
+  state.bookingErrors = errs;
+  return Object.keys(errs).length === 0;
+}
+function submitBooking(){
+  if(!validateBooking()){
+    showToast(t('fixErrors'), 'ti-alert-triangle');
+    render();
+    return;
+  }
+  const s = serviceById(state.activeService);
+  const c = cityById(state.draft.city);
+  const order = {
+    id: nextOrderId++,
+    service: s.id,
+    customer:'Aaliyah R.',
+    city: state.draft.city,
+    address: state.draft.address,
+    lat: state.draft.lat ?? c.lat,
+    lng: state.draft.lng ?? c.lng,
+    date: fmtDateLabel(state.draft.date),
+    time: state.draft.time,
+    status: 'pending',
+    workerId: null,
+    createdAt: Date.now(),
+  };
+  orders.unshift(order);
+  state.activeOrder = order.id;
+  state.bookingErrors = {};
+  go('confirmation');
+  burstConfetti();
+}
+
+function screenConfirmation(){
+  const o = orders.find(x=>x.id===state.activeOrder);
+  const s = serviceById(o.service);
+  return `<div class="screen">
+    <div class="confirm-wrap">
+      <div class="confirm-tick"><i class="ti ti-check"></i></div>
+      <h2>Booking received</h2>
+      <p>We've sent your ${svcName(s).toLowerCase()} request to our dispatch team. You'll get an update once it's confirmed.</p>
+      <div class="confirm-id">#${o.id}</div>
+      <button class="btn-primary" onclick="state.activeOrder=${o.id}; go('tracking')"><i class="ti ti-map-pin"></i> ${t('trackOrder')}</button>
+      <div style="height:10px"></div>
+      <button class="btn-ghost" onclick="switchCustomerTab('home')">Back to home</button>
+    </div>
+  </div>`;
+}
+
+function renderRatingBlock(o){
+  if(o.rating){
+    return `<div class="rate-block">
+      <h3>${t('thanksRating')}</h3>
+      <div class="rated-summary">${[1,2,3,4,5].map(n=>`<i class="ti ${n<=o.rating?'ti-star-filled':'ti-star'}"></i>`).join('')}</div>
+      ${o.ratingComment ? `<div style="font-size:12px; color:var(--ink-muted);">"${o.ratingComment}"</div>` : ''}
+    </div>`;
+  }
+  const d = state.ratingDraft;
+  return `<div class="rate-block">
+    <h3>${t('rateService')}</h3>
+    <div class="star-row">
+      ${[1,2,3,4,5].map(n=>`<button onclick="setRatingStars(${n})" class="${n<=d.stars?'filled':''}"><i class="ti ${n<=d.stars?'ti-star-filled':'ti-star'}"></i></button>`).join('')}
+    </div>
+    <textarea placeholder="${t('addComment')}" oninput="state.ratingDraft.comment=this.value" style="margin-bottom:12px;">${d.comment}</textarea>
+    <button class="btn-primary" ${d.stars===0?'disabled style="opacity:0.5;"':''} onclick="submitRating(${o.id})"><i class="ti ti-star"></i> ${t('submitRating')}</button>
+  </div>`;
+}
+function setRatingStars(n){ state.ratingDraft.stars = n; render(); }
+function submitRating(orderId){
+  const d = state.ratingDraft;
+  if(d.stars===0) return;
+  const o = orders.find(x=>x.id===orderId);
+  o.rating = d.stars;
+  o.ratingComment = d.comment;
+  state.ratingDraft = {stars:0, comment:''};
+  showToast(t('thanksRating'), 'ti-star');
+  render();
+}
+
+function openRescheduleSheet(orderId){
+  const o = orders.find(x=>x.id===orderId);
+  state.rescheduleDraft = {date:o.date, time:o.time};
+  openSheet(`
+    <div class="sheet-handle"></div>
+    <h3>${t('newTime')}</h3>
+    <div class="select-wrap">
+      <select onchange="state.rescheduleDraft.date=this.value">
+        ${['Jul 18','Jul 19','Jul 20','Jul 21','Jul 22'].map(d=>`<option ${o.date===d?'selected':''}>${d}</option>`).join('')}
+      </select>
+      <i class="ti ti-chevron-down"></i>
+    </div>
+    <div class="chip-row">
+      ${['9:00 AM','11:30 AM','2:00 PM','4:30 PM'].map(tm=>`<div class="chip ${o.time===tm?'active':''}" onclick="pickRescheduleTime(this,'${tm}')">${tm}</div>`).join('')}
+    </div>
+    <button class="btn-primary" onclick="confirmReschedule(${orderId})" style="margin-top:6px;"><i class="ti ti-check"></i> ${t('confirmReschedule')}</button>
+  `);
+}
+function pickRescheduleTime(el, tm){
+  state.rescheduleDraft.time = tm;
+  el.parentElement.querySelectorAll('.chip').forEach(c=>c.classList.remove('active'));
+  el.classList.add('active');
+}
+function confirmReschedule(orderId){
+  const o = orders.find(x=>x.id===orderId);
+  o.date = state.rescheduleDraft.date || o.date;
+  o.time = state.rescheduleDraft.time || o.time;
+  closeSheet();
+  showToast(t('rescheduled'), 'ti-calendar-time');
+  render();
+}
+
+function openCancelSheet(orderId){
+  openSheet(`
+    <div class="sheet-handle"></div>
+    <h3>${t('confirmCancelTitle')}</h3>
+    <p style="font-size:12.5px; color:var(--ink-muted); line-height:1.5; margin:0 0 18px;">${t('confirmCancelBody')}</p>
+    <button class="btn-primary" style="background:var(--rust); margin-bottom:10px;" onclick="confirmCancelOrder(${orderId})"><i class="ti ti-x"></i> ${t('yesCancelBooking')}</button>
+    <button class="btn-ghost" onclick="closeSheet()">${t('keepBooking')}</button>
+  `);
+}
+function confirmCancelOrder(orderId){
+  const o = orders.find(x=>x.id===orderId);
+  o.status = 'cancelled';
+  closeSheet();
+  showToast(t('bookingCancelled'), 'ti-x');
+  render();
+}
+
+function screenBookings(){
+  const list = orders.filter(o=>o.customer==='Aaliyah R.');
+  return `<div class="screen">
+    <div class="topbar"><h1>${t('myBookings')}</h1></div>
+    ${list.length===0 ? `<div class="empty-state"><i class="ti ti-calendar-off"></i><b>${t('noBookings')}</b><span>${t('noBookingsSub')}</span></div>` : `
+    <div class="card-list">
+      ${list.map(o=>{
+        const s = serviceById(o.service); const c = cityById(o.city);
+        return `<div class="order-card" onclick="state.activeOrder=${o.id}; go('tracking')">
+          <div class="order-top"><b>${svcName(s)}</b><span class="status-pill status-${o.status}">${state.lang==='ar'?STATUS_LABEL_AR[o.status]:STATUS_LABEL[o.status]}</span></div>
+          <div class="order-meta"><i class="ti ti-map-pin"></i> ${cityName(c)}</div>
+          <div class="order-meta"><i class="ti ti-clock"></i> ${o.date} · ${o.time}</div>
+        </div>`;
+      }).join('')}
+    </div>`}
+  </div>`;
+}
+
+function screenTracking(){
+  const o = orders.find(x=>x.id===state.activeOrder);
+  const s = serviceById(o.service);
+  const c = cityById(o.city);
+  const curIdx = STATUS_STEPS.indexOf(o.status);
+  const w = o.workerId ? workerById(o.workerId) : null;
+  const isCancelled = o.status==='cancelled';
+  const isCompleted = o.status==='completed';
+  const isActive = !isCancelled && !isCompleted;
+  return `<div class="screen">
+    <div class="topbar"><button class="back-btn" onclick="state.navDirection='back'; switchCustomerTab('bookings')">&lsaquo;</button><h1>#${o.id} · ${svcName(s)}</h1></div>
+    <div class="detail-block" style="margin:0 20px 16px;">
+      <div class="detail-row"><span class="dl">${t('chooseCity')}</span><span class="dv">${cityName(c)}</span></div>
+      <div class="detail-row"><span class="dl">${t('address')}</span><span class="dv">${o.address}</span></div>
+      <div class="detail-row"><span class="dl">Schedule</span><span class="dv">${o.date} · ${o.time}</span></div>
+      <div class="detail-row"><span class="dl">Status</span><span class="status-pill status-${o.status}">${state.lang==='ar'?STATUS_LABEL_AR[o.status]:STATUS_LABEL[o.status]}</span></div>
+    </div>
+    <div class="map-box view" id="track-map"></div>
+    <a class="btn-ghost map-link" href="https://www.google.com/maps?q=${o.lat},${o.lng}" target="_blank" rel="noopener"><i class="ti ti-map-2"></i> ${t('openMaps')}</a>
+    ${w ? `<div class="worker-card">
+      ${avatarImg(w.photo, w.name)}
+      <div class="wc-info"><b>${w.name}</b><span>${t('yourWorker')}</span></div>
+      <button class="icon-btn"><i class="ti ti-phone"></i></button>
+    </div>` : ''}
+
+    ${isCancelled ? `
+      <div class="empty-state"><i class="ti ti-x"></i><b>${t('bookingCancelled')}</b></div>
+      <div class="px"><button class="btn-primary" onclick="bookAgain(${o.id})"><i class="ti ti-repeat"></i> ${t('bookAgain')}</button></div>
+    ` : `
+      <div class="section-label">${t('trackOrder')}</div>
+      <div class="timeline">
+        ${STATUS_STEPS.map((step,i)=>{
+          const done = i < curIdx || (i===curIdx && step==='completed');
+          const current = i===curIdx && step!=='completed';
+          const label = state.lang==='ar' ? STATUS_LABEL_AR[step] : STATUS_LABEL[step];
+          return `<div class="tl-item">
+            <div class="tl-dot-col">
+              <div class="tl-dot ${done?'done':current?'current':''}"><i class="ti ${done?'ti-check':'ti-point'}"></i></div>
+              ${i<STATUS_STEPS.length-1?`<div class="tl-line ${i<curIdx?'done':''}"></div>`:''}
+            </div>
+            <div class="tl-body"><b>${label}</b><span>${current?'Happening now':done?'Done':'Upcoming'}</span></div>
+          </div>`;
+        }).join('')}
+      </div>
+    `}
+
+    ${isActive ? `
+      <div class="px" style="display:flex; gap:10px; margin-top:6px;">
+        <button class="btn-ghost" style="flex:1;" onclick="openRescheduleSheet(${o.id})"><i class="ti ti-calendar-time"></i> ${t('reschedule')}</button>
+        <button class="btn-ghost" style="flex:1; color:var(--rust); border-color:var(--rust);" onclick="openCancelSheet(${o.id})"><i class="ti ti-x"></i> ${t('cancelBooking')}</button>
+      </div>
+    ` : ''}
+
+    ${isCompleted ? renderRatingBlock(o) : ''}
+    ${isCompleted ? `<div class="px"><button class="btn-ghost" onclick="bookAgain(${o.id})"><i class="ti ti-repeat"></i> ${t('bookAgain')}</button></div>` : ''}
+  </div>`;
+}
+
+function screenInquiries(){
+  const list = inquiries.filter(q=>q.customer==='Aaliyah R.');
+  const type = PLACEMENTS.find(p=>p.id===state.activeInquiryType);
+  const d = state.placementDraft;
+  const price = placementPrice(type.id, d.city, d.workers, d.duration);
+  return `<div class="screen">
+    <div class="topbar"><h1>${t('inquiryTitle')}</h1></div>
+    <p class="px" style="font-size:12.5px; color:var(--ink-muted); line-height:1.55; margin:0 0 16px;">${t('inquirySub')}</p>
+    <div class="inquiry-type-row">
+      ${PLACEMENTS.map(p=>`<div class="inq-type ${state.activeInquiryType===p.id?'active':''}" onclick="state.activeInquiryType='${p.id}'; render();"><div class="tile-photo" style="background-image:url('${p.photo}')"></div><span>${svcName(p)||p.name}</span></div>`).join('')}
+    </div>
+    <div class="field-group">
+      <span class="field-label">${t('chooseCity')}</span>
+      <div class="select-wrap">
+        <select onchange="state.placementDraft.city=this.value; render();">
+          ${CITIES.map(c=>`<option value="${c.id}" ${d.city===c.id?'selected':''}>${cityName(c)} · ${c.country}</option>`).join('')}
+        </select>
+        <i class="ti ti-chevron-down"></i>
+      </div>
+
+      <span class="field-label">${t('numWorkers')}</span>
+      <div class="stepper">
+        <button onclick="adjustWorkers(-1)" ${d.workers<=1?'disabled':''} aria-label="Decrease">&minus;</button>
+        <span class="count">${d.workers}</span>
+        <button onclick="adjustWorkers(1)" ${d.workers>=5?'disabled':''} aria-label="Increase">+</button>
+        <span class="stepper-label">${d.workers===1?'worker':'workers'}</span>
+      </div>
+
+      <span class="field-label">${t('duration')}</span>
+      <div class="chip-row">
+        ${DURATIONS.map(dur=>`<div class="chip ${d.duration===dur.id?'active':''}" onclick="state.placementDraft.duration='${dur.id}'; render();">${state.lang==='ar'?dur.labelAr:dur.label}</div>`).join('')}
+      </div>
+
+      ${type.showLiveOption ? `
+      <span class="field-label">${t('liveType')}</span>
+      <div class="chip-row">
+        <div class="chip ${d.liveType==='live-in'?'active':''}" onclick="state.placementDraft.liveType='live-in'; render();">${t('liveIn')}</div>
+        <div class="chip ${d.liveType==='live-out'?'active':''}" onclick="state.placementDraft.liveType='live-out'; render();">${t('liveOut')}</div>
+      </div>` : ''}
+
+      <span class="field-label">${t('startDate')} <span class="req">*</span></span>
+      <input type="date" class="${state.placementErrors.startDate?'input-error':''}" min="${todayISO()}" value="${d.startDate}" onchange="state.placementDraft.startDate=this.value; state.placementErrors.startDate=false; render();" style="margin-bottom:${state.placementErrors.startDate?'4px':'14px'};">
+      ${state.placementErrors.startDate ? `<div class="field-error"><i class="ti ti-alert-circle"></i> ${t('requiredField')}</div>` : ''}
+
+      <span class="field-label">${t('requirements')}</span>
+      <textarea placeholder="e.g. two children ages 4 and 7, non-smoker preferred" oninput="state.placementDraft.notes=this.value">${d.notes||''}</textarea>
+    </div>
+    <div class="price-band">
+      <div><div class="pl">${t('estimatedFee')}</div><div style="font-size:11px; color:var(--ink-muted); font-weight:600; max-width:150px; line-height:1.4;">${t('feeNote')}</div></div>
+      <div class="pv">${price}</div>
+    </div>
+    <div class="px">
+      <button class="btn-primary" onclick="submitInquiry()"><i class="ti ti-send"></i> ${t('submitInquiry')}</button>
+    </div>
+    <div class="section-label">Your requests</div>
+    <div class="card-list">
+      ${list.map(q=>{
+        const label = state.lang==='ar' ? INQUIRY_LABEL_AR[q.status] : INQUIRY_LABEL[q.status];
+        const qType = PLACEMENTS.find(p=>p.id===q.type);
+        const qPrice = placementPrice(q.type, q.city, q.workers, q.duration);
+        const qDur = DURATIONS.find(dur=>dur.id===q.duration);
+        return `<div class="order-card" style="cursor:default;">
+        <div class="order-top"><b>${qType.name} · ${q.workers}x</b><span class="status-pill ${INQUIRY_PILL_CLASS[q.status]}">${label}</span></div>
+        <div class="order-meta"><i class="ti ti-map-pin"></i> ${cityById(q.city).name}</div>
+        <div class="order-meta"><i class="ti ti-calendar"></i> ${state.lang==='ar'?qDur.labelAr:qDur.label} · ${q.liveType==='live-in'?t('liveIn'):t('liveOut')}</div>
+        <div class="order-meta"><i class="ti ti-cash"></i> ${qPrice}</div>
+      </div>`;
+      }).join('')}
+    </div>
+  </div>`;
+}
+function adjustWorkers(delta){
+  const d = state.placementDraft;
+  d.workers = Math.min(5, Math.max(1, d.workers + delta));
+  render();
+}
+function validatePlacement(){
+  const errs = {};
+  if(!state.placementDraft.startDate) errs.startDate = true;
+  state.placementErrors = errs;
+  return Object.keys(errs).length === 0;
+}
+function submitInquiry(){
+  if(!validatePlacement()){
+    showToast(t('fixErrors'), 'ti-alert-triangle');
+    render();
+    return;
+  }
+  const d = state.placementDraft;
+  inquiries.unshift({
+    id: nextInquiryId++,
+    type: state.activeInquiryType,
+    customer:'Aaliyah R.',
+    notes: d.notes.trim() || 'No additional notes provided',
+    status:'new',
+    city: d.city,
+    workers: d.workers,
+    duration: d.duration,
+    liveType: d.liveType,
+    startDate: fmtDateLabel(d.startDate),
+  });
+  state.placementDraft.notes = '';
+  state.placementDraft.startDate = '';
+  state.placementErrors = {};
+  showToast('Request sent — our team will follow up', 'ti-send');
+  render();
+}
+
+function screenProfile(){
+  return `<div class="screen">
+    <div class="profile-head">
+      ${avatarImg(CUSTOMER_PHOTO, 'Aaliyah Rahman', 'lg')}
+      <div><h2>Aaliyah Rahman</h2><span>+971 50 123 4567</span></div>
+    </div>
+    <div class="menu-row"><i class="ti ti-map-pin"></i><span class="mr-label">${t('savedAddresses')}</span><i class="ti ti-chevron-right"></i></div>
+    <div class="menu-row"><i class="ti ti-credit-card"></i><span class="mr-label">${t('paymentMethods')}</span><i class="ti ti-chevron-right"></i></div>
+    <div class="menu-row"><i class="ti ti-language"></i><span class="mr-label">${t('language')}</span><span class="mr-sub">${state.lang==='ar'?'العربية':'English'}</span></div>
+    <div class="menu-row"><i class="ti ti-headset"></i><span class="mr-label">${t('support')}</span><i class="ti ti-chevron-right"></i></div>
+    <div class="menu-row"><i class="ti ti-logout"></i><span class="mr-label">${t('logout')}</span></div>
+  </div>`;
+}
+
+/* ======================= WORKER SCREENS ======================= */
+function renderWorker(){
+  if(state.screen==='worker-job-detail') return screenWorkerJobDetail();
+  if(state.workerTab==='profile') return screenWorkerProfile();
+  return screenWorkerJobs();
+}
+
+function screenWorkerJobs(){
+  const me = workerById(state.currentWorkerId);
+  const active = orders.filter(o=>o.workerId===state.currentWorkerId && (o.status==='assigned'||o.status==='progress'));
+  const done = orders.filter(o=>o.workerId===state.currentWorkerId && o.status==='completed');
+  const st = workerStats(state.currentWorkerId);
+  return `<div class="screen">
+    <div class="topbar"><h1>${t('myJobs')}</h1></div>
+    <div class="worker-card" style="margin:0 20px 12px;">
+      ${avatarImg(me.photo, me.name)}
+      <div class="wc-info"><b>${me.name}</b><span>${t('loggedInAs')}</span></div>
+    </div>
+    <div class="worker-stats" style="margin:0 20px 18px; font-size:12px;">
+      <i class="ti ti-check"></i> ${st.count} ${st.count===1?'job completed':'jobs completed'}
+      ${st.avg ? `<span style="margin-left:8px;"><i class="ti ti-star-filled"></i> ${st.avg} ${t('avgRating')}</span>` : ''}
+    </div>
+    ${active.length===0 ? `<div class="empty-state"><i class="ti ti-clipboard-off"></i><b>${t('noJobs')}</b><span>${t('noJobsSub')}</span></div>` : `
+    <div class="card-list">
+      ${active.map(o=>{
+        const s = serviceById(o.service); const c = cityById(o.city);
+        return `<div class="order-card" onclick="state.activeWorkerJob=${o.id}; go('worker-job-detail')">
+          <div class="order-top"><b>${s.name}</b><span class="status-pill status-${o.status}">${STATUS_LABEL[o.status]}</span></div>
+          <div class="order-meta"><i class="ti ti-map-pin"></i> ${c.name}, ${c.country}</div>
+          <div class="order-meta"><i class="ti ti-clock"></i> ${o.date} · ${o.time}</div>
+        </div>`;
+      }).join('')}
+    </div>`}
+    ${done.length>0 ? `<div class="section-label">${t('recentlyCompleted')}</div>
+    <div class="card-list">
+      ${done.map(o=>{
+        const s = serviceById(o.service); const c = cityById(o.city);
+        return `<div class="order-card" style="cursor:default; opacity:0.75;">
+          <div class="order-top"><b>${s.name}</b><span class="status-pill status-completed">${STATUS_LABEL.completed}</span></div>
+          <div class="order-meta"><i class="ti ti-map-pin"></i> ${c.name}, ${c.country}</div>
+        </div>`;
+      }).join('')}
+    </div>` : ''}
+  </div>`;
+}
+
+function screenWorkerJobDetail(){
+  const o = orders.find(x=>x.id===state.activeWorkerJob);
+  const s = serviceById(o.service); const c = cityById(o.city);
+  return `<div class="screen">
+    <div class="topbar"><button class="back-btn" onclick="state.navDirection='back'; switchWorkerTab('jobs')">&lsaquo;</button><h1>${s.name}</h1></div>
+    <div class="detail-block">
+      <div class="detail-row"><span class="dl">Location</span><span class="dv">${c.name}, ${c.country}</span></div>
+      <div class="detail-row"><span class="dl">${t('address')}</span><span class="dv">${o.address}</span></div>
+      <div class="detail-row"><span class="dl">Schedule</span><span class="dv">${o.date} · ${o.time}</span></div>
+      <div class="detail-row"><span class="dl">Customer</span><span class="dv">${o.customer}</span></div>
+      <div class="detail-row"><span class="dl">Status</span><span class="status-pill status-${o.status}">${STATUS_LABEL[o.status]}</span></div>
+    </div>
+    <div class="map-box view" id="worker-map"></div>
+    <a class="btn-ghost map-link" href="https://www.google.com/maps?q=${o.lat},${o.lng}" target="_blank" rel="noopener"><i class="ti ti-map-2"></i> ${t('openMaps')}</a>
+    <div class="px" style="display:flex; flex-direction:column; gap:10px; margin-top:16px;">
+      ${o.status==='assigned' ? `<button class="btn-primary" onclick="workerAdvance(${o.id})"><i class="ti ti-player-play"></i> ${t('startJob')}</button>` : ''}
+      ${o.status==='progress' ? `<button class="btn-primary" onclick="workerAdvance(${o.id})"><i class="ti ti-check"></i> ${t('markComplete')}</button>` : ''}
+      ${o.status==='completed' ? `<div class="empty-state" style="padding:20px;"><i class="ti ti-check"></i><b>${t('jobCompleted')}</b></div>` : ''}
+    </div>
+  </div>`;
+}
+function workerAdvance(orderId){
+  const o = orders.find(x=>x.id===orderId);
+  const wasAssigned = o.status==='assigned';
+  const idx = STATUS_STEPS.indexOf(o.status);
+  o.status = STATUS_STEPS[Math.min(idx+1, STATUS_STEPS.length-1)];
+  showToast(wasAssigned ? t('jobStarted') : t('jobCompleted'), 'ti-check');
+  render();
+}
+
+function screenWorkerProfile(){
+  const me = workerById(state.currentWorkerId);
+  return `<div class="screen">
+    <div class="profile-head">
+      ${avatarImg(me.photo, me.name, 'lg')}
+      <div><h2>${me.name}</h2><span style="text-transform:capitalize;">${me.skill}</span></div>
+    </div>
+    <div class="menu-row" style="cursor:default;">
+      <i class="ti ti-toggle-right"></i><span class="mr-label">${t('availability')}</span>
+      <div class="chip ${me.available?'active':''}" style="padding:6px 12px; font-size:11px;" onclick="toggleWorker('${me.id}'); render();">${me.available?'Available':'Off duty'}</div>
+    </div>
+    <div class="field-group">
+      <span class="field-label">${t('switchWorker')}</span>
+      <div class="select-wrap">
+        <select onchange="state.currentWorkerId=this.value; render();">
+          ${WORKERS.map(w=>`<option value="${w.id}" ${state.currentWorkerId===w.id?'selected':''}>${w.name} — ${w.skill}</option>`).join('')}
+        </select>
+        <i class="ti ti-chevron-down"></i>
+      </div>
+    </div>
+    <div class="menu-row"><i class="ti ti-headset"></i><span class="mr-label">${t('support')}</span><i class="ti ti-chevron-right"></i></div>
+    <div class="menu-row"><i class="ti ti-logout"></i><span class="mr-label">${t('logout')}</span></div>
+  </div>`;
+}
+
+/* ======================= ADMIN SCREENS ======================= */
+function renderAdmin(){
+  if(state.screen==='admin-order') return screenAdminOrder();
+  if(state.adminTab==='queue') return screenAdminQueue();
+  if(state.adminTab==='inquiries') return screenAdminInquiries();
+  if(state.adminTab==='dashboard') return screenAdminDashboard();
+  if(state.adminTab==='financials') return screenAdminFinancials();
+  if(state.adminTab==='workers') return screenAdminWorkers();
+  return screenAdminQueue();
+}
+
+function screenAdminQueue(){
+  const filters = ['all','pending','assigned','progress','completed','cancelled'];
+  const list = orders.filter(o=> state.adminFilter==='all' ? true : o.status===state.adminFilter);
+  return `<div class="screen">
+    <div class="topbar"><h1>Order queue</h1></div>
+    <div class="filter-row">
+      ${filters.map(f=>`<div class="filter-chip ${state.adminFilter===f?'active':''}" onclick="state.adminFilter='${f}'; render();">${f==='all'?'All':STATUS_LABEL[f]}</div>`).join('')}
+    </div>
+    <div class="card-list">
+      ${list.map(o=>{
+        const s = serviceById(o.service); const c = cityById(o.city);
+        const breach = isSlaBreach(o);
+        return `<div class="order-card" onclick="openAdminOrder(${o.id})">
+          <div class="order-top"><b>#${o.id} · ${s.name}</b><span class="status-pill status-${o.status}">${STATUS_LABEL[o.status]}</span></div>
+          <div class="order-meta"><i class="ti ti-user"></i> ${o.customer}</div>
+          <div class="order-meta"><i class="ti ti-map-pin"></i> ${c.name}, ${c.country}</div>
+          <div class="order-meta"><i class="ti ti-clock"></i> ${o.date} · ${o.time}</div>
+          ${breach ? `<div class="sla-badge"><i class="ti ti-alert-triangle"></i> ${t('needsAttention')}</div>` : ''}
+        </div>`;
+      }).join('')}
+      ${list.length===0 ? `<div class="empty-state"><i class="ti ti-inbox"></i><b>No orders here</b><span>Try a different filter.</span></div>` : ''}
+    </div>
+  </div>`;
+}
+function openAdminOrder(id){ state.activeAdminOrder = id; go('admin-order'); }
+
+function screenAdminOrder(){
+  const o = orders.find(x=>x.id===state.activeAdminOrder);
+  const s = serviceById(o.service); const c = cityById(o.city);
+  const w = o.workerId ? workerById(o.workerId) : null;
+  return `<div class="screen">
+    <div class="topbar"><button class="back-btn" onclick="state.navDirection='back'; switchAdminTab('queue')">&lsaquo;</button><h1>#${o.id}</h1></div>
+    <div class="detail-block">
+      <div class="detail-row"><span class="dl">Service</span><span class="dv">${s.name}</span></div>
+      <div class="detail-row"><span class="dl">Customer</span><span class="dv">${o.customer}</span></div>
+      <div class="detail-row"><span class="dl">Location</span><span class="dv">${c.name}, ${c.country}</span></div>
+      <div class="detail-row"><span class="dl">${t('address')}</span><span class="dv">${o.address}</span></div>
+      <div class="detail-row"><span class="dl">Schedule</span><span class="dv">${o.date} · ${o.time}</span></div>
+      <div class="detail-row"><span class="dl">Price</span><span class="dv">${priceFor(s,o.city) || 'Quotation'}</span></div>
+      <div class="detail-row"><span class="dl">Status</span><span class="status-pill status-${o.status}">${STATUS_LABEL[o.status]}</span></div>
+    </div>
+    <div class="map-box view" id="admin-map"></div>
+    <a class="btn-ghost map-link" href="https://www.google.com/maps?q=${o.lat},${o.lng}" target="_blank" rel="noopener"><i class="ti ti-map-2"></i> ${t('openMaps')}</a>
+    ${w ? `<div class="worker-card">
+      ${avatarImg(w.photo, w.name)}
+      <div class="wc-info"><b>${w.name}</b><span>Assigned worker</span></div>
+    </div>` : ''}
+    <div class="px" style="display:flex; flex-direction:column; gap:10px; margin-top:16px;">
+      ${!w && o.status!=='cancelled' ? `<button class="btn-primary" onclick="openWorkerPicker(${o.id})"><i class="ti ti-user-plus"></i> Assign worker</button>` : ''}
+      ${w && o.status==='assigned' ? `<button class="btn-primary" onclick="advanceOrder(${o.id})"><i class="ti ti-truck-delivery"></i> Mark in progress</button>` : ''}
+      ${o.status==='progress' ? `<button class="btn-primary" onclick="advanceOrder(${o.id})"><i class="ti ti-check"></i> Mark completed</button>` : ''}
+      ${o.status!=='completed' && o.status!=='cancelled' ? `<button class="btn-ghost" onclick="cancelOrder(${o.id})">Cancel order</button>` : ''}
+    </div>
+  </div>`;
+}
+
+function openWorkerPicker(orderId){
+  const o = orders.find(x=>x.id===orderId);
+  const s = serviceById(o.service);
+  const relevant = WORKERS.slice().sort((a,b)=> (b.skill===s.id)-(a.skill===s.id));
+  openSheet(`
+    <div class="sheet-handle"></div>
+    <h3>Assign a worker</h3>
+    ${relevant.map(w=>`
+      <div class="worker-pick ${w.available?'':'unavailable'}" onclick="assignWorker(${orderId}, '${w.id}')">
+        ${avatarImg(w.photo, w.name)}
+        <div class="wp-info"><b>${w.name}</b><span>${w.skill}${w.skill===s.id?' · best match':''}</span></div>
+        <div class="dot ${w.available?'':'off'}"></div>
+      </div>`).join('')}
+  `);
+}
+function assignWorker(orderId, workerId){
+  const o = orders.find(x=>x.id===orderId);
+  o.workerId = workerId; o.status = 'assigned';
+  closeSheet();
+  showToast('Worker assigned — customer notified', 'ti-user-check');
+  render();
+}
+function advanceOrder(orderId){
+  const o = orders.find(x=>x.id===orderId);
+  const idx = STATUS_STEPS.indexOf(o.status);
+  o.status = STATUS_STEPS[Math.min(idx+1, STATUS_STEPS.length-1)];
+  showToast('Status updated', 'ti-refresh');
+  render();
+}
+function cancelOrder(orderId){
+  const o = orders.find(x=>x.id===orderId);
+  o.status = 'cancelled';
+  showToast('Order cancelled', 'ti-x');
+  switchAdminTab('queue');
+}
+
+function screenAdminInquiries(){
+  return `<div class="screen">
+    <div class="topbar"><h1>${t('placementRequests')}</h1></div>
+    <div class="card-list">
+      ${inquiries.map(q=>{
+        const type = PLACEMENTS.find(p=>p.id===q.type);
+        const label = INQUIRY_LABEL[q.status];
+        const isLast = q.status==='placed';
+        const price = placementPrice(q.type, q.city, q.workers, q.duration);
+        const dur = DURATIONS.find(d=>d.id===q.duration);
+        const curIdx = INQUIRY_STEPS.indexOf(q.status);
+        return `<div class="order-card" style="cursor:default;">
+          <div class="order-top"><b>${type.name} · ${q.workers}x · ${q.customer}</b><span class="status-pill ${INQUIRY_PILL_CLASS[q.status]}">${label}</span></div>
+          <div class="order-meta"><i class="ti ti-map-pin"></i> ${cityById(q.city).name}, ${cityById(q.city).country}</div>
+          <div class="order-meta"><i class="ti ti-calendar"></i> ${dur.label} · ${q.liveType==='live-in'?'Live-in':'Live-out'} · from ${q.startDate}</div>
+          <div class="order-meta"><i class="ti ti-cash"></i> ${price} estimated</div>
+          <div class="order-meta"><i class="ti ti-note"></i> ${q.notes}</div>
+          <div class="pipeline-track">
+            <div class="pipeline-track-bg"></div>
+            <div class="pipeline-track-fill" style="width:${curIdx/(INQUIRY_STEPS.length-1)*100}%"></div>
+            ${INQUIRY_STEPS.map((step,i)=>{
+              const pct = i/(INQUIRY_STEPS.length-1)*100;
+              const xform = i===0 ? 'translateX(0)' : i===INQUIRY_STEPS.length-1 ? 'translateX(-100%)' : 'translateX(-50%)';
+              return `<div class="pipeline-marker ${i<curIdx?'done':''} ${i===curIdx?'current':''}" style="left:${pct}%; transform:${xform};">
+                <div class="pipeline-marker-dot"></div>
+                <span class="pipeline-marker-label">${state.lang==='ar'?INQUIRY_LABEL_AR[step]:INQUIRY_LABEL[step]}</span>
+              </div>`;
+            }).join('')}
+          </div>
+          ${!isLast ? `<div style="margin-top:12px;"><button class="btn-ghost" style="padding:9px;" onclick="advanceInquiry(${q.id})"><i class="ti ti-arrow-right"></i> ${t('pipelineStage')}</button></div>` : ''}
+        </div>`;
+      }).join('')}
+    </div>
+  </div>`;
+}
+function advanceInquiry(id){
+  const q = inquiries.find(x=>x.id===id);
+  const idx = INQUIRY_STEPS.indexOf(q.status);
+  q.status = INQUIRY_STEPS[Math.min(idx+1, INQUIRY_STEPS.length-1)];
+  showToast('Inquiry moved to ' + INQUIRY_LABEL[q.status], 'ti-arrow-right');
+  render();
+}
+
+function computeFinancials(){
+  const fin = {
+    bookingsCollectedAED:0, bookingsCollectedIQD:0,
+    bookingsPendingAED:0, bookingsPendingIQD:0,
+    byService:{},
+    placementsRealizedAED:0, placementsRealizedIQD:0,
+    placementsPipelineAED:0, placementsPipelineIQD:0,
+  };
+  orders.forEach(o=>{
+    const s = serviceById(o.service);
+    if(!s.fixed || o.status==='cancelled') return;
+    const c = cityById(o.city);
+    const amt = serviceAmount(s, o.city);
+    if(!fin.byService[s.id]) fin.byService[s.id] = {name:s.name, count:0, aed:0, iqd:0};
+    if(o.status==='completed'){
+      if(c.currency==='AED') fin.bookingsCollectedAED += amt; else fin.bookingsCollectedIQD += amt;
+      fin.byService[s.id].count++;
+      if(c.currency==='AED') fin.byService[s.id].aed += amt; else fin.byService[s.id].iqd += amt;
+    } else {
+      if(c.currency==='AED') fin.bookingsPendingAED += amt; else fin.bookingsPendingIQD += amt;
+    }
+  });
+  inquiries.forEach(q=>{
+    const c = cityById(q.city);
+    const amt = placementAmount(q.type, q.city, q.workers, q.duration);
+    if(q.status==='placed'){
+      if(c.currency==='AED') fin.placementsRealizedAED += amt; else fin.placementsRealizedIQD += amt;
+    } else {
+      if(c.currency==='AED') fin.placementsPipelineAED += amt; else fin.placementsPipelineIQD += amt;
+    }
+  });
+  return fin;
+}
+
+function screenAdminFinancials(){
+  const f = computeFinancials();
+  const rows = Object.values(f.byService);
+  return `<div class="screen">
+    <div class="topbar"><h1>${t('financials')}</h1></div>
+
+    <div class="section-label">${t('bookingsRevenue')}</div>
+    <div class="stat-grid">
+      <div class="stat-card"><div class="sv">AED ${f.bookingsCollectedAED.toLocaleString()}</div><div class="sl">${t('collected')} \u2014 UAE</div></div>
+      <div class="stat-card"><div class="sv">IQD ${f.bookingsCollectedIQD.toLocaleString()}</div><div class="sl">${t('collected')} \u2014 Iraq</div></div>
+      <div class="stat-card"><div class="sv">AED ${f.bookingsPendingAED.toLocaleString()}</div><div class="sl">${t('pending')} \u2014 UAE</div></div>
+      <div class="stat-card"><div class="sv">IQD ${f.bookingsPendingIQD.toLocaleString()}</div><div class="sl">${t('pending')} \u2014 Iraq</div></div>
+    </div>
+
+    <div class="section-label">${t('revenueByService')}</div>
+    <div class="chart-block">
+      ${rows.length ? (()=>{
+        const maxCount = Math.max(1, ...rows.map(r=>r.count));
+        return rows.map(r=>`
+        <div class="chart-row">
+          <div class="chart-row-top"><b>${r.name}</b><span>${r.count} completed</span></div>
+          <div class="chart-bar-track"><div class="chart-bar-fill" style="--w:${Math.max(3,(r.count/maxCount*100))}%"></div></div>
+          <div class="chart-row-value">${r.aed?`AED ${r.aed.toLocaleString()}`:''}${r.aed&&r.iqd?' · ':''}${r.iqd?`IQD ${r.iqd.toLocaleString()}`:''}${!r.aed&&!r.iqd?'—':''}</div>
+        </div>`).join('');
+      })() : `<div class="empty-state"><i class="ti ti-report-money"></i><b>${t('noRevenueYet')}</b></div>`}
+    </div>
+
+    <div class="section-label">${t('placementFees')}</div>
+    <div class="stat-grid">
+      <div class="stat-card"><div class="sv">AED ${f.placementsRealizedAED.toLocaleString()}</div><div class="sl">${t('realized')} \u2014 UAE</div></div>
+      <div class="stat-card"><div class="sv">IQD ${f.placementsRealizedIQD.toLocaleString()}</div><div class="sl">${t('realized')} \u2014 Iraq</div></div>
+      <div class="stat-card"><div class="sv">AED ${f.placementsPipelineAED.toLocaleString()}</div><div class="sl">${t('pipelineVal')} \u2014 UAE</div></div>
+      <div class="stat-card"><div class="sv">IQD ${f.placementsPipelineIQD.toLocaleString()}</div><div class="sl">${t('pipelineVal')} \u2014 Iraq</div></div>
+    </div>
+    <p class="px" style="font-size:11px; color:var(--ink-faint); line-height:1.55; margin:4px 0 14px;">${t('financialsNote')}</p>
+    <div class="px"><button class="btn-ghost" onclick="exportFinancialsCsv()"><i class="ti ti-download"></i> ${t('exportCsv')}</button></div>
+  </div>`;
+}
+function exportFinancialsCsv(){
+  const f = computeFinancials();
+  const rows = [
+    ['Metric','Currency','Amount'],
+    ['Bookings collected','AED', f.bookingsCollectedAED],
+    ['Bookings collected','IQD', f.bookingsCollectedIQD],
+    ['Bookings pending','AED', f.bookingsPendingAED],
+    ['Bookings pending','IQD', f.bookingsPendingIQD],
+    ['Placements realized','AED', f.placementsRealizedAED],
+    ['Placements realized','IQD', f.placementsRealizedIQD],
+    ['Placements pipeline','AED', f.placementsPipelineAED],
+    ['Placements pipeline','IQD', f.placementsPipelineIQD],
+    [],
+    ['Service','Completed count','AED revenue','IQD revenue'],
+    ...Object.values(f.byService).map(r=>[r.name, r.count, r.aed, r.iqd]),
+  ];
+  const csv = rows.map(r=>r.map(cell=>`"${String(cell??'').replace(/"/g,'""')}"`).join(',')).join('\n');
+  const blob = new Blob([csv], {type:'text/csv;charset=utf-8;'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = 'tadbeer-financials.csv';
+  document.body.appendChild(a); a.click(); document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+  showToast('CSV downloaded', 'ti-download');
+}
+
+function screenAdminDashboard(){
+  const today = orders.filter(o=>o.status!=='completed' && o.status!=='cancelled').length;
+  const pending = orders.filter(o=>o.status==='pending').length;
+  const completed = orders.filter(o=>o.status==='completed').length;
+  const avail = WORKERS.filter(w=>w.available).length;
+  return `<div class="screen">
+    <div class="topbar"><h1>Overview</h1></div>
+    <div class="section-label">${t('opsMap')}</div>
+    <div class="ops-map-wrap">
+      <div class="map-box view ops-map" id="ops-map"></div>
+      <div class="ops-legend">
+        <span><i class="dot-legend" style="background:var(--accent);"></i> ${t('needsAssign')}</span>
+        <span><i class="dot-legend" style="background:var(--primary);"></i> ${t('dispatched')}</span>
+        <span><i class="dot-legend" style="background:var(--rust);"></i> ${t('inProgressLegend')}</span>
+      </div>
+    </div>
+    <div class="stat-grid">
+      <div class="stat-card"><div class="sv">${today}</div><div class="sl">Active orders</div></div>
+      <div class="stat-card"><div class="sv">${pending}</div><div class="sl">Needs assignment</div></div>
+      <div class="stat-card"><div class="sv">${completed}</div><div class="sl">Completed</div></div>
+      <div class="stat-card"><div class="sv">${avail}/${WORKERS.length}</div><div class="sl">Workers available</div></div>
+    </div>
+    <div class="section-label">By country</div>
+    <div class="card-list">
+      ${['UAE','Iraq'].map(country=>{
+        const cnt = orders.filter(o=>cityById(o.city).country===country).length;
+        return `<div class="svc-row" style="cursor:default;">
+          <div class="tile-icon"><i class="ti ${country==='UAE'?'ti-flag':'ti-flag-3'}"></i></div>
+          <div class="svc-info"><b>${country}</b><span>${cnt} order${cnt===1?'':'s'} in this market</span></div>
+        </div>`;
+      }).join('')}
+    </div>
+    <div class="section-label">Needs attention</div>
+    <div class="card-list">
+      ${orders.filter(o=>o.status==='pending').map(o=>{
+        const s = serviceById(o.service);
+        const breach = isSlaBreach(o);
+        return `<div class="order-card" onclick="openAdminOrder(${o.id})">
+          <div class="order-top"><b>#${o.id} · ${s.name}</b><span class="status-pill status-pending">Needs assignment</span></div>
+          <div class="order-meta"><i class="ti ti-map-pin"></i> ${cityById(o.city).name}</div>
+          ${breach ? `<div class="sla-badge"><i class="ti ti-alert-triangle"></i> ${t('needsAttention')}</div>` : ''}
+        </div>`;
+      }).join('') || `<div class="empty-state"><i class="ti ti-check"></i><b>All caught up</b><span>No orders waiting on dispatch.</span></div>`}
+    </div>
+  </div>`;
+}
+
+function workerStats(workerId){
+  const done = orders.filter(o=>o.workerId===workerId && o.status==='completed');
+  const rated = done.filter(o=>o.rating);
+  const avg = rated.length ? (rated.reduce((sum,o)=>sum+o.rating,0)/rated.length).toFixed(1) : null;
+  return {count:done.length, avg};
+}
+function screenAdminWorkers(){
+  return `<div class="screen">
+    <div class="topbar"><h1>Workers</h1></div>
+    <div class="card-list">
+      ${WORKERS.map(w=>{
+        const st = workerStats(w.id);
+        return `
+        <div class="order-card" style="display:flex; align-items:center; gap:12px; cursor:default;">
+          ${avatarImg(w.photo, w.name)}
+          <div style="flex:1;">
+            <b style="display:block; font-size:13.5px; font-weight:700;">${w.name}</b>
+            <span style="font-size:11.5px; color:var(--ink-muted); text-transform:capitalize;">${w.skill}</span>
+            <div class="worker-stats">
+              <i class="ti ti-check"></i> ${st.count} ${st.count===1?'job completed':'jobs completed'}
+              ${st.avg ? `<span style="margin-left:6px;"><i class="ti ti-star-filled"></i> ${st.avg}</span>` : `<span style="margin-left:6px; color:var(--ink-faint);">${t('noRatingsYet')}</span>`}
+            </div>
+          </div>
+          <div class="chip ${w.available?'active':''}" style="padding:7px 12px; font-size:11px;" onclick="toggleWorker('${w.id}')">
+            ${w.available?'Available':'Off duty'}
+          </div>
+        </div>`;}).join('')}
+    </div>
+  </div>`;
+}
+function toggleWorker(id){
+  const w = workerById(id);
+  w.available = !w.available;
+  render();
+}
+
+/* ======================= CLOCK ======================= */
+function tickClock(){
+  const el = document.getElementById('clock');
+  if(el) el.textContent = new Date().toLocaleTimeString([], {hour:'numeric', minute:'2-digit'});
+}
+tickClock();
+setInterval(tickClock, 30000);
+setInterval(()=>{
+  if(state.role==='admin' && (state.adminTab==='queue' || state.adminTab==='dashboard') && state.screen!=='admin-order'){
+    render();
+  }
+}, 60000);
+
+/* ======================= INIT ======================= */
+render();
+setTimeout(()=>{
+  const splash = document.getElementById('splash');
+  if(splash) splash.classList.add('hide');
+}, 850);
+</script>
+</body>
+</html>
