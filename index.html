@@ -218,12 +218,11 @@ html,body{
   background:var(--bg);
   overflow-y:auto;overflow-x:hidden;
   -webkit-overflow-scrolling:touch;
-  transform:translateX(100%);
-  transition:transform .32s cubic-bezier(.4,0,.2,1);
-  will-change:transform;
+  opacity:0;visibility:hidden;
+  transition:opacity .18s ease,visibility .18s ease;
 }
-.screen.active{transform:translateX(0);}
-.screen.exit-left{transform:translateX(-30%);}
+.screen.active{opacity:1;visibility:visible;}
+.screen.exit-left{opacity:0;visibility:hidden;}
 .screen-scroll{padding-bottom:calc(var(--nav-h) + 24px);}
 .screen-scroll-nb{padding-bottom:32px;} /* no bottom nav */
 
@@ -591,13 +590,31 @@ html,body{
 @keyframes pop-in{0%{transform:scale(0);opacity:0;}100%{transform:scale(1);opacity:1;}}
 
 /* ═══════════════════════════════════════
-   ADMIN FINANCIALS BAR
+   ADMIN FINANCIALS
 ═══════════════════════════════════════ */
 .fin-bar-row{display:flex;align-items:center;gap:var(--s3);margin-bottom:var(--s3);}
-.fin-bar-label{font-size:var(--text-sm);font-weight:var(--font-weight-medium);color:var(--ink);width:120px;flex-shrink:0;font-family:var(--font-family-body);letter-spacing:var(--ls-sm);}
-.fin-bar-track{flex:1;height:8px;background:var(--border);border-radius:4px;overflow:hidden;}
-.fin-bar-fill{height:100%;border-radius:4px;transition:width .6s ease;}
-.fin-bar-amt{font-size:var(--text-sm);font-weight:var(--font-weight-bold);color:var(--ink);width:70px;text-align:right;font-family:var(--font-family-heading);letter-spacing:var(--ls-sm);}
+.fin-bar-label{font-size:var(--text-sm);font-weight:var(--font-weight-medium);color:var(--ink);width:110px;flex-shrink:0;font-family:var(--font-family-body);}
+.fin-bar-track{flex:1;height:10px;background:var(--border);border-radius:5px;overflow:hidden;}
+.fin-bar-fill{height:100%;border-radius:5px;transition:width .6s ease;}
+.fin-bar-amt{font-size:var(--text-sm);font-weight:var(--font-weight-bold);color:var(--ink);width:68px;text-align:right;font-family:var(--font-family-heading);}
+.fin-tab-row{display:flex;gap:4px;padding:0 var(--s4) var(--s3);}
+.fin-tab{flex:1;font-size:12px;font-weight:var(--font-weight-semibold);padding:7px 0;border:none;border-radius:var(--r-pill);background:transparent;color:var(--ink2);cursor:pointer;font-family:var(--font-family-body);}
+.fin-tab.active{background:var(--navy);color:#fff;}
+.fin-hero-card{margin:0 var(--s4) var(--s4);background:linear-gradient(135deg,#0C1A28 0%,#0e2a1c 55%,#1A7A46 100%);border-radius:16px;padding:20px 20px 14px;color:#fff;position:relative;overflow:hidden;}
+.fin-hero-card::after{content:'';position:absolute;top:-30px;right:-30px;width:120px;height:120px;border-radius:50%;background:rgba(26,122,70,.25);pointer-events:none;}
+.fin-spark{display:flex;align-items:flex-end;gap:4px;height:40px;margin-top:14px;}
+.fin-spark-bar{flex:1;border-radius:3px 3px 0 0;background:rgba(255,255,255,.2);}
+.fin-spark-bar.hi{background:#3de87a;}
+.fin-kpi-card{padding:14px 16px;border-top:3px solid transparent;}
+.fin-kpi-label{font-size:10px;color:var(--ink2);text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px;font-family:var(--font-family-heading);}
+.fin-kpi-val{font-size:21px;font-weight:var(--font-weight-bold);color:var(--ink);letter-spacing:-.02em;font-family:var(--font-family-heading);}
+.fin-kpi-sub{font-size:11px;margin-top:4px;}
+.fin-trend-chart{display:flex;align-items:flex-end;gap:5px;padding-bottom:4px;}
+.fin-trend-col{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;}
+.fin-trend-bar{width:100%;border-radius:4px 4px 0 0;background:var(--green-light);transition:height .5s ease;}
+.fin-trend-bar.hi{background:var(--green);}
+.fin-trend-lbl{font-size:9px;color:var(--ink2);font-family:var(--font-family-body);}
+.fin-trend-amt{font-size:8px;color:var(--ink2);font-family:var(--font-family-heading);white-space:nowrap;}
 
 /* ═══════════════════════════════════════
    DATE PILLS (booking step 3)
@@ -840,6 +857,64 @@ hr.divider{border:none;border-top:1px solid var(--border);margin:var(--s4) 0;}
 .info-row:last-child{border-bottom:none;}
 .info-icon{width:32px;height:32px;border-radius:var(--r-sm);background:var(--green-light);display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;}
 .info-text{flex:1;}
+/* ─── ADMIN QUEUE CARDS ─── */
+.q-search{width:100%;box-sizing:border-box;padding:9px 14px 9px 36px;border:1px solid var(--border);border-radius:var(--r-pill);font-size:13px;background:var(--surface);color:var(--ink);font-family:var(--font-family-body);outline:none;}
+.q-search:focus{border-color:var(--green);}
+.q-search-wrap{position:relative;padding:var(--s3) var(--s4);background:var(--surface);border-bottom:1px solid var(--border);}
+.q-search-icon{position:absolute;left:calc(var(--s4) + 10px);top:50%;transform:translateY(-50%);color:var(--ink3);pointer-events:none;}
+.q-tabs{display:flex;gap:6px;padding:var(--s3) var(--s4);background:var(--bg);}
+.q-tab{flex:1;font-size:11px;font-weight:var(--font-weight-semibold);padding:7px 4px;border:1.5px solid var(--border);border-radius:var(--r-pill);background:var(--surface);color:var(--ink2);cursor:pointer;font-family:var(--font-family-body);white-space:nowrap;text-align:center;transition:all .15s;}
+.q-tab.active{background:var(--navy);border-color:var(--navy);color:#fff;}
+.q-card{margin-bottom:var(--s3);border-left:4px solid var(--border);padding:14px 16px;}
+.q-card-top{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:10px;}
+.q-svc-row{display:flex;align-items:center;gap:8px;}
+.q-svc-icon{font-size:20px;line-height:1;}
+.q-svc-name{font-size:13px;font-weight:var(--font-weight-bold);color:var(--ink);font-family:var(--font-family-heading);}
+.q-ref{font-size:10px;color:var(--ink3);letter-spacing:.03em;margin-top:1px;}
+.q-status-pill{display:inline-flex;align-items:center;gap:4px;padding:3px 8px;border-radius:var(--r-pill);font-size:10px;font-weight:700;white-space:nowrap;}
+.q-dot{width:5px;height:5px;border-radius:50%;flex-shrink:0;}
+.q-mid{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:10px;}
+.q-customer{font-size:14px;font-weight:var(--font-weight-bold);color:var(--ink);}
+.q-price{font-size:16px;font-weight:var(--font-weight-bold);color:var(--ink);font-family:var(--font-family-heading);letter-spacing:-.02em;}
+.q-meta{display:flex;align-items:center;gap:5px;font-size:11px;color:var(--ink2);margin-bottom:5px;}
+.q-worker-chip{display:inline-flex;align-items:center;gap:5px;background:var(--green-light);color:var(--green);border-radius:var(--r-pill);font-size:11px;font-weight:var(--font-weight-semibold);padding:4px 10px;margin-top:4px;}
+.q-actions{display:flex;gap:8px;margin-top:12px;}
+/* ─── WORKER MANAGEMENT ─── */
+.wm-summary{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;padding:var(--s3) var(--s4) 0;}
+.wm-stat-box{background:var(--card);border-radius:12px;padding:12px 8px;text-align:center;border:1px solid var(--border);}
+.wm-stat-val{font-size:20px;font-weight:var(--font-weight-bold);color:var(--ink);font-family:var(--font-family-heading);letter-spacing:-.02em;}
+.wm-stat-lbl{font-size:9px;color:var(--ink2);margin-top:2px;text-transform:uppercase;letter-spacing:.05em;}
+.wm-stat-box.hi .wm-stat-val{color:var(--green);}
+.wm-stat-box.warn .wm-stat-val{color:#B45309;}
+.wm-filters{display:flex;gap:6px;padding:var(--s3) var(--s4);}
+.wm-filter{flex:1;font-size:11px;font-weight:var(--font-weight-semibold);padding:6px 0;border:1.5px solid var(--border);border-radius:var(--r-pill);background:var(--surface);color:var(--ink2);cursor:pointer;white-space:nowrap;}
+.wm-filter.active{background:var(--navy);border-color:var(--navy);color:#fff;}
+.wm-card{margin-bottom:var(--s3);padding:16px;position:relative;}
+.wm-top{display:flex;align-items:center;gap:12px;margin-bottom:12px;}
+.wm-avatar-wrap{position:relative;flex-shrink:0;}
+.wm-avatar{width:52px;height:52px;border-radius:50%;overflow:hidden;display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:700;color:#fff;}
+.wm-avatar img{width:100%;height:100%;object-fit:cover;}
+.wm-status-dot{position:absolute;bottom:1px;right:1px;width:12px;height:12px;border-radius:50%;border:2.5px solid var(--card);}
+.wm-name{font-size:15px;font-weight:var(--font-weight-bold);color:var(--ink);font-family:var(--font-family-heading);}
+.wm-role{font-size:11px;color:var(--ink2);margin-top:2px;}
+.wm-status-pill-wrap{margin-left:auto;align-self:flex-start;}
+.wm-metrics{display:flex;gap:0;border-top:1px solid var(--border);border-bottom:1px solid var(--border);margin:0 -16px;padding:10px 16px;}
+.wm-metric{flex:1;text-align:center;}
+.wm-metric-val{font-size:15px;font-weight:var(--font-weight-bold);color:var(--ink);font-family:var(--font-family-heading);}
+.wm-metric-lbl{font-size:9px;color:var(--ink2);text-transform:uppercase;letter-spacing:.05em;margin-top:2px;}
+.wm-metric+.wm-metric{border-left:1px solid var(--border);}
+.wm-actions{display:flex;gap:8px;margin-top:12px;}
+/* ─── SALON MENU ─── */
+.salon-section-hdr{font-size:15px;font-weight:var(--font-weight-bold);color:var(--ink);padding:18px var(--s4) 4px;background:var(--bg);}
+.salon-item{display:flex;gap:12px;padding:14px var(--s4);border-bottom:1px solid var(--border);background:var(--card);}
+.salon-item-img{width:80px;height:80px;object-fit:cover;border-radius:10px;flex-shrink:0;}
+.salon-item-info{flex:1;min-width:0;}
+.salon-item-name{font-size:13px;font-weight:var(--font-weight-bold);color:var(--navy);margin-bottom:3px;}
+.salon-item-desc{font-size:11px;color:var(--ink2);line-height:1.45;margin-bottom:8px;}
+.salon-item-footer{display:flex;align-items:center;gap:8px;}
+.salon-item-old{font-size:11px;color:var(--ink2);text-decoration:line-through;}
+.salon-item-new{font-size:13px;font-weight:var(--font-weight-bold);color:var(--ink);}
+.salon-add-btn{margin-left:auto;font-size:11px;font-weight:var(--font-weight-bold);border:1.5px solid var(--navy);color:var(--navy);background:transparent;border-radius:6px;padding:5px 12px;cursor:pointer;white-space:nowrap;}
 .info-title{font-size:var(--text-base);font-weight:var(--font-weight-bold);color:var(--ink);font-family:var(--font-family-heading);letter-spacing:var(--ls-base);}
 .info-sub{font-size:var(--text-xs);color:var(--ink2);font-family:var(--font-family-body);margin-top:2px;line-height:1.45;}
 
@@ -852,25 +927,35 @@ hr.divider{border:none;border-top:1px solid var(--border);margin:var(--s4) 0;}
 /* ─── SPLASH SCREEN ─── */
 #splash{
   position:fixed;inset:0;z-index:9999;
-  background:linear-gradient(160deg,#0C1A28 0%,#0e2235 50%,#071018 100%);
-  display:flex;flex-direction:column;align-items:center;justify-content:center;
-  gap:0;
-  transition:opacity .6s ease, transform .6s ease;
+  background:radial-gradient(ellipse at 50% 40%,#112640 0%,#0a1c2e 45%,#060e18 100%);
+  display:flex;flex-direction:column;align-items:center;
+  justify-content:space-between;
+  padding:max(env(safe-area-inset-top,0px),48px) 0 max(env(safe-area-inset-bottom,0px),48px);
+  transition:opacity .6s ease,transform .6s ease;
+  overflow:hidden;
+}
+#splash::before{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse at 50% 35%,rgba(26,122,70,.18) 0%,transparent 65%);
+  animation:splash-glow-pulse 3s ease-in-out infinite;
+  pointer-events:none;
 }
 #splash.fade-out{opacity:0;transform:scale(1.04);pointer-events:none;}
 #splash.gone{display:none;}
+.splash-center{display:flex;flex-direction:column;align-items:center;gap:0;flex:1;justify-content:center;}
 .splash-logo{
-  width:220px;
-  animation:splash-pop .7s cubic-bezier(.175,.885,.32,1.275) both;
+  width:260px;border-radius:28px;
+  animation:splash-pop .8s cubic-bezier(.175,.885,.32,1.275) both;
+  filter:drop-shadow(0 0 32px rgba(26,122,70,.5));
 }
 .splash-wordmark{
-  margin-top:4px;
+  margin-top:16px;
   text-align:center;
-  animation:splash-rise .6s .3s ease both;
+  animation:splash-rise .6s .35s ease both;
 }
 .splash-wordmark .sw-main{
   font-family:var(--font-family-heading);
-  font-size:11px;
+  font-size:12px;
   font-weight:var(--font-weight-semibold);
   color:rgba(255,255,255,.55);
   letter-spacing:.22em;
@@ -883,34 +968,46 @@ hr.divider{border:none;border-top:1px solid var(--border);margin:var(--s4) 0;}
   margin-top:2px;
   font-weight:var(--font-weight-medium);
 }
+.splash-bottom{
+  display:flex;flex-direction:column;align-items:center;gap:10px;
+  animation:splash-rise .6s .55s ease both;
+}
 .splash-bar{
-  position:absolute;bottom:52px;left:50%;transform:translateX(-50%);
-  width:120px;height:3px;background:rgba(255,255,255,.08);border-radius:2px;overflow:hidden;
-  animation:splash-rise .5s .4s ease both;
+  width:160px;height:6px;background:rgba(255,255,255,.1);border-radius:3px;overflow:hidden;
 }
 .splash-bar-fill{
-  height:100%;width:0%;background:var(--green);border-radius:2px;
-  animation:splash-load 2.4s .2s ease forwards;
+  height:100%;width:0%;border-radius:2px;
+  background:linear-gradient(90deg,var(--green),#3de87a,var(--green));
+  background-size:200% 100%;
+  animation:splash-load 4.8s .2s ease forwards, splash-shimmer 1.5s .2s linear infinite;
 }
 .splash-version{
-  position:absolute;bottom:28px;left:50%;transform:translateX(-50%);
-  font-size:10px;color:rgba(255,255,255,.22);letter-spacing:.08em;white-space:nowrap;
+  font-size:10px;color:rgba(255,255,255,.28);letter-spacing:.1em;white-space:nowrap;
   font-family:var(--font-family-body);
   animation:splash-rise .5s .5s ease both;
 }
 @keyframes splash-pop{
-  0%{transform:scale(.7);opacity:0;}
-  100%{transform:scale(1);opacity:1;}
+  0%{transform:scale(.6);opacity:0;filter:drop-shadow(0 0 0px rgba(26,122,70,0));}
+  60%{transform:scale(1.06);}
+  100%{transform:scale(1);opacity:1;filter:drop-shadow(0 0 32px rgba(26,122,70,.5));}
 }
 @keyframes splash-rise{
-  0%{transform:translateY(12px);opacity:0;}
+  0%{transform:translateY(16px);opacity:0;}
   100%{transform:translateY(0);opacity:1;}
 }
 @keyframes splash-load{
   0%{width:0%;}
   40%{width:55%;}
-  80%{width:85%;}
+  80%{width:88%;}
   100%{width:100%;}
+}
+@keyframes splash-shimmer{
+  0%{background-position:200% 0;}
+  100%{background-position:-200% 0;}
+}
+@keyframes splash-glow-pulse{
+  0%,100%{opacity:.6;}
+  50%{opacity:1;}
 }
 
 } /* end @layer tap */
@@ -919,13 +1016,17 @@ hr.divider{border:none;border-top:1px solid var(--border);margin:var(--s4) 0;}
 <body>
 <!-- SPLASH SCREEN -->
 <div id="splash">
+  <div class="splash-center">
   <img class="splash-logo" src="data:image/jpeg;base64,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" alt="TAP — Tadbeer Alsultan Plus">
   <div class="splash-wordmark">
     <div class="sw-main">Tadbeer Alsultan Plus</div>
     <div class="sw-arabic">تدبير السلطان</div>
   </div>
-  <div class="splash-bar"><div class="splash-bar-fill"></div></div>
-  <div class="splash-version">v1.0 · UAE</div>
+  </div>
+  <div class="splash-bottom">
+    <div class="splash-bar"><div class="splash-bar-fill"></div></div>
+    <div class="splash-version">v1.0 · UAE</div>
+  </div>
 </div>
 <div id="shell">
 <div id="phone">
@@ -938,7 +1039,6 @@ hr.divider{border:none;border-top:1px solid var(--border);margin:var(--s4) 0;}
       <button class="app-btn" onclick="switchApp('w')">Worker</button>
       <button class="app-btn" onclick="switchApp('a')">⚙ Admin</button>
     </div>
-    <button id="demo-play-btn" onclick="runDemo()" style="padding:5px 11px;background:linear-gradient(135deg,var(--gold),var(--gold-mid));border:none;border-radius:var(--r-pill);font-size:var(--text-xs);font-weight:var(--font-weight-bold);color:#fff;cursor:pointer;white-space:nowrap;box-shadow:var(--sh-gold);letter-spacing:.01em;">▶ Demo</button>
   </div>
 
   <!-- ════════════════════════════════════
@@ -1230,34 +1330,216 @@ hr.divider{border:none;border-top:1px solid var(--border);margin:var(--s4) 0;}
           <img id="svc-detail-hero-img" src="https://images.unsplash.com/photo-1581578731548-c64695cc6952?w=600&h=440&fit=crop&q=80" style="width:100%;height:100%;object-fit:cover;" loading="lazy">
           <div style="position:absolute;inset:0;background:linear-gradient(to bottom,transparent 40%,rgba(0,0,0,.45));"></div>
         </div>
-        <div style="padding:var(--s4);">
-          <h2 id="svc-detail-name" style="font-size:22px;font-weight:var(--font-weight-bold);color:var(--ink);margin-bottom:var(--s2);">Home Cleaning</h2>
-          <div class="rating-row" style="margin-bottom:var(--s4);">
-            <span class="stars">★★★★★</span>
-            <span class="rating-num">4.9</span>
-            <span class="rating-cnt">· 1,240+ jobs · Abu Dhabi</span>
+        <!-- STANDARD CONTENT (non-salon services) -->
+        <div id="svc-standard-content">
+          <div style="padding:var(--s4);">
+            <h2 id="svc-detail-name" style="font-size:22px;font-weight:var(--font-weight-bold);color:var(--ink);margin-bottom:var(--s2);">Home Cleaning</h2>
+            <div class="rating-row" style="margin-bottom:var(--s4);">
+              <span class="stars">★★★★★</span>
+              <span class="rating-num">4.9</span>
+              <span class="rating-cnt">· 1,240+ jobs · Abu Dhabi</span>
+            </div>
+            <div style="background:linear-gradient(90deg,var(--green),var(--green-mid));border-radius:var(--r-md);padding:14px var(--s4);margin-bottom:var(--s4);">
+              <div id="svc-detail-price" style="font-size:16px;font-weight:var(--font-weight-bold);color:#fff;">From AED 60 / hour</div>
+              <div style="font-size:12px;color:rgba(255,255,255,.8);margin-top:2px;">Materials included · No hidden charges</div>
+            </div>
+            <div class="card section-pad" style="margin-bottom:var(--s4);">
+              <div class="info-row">
+                <div class="info-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" stroke="#1A7A46" stroke-width="2" stroke-linejoin="round" fill="none"/><path d="M9 12l2 2 4-4" stroke="#1A7A46" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+                <div class="info-text"><div class="info-title">Certified Staff</div><div class="info-sub">Background-checked & trained professionals</div></div>
+              </div>
+              <div class="info-row">
+                <div class="info-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M1 4v6h6" stroke="#1A7A46" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M3.51 15a9 9 0 102.13-9.36L1 10" stroke="#1A7A46" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+                <div class="info-text"><div class="info-title">Free Revisit Guarantee</div><div class="info-sub">Not satisfied? We'll revisit at no charge</div></div>
+              </div>
+              <div class="info-row">
+                <div class="info-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="#1A7A46" stroke-width="2"/><path d="M12 6v6l4 2" stroke="#1A7A46" stroke-width="2" stroke-linecap="round"/></svg></div>
+                <div class="info-text"><div class="info-title">On Time or 10% Off</div><div class="info-sub">We value your time, always</div></div>
+              </div>
+            </div>
           </div>
-          <div style="background:linear-gradient(90deg,var(--green),var(--green-mid));border-radius:var(--r-md);padding:14px var(--s4);margin-bottom:var(--s4);">
-            <div style="font-size:16px;font-weight:var(--font-weight-bold);color:#fff;">From AED 60 / hour</div>
-            <div style="font-size:12px;color:rgba(255,255,255,.8);margin-top:2px;">Materials included · No hidden charges</div>
-          </div>
-          <div class="card section-pad" style="margin-bottom:var(--s4);">
-            <div class="info-row">
-              <div class="info-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" stroke="#1A7A46" stroke-width="2" stroke-linejoin="round" fill="none"/><path d="M9 12l2 2 4-4" stroke="#1A7A46" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-              <div class="info-text"><div class="info-title">Certified Staff</div><div class="info-sub">Background-checked & trained professionals</div></div>
-            </div>
-            <div class="info-row">
-              <div class="info-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M1 4v6h6" stroke="#1A7A46" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M3.51 15a9 9 0 102.13-9.36L1 10" stroke="#1A7A46" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-              <div class="info-text"><div class="info-title">Free Revisit Guarantee</div><div class="info-sub">Not satisfied? We'll revisit at no charge</div></div>
-            </div>
-            <div class="info-row">
-              <div class="info-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="#1A7A46" stroke-width="2"/><path d="M12 6v6l4 2" stroke="#1A7A46" stroke-width="2" stroke-linecap="round"/></svg></div>
-              <div class="info-text"><div class="info-title">On Time or 10% Off</div><div class="info-sub">We value your time, always</div></div>
-            </div>
+          <div style="padding:0 var(--s4) 32px;">
+            <button class="btn-primary" onclick="cGo('c-booking-step1','c-svc-detail')">Book Now</button>
           </div>
         </div>
-        <div style="padding:0 var(--s4) 32px;">
-          <button class="btn-primary" onclick="cGo('c-booking-step1','c-svc-detail')">Book Now</button>
+
+        <!-- SALON & SPA MENU -->
+        <div id="salon-menu" style="display:none;padding-bottom:32px;">
+
+          <!-- Bestsellers -->
+          <div class="salon-section-hdr">🏆 Bestsellers</div>
+
+          <div class="salon-item">
+            <img class="salon-item-img" src="https://images.unsplash.com/photo-1604654894610-df63bc536371?w=80&h=80&fit=crop&q=80" loading="lazy">
+            <div class="salon-item-info">
+              <div class="salon-item-name">No Polish Mani Pedi</div>
+              <div class="salon-item-desc">Pamper yourself with classic no polish manicure and pedicure.</div>
+              <div class="salon-item-footer">
+                <span class="salon-item-old">AED 45</span>
+                <span class="salon-item-new">AED 35</span>
+                <button class="salon-add-btn">ADD +</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="salon-item">
+            <img class="salon-item-img" src="https://images.unsplash.com/photo-1519014816548-bf5fe059798b?w=80&h=80&fit=crop&q=80" loading="lazy">
+            <div class="salon-item-info">
+              <div class="salon-item-name">Classic Mani Pedi & Threading</div>
+              <div class="salon-item-desc">Groomed nails, smooth and defined brows and lips, your ultimate beauty refresh.</div>
+              <div class="salon-item-footer">
+                <span class="salon-item-old">AED 69</span>
+                <span class="salon-item-new">AED 49</span>
+                <button class="salon-add-btn">ADD +</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="salon-item">
+            <img class="salon-item-img" src="https://images.unsplash.com/photo-1560066984-138dadb4c035?w=80&h=80&fit=crop&q=80" loading="lazy">
+            <div class="salon-item-info">
+              <div class="salon-item-name">Cleansing Facial & Hairstyle</div>
+              <div class="salon-item-desc">Deep facial cleanse followed by a professional hairstyle for a fresh, polished look.</div>
+              <div class="salon-item-footer">
+                <span class="salon-item-old">AED 99</span>
+                <span class="salon-item-new">AED 79</span>
+                <button class="salon-add-btn">ADD +</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="salon-item">
+            <img class="salon-item-img" src="https://images.unsplash.com/photo-1544161515-4ab6ce6db874?w=80&h=80&fit=crop&q=80" loading="lazy">
+            <div class="salon-item-info">
+              <div class="salon-item-name">French Mani-Pedi & Foot Massage</div>
+              <div class="salon-item-desc">Classic French nails paired with a soothing foot massage for elegant relaxation.</div>
+              <div class="salon-item-footer">
+                <span class="salon-item-old">AED 99</span>
+                <span class="salon-item-new">AED 69</span>
+                <button class="salon-add-btn">ADD +</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="salon-item">
+            <img class="salon-item-img" src="https://images.unsplash.com/photo-1600334129128-685c5582fd35?w=80&h=80&fit=crop&q=80" loading="lazy">
+            <div class="salon-item-info">
+              <div class="salon-item-name">Full Arms & Underarms Waxing</div>
+              <div class="salon-item-desc">Get smooth, hair-free arms and underarms with gentle waxing for lasting softness.</div>
+              <div class="salon-item-footer">
+                <span class="salon-item-old">AED 45</span>
+                <span class="salon-item-new">AED 35</span>
+                <button class="salon-add-btn">ADD +</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Facials -->
+          <div class="salon-section-hdr">✨ Facials</div>
+
+          <div class="salon-item">
+            <img class="salon-item-img" src="https://images.unsplash.com/photo-1556228720-195a672e8a03?w=80&h=80&fit=crop&q=80" loading="lazy">
+            <div class="salon-item-info">
+              <div class="salon-item-name">Cleansing</div>
+              <div class="salon-item-desc">Removal of blackheads, dust particles, and oil accumulated in your pores for clean and clear skin.</div>
+              <div class="salon-item-footer">
+                <span class="salon-item-old">AED 59</span>
+                <span class="salon-item-new">AED 39</span>
+                <button class="salon-add-btn">ADD +</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="salon-item">
+            <img class="salon-item-img" src="https://images.unsplash.com/photo-1512290923902-8a9f81dc236c?w=80&h=80&fit=crop&q=80" loading="lazy">
+            <div class="salon-item-info">
+              <div class="salon-item-name">Herbal Facial</div>
+              <div class="salon-item-desc">Gives you a healthy, natural glow with the application of all natural products.</div>
+              <div class="salon-item-footer">
+                <span class="salon-item-old">AED 79</span>
+                <span class="salon-item-new">AED 49</span>
+                <button class="salon-add-btn">ADD +</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="salon-item">
+            <img class="salon-item-img" src="https://images.unsplash.com/photo-1596755389378-c31d21fd1273?w=80&h=80&fit=crop&q=80" loading="lazy">
+            <div class="salon-item-info">
+              <div class="salon-item-name">Casmara Facial</div>
+              <div class="salon-item-desc">Perfect for dry or normal skin — gives a natural glow while reducing dark circles and under-eye puffiness.</div>
+              <div class="salon-item-footer">
+                <span class="salon-item-old">AED 99</span>
+                <span class="salon-item-new">AED 75</span>
+                <button class="salon-add-btn">ADD +</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="salon-item">
+            <img class="salon-item-img" src="https://images.unsplash.com/photo-1519823551278-64ac92734fb1?w=80&h=80&fit=crop&q=80" loading="lazy">
+            <div class="salon-item-info">
+              <div class="salon-item-name">Back Facial</div>
+              <div class="salon-item-desc">Revive your back with a deep-cleansing facial that smooths skin for a refreshed, radiant glow.</div>
+              <div class="salon-item-footer">
+                <span class="salon-item-new">AED 99</span>
+                <button class="salon-add-btn">ADD +</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="salon-item">
+            <img class="salon-item-img" src="https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?w=80&h=80&fit=crop&q=80" loading="lazy">
+            <div class="salon-item-info">
+              <div class="salon-item-name">Hyaluronic Sheet Mask</div>
+              <div class="salon-item-desc">Hydrate and plump with Hyaluronic Sheet Mask.</div>
+              <div class="salon-item-footer">
+                <span class="salon-item-old">AED 25</span>
+                <span class="salon-item-new">AED 15</span>
+                <button class="salon-add-btn">ADD +</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="salon-item">
+            <img class="salon-item-img" src="https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?w=80&h=80&fit=crop&q=80" loading="lazy">
+            <div class="salon-item-info">
+              <div class="salon-item-name">Vitamin C Sheet Mask</div>
+              <div class="salon-item-desc">Brighten and hydrate with Vitamin C Sheet Mask.</div>
+              <div class="salon-item-footer">
+                <span class="salon-item-old">AED 25</span>
+                <span class="salon-item-new">AED 15</span>
+                <button class="salon-add-btn">ADD +</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="salon-item">
+            <img class="salon-item-img" src="https://images.unsplash.com/photo-1556228578-8c89e6adf883?w=80&h=80&fit=crop&q=80" loading="lazy">
+            <div class="salon-item-info">
+              <div class="salon-item-name">Retinol V Sheet Mask</div>
+              <div class="salon-item-desc">Radiant skin with Pro-Age Mask and Bakuchiol.</div>
+              <div class="salon-item-footer">
+                <span class="salon-item-old">AED 25</span>
+                <span class="salon-item-new">AED 15</span>
+                <button class="salon-add-btn">ADD +</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="salon-item">
+            <img class="salon-item-img" src="https://images.unsplash.com/photo-1512290923902-8a9f81dc236c?w=80&h=80&fit=crop&q=80" loading="lazy">
+            <div class="salon-item-info">
+              <div class="salon-item-name">Under Eye Pads</div>
+              <div class="salon-item-desc">Refresh under eyes with hyaluronic acid and aloe vera gel pads.</div>
+              <div class="salon-item-footer">
+                <span class="salon-item-old">AED 10</span>
+                <span class="salon-item-new">AED 8</span>
+                <button class="salon-add-btn">ADD +</button>
+              </div>
+            </div>
+          </div>
+
         </div>
       </div>
     </section>
@@ -2161,18 +2443,24 @@ hr.divider{border:none;border-top:1px solid var(--border);margin:var(--s4) 0;}
           </div>
         </div>
 
+        <!-- SEARCH -->
+        <div class="q-search-wrap">
+          <svg class="q-search-icon" width="14" height="14" viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="8" stroke="currentColor" stroke-width="2"/><path d="M21 21l-4.35-4.35" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+          <input class="q-search" id="queue-search" type="text" placeholder="Search by name, ref or service…" oninput="renderAdminQueue()">
+        </div>
+
         <!-- FILTER TABS -->
-        <div style="display:flex;gap:0;padding:0 var(--s4);background:var(--surface);border-bottom:1px solid var(--border);overflow-x:auto;scrollbar-width:none;">
-          <button id="qf-all" onclick="setQueueFilter('all')" style="padding:12px 14px;background:none;border:none;border-bottom:2px solid var(--green);font-size:12px;font-weight:var(--font-weight-bold);color:var(--green);cursor:pointer;white-space:nowrap;">All</button>
-          <button id="qf-pending" onclick="setQueueFilter('pending')" style="padding:12px 14px;background:none;border:none;border-bottom:2px solid transparent;font-size:12px;font-weight:var(--font-weight-semibold);color:var(--ink2);cursor:pointer;white-space:nowrap;">Pending <span id="qf-pending-count" class="badge badge-red" style="margin-left:4px;font-size:9px;"></span></button>
-          <button id="qf-active" onclick="setQueueFilter('active')" style="padding:12px 14px;background:none;border:none;border-bottom:2px solid transparent;font-size:12px;font-weight:var(--font-weight-semibold);color:var(--ink2);cursor:pointer;white-space:nowrap;">Active <span id="qf-active-count" class="badge badge-green" style="margin-left:4px;font-size:9px;"></span></button>
-          <button id="qf-completed" onclick="setQueueFilter('completed')" style="padding:12px 14px;background:none;border:none;border-bottom:2px solid transparent;font-size:12px;font-weight:var(--font-weight-semibold);color:var(--ink2);cursor:pointer;white-space:nowrap;">Completed</button>
+        <div class="q-tabs">
+          <button class="q-tab active" id="qf-all" onclick="setQueueFilter('all')">All</button>
+          <button class="q-tab" id="qf-pending" onclick="setQueueFilter('pending')">Pending <span id="qf-pending-count"></span></button>
+          <button class="q-tab" id="qf-active" onclick="setQueueFilter('active')">Active <span id="qf-active-count"></span></button>
+          <button class="q-tab" id="qf-completed" onclick="setQueueFilter('completed')">Done</button>
         </div>
 
         <!-- QUEUE LIST -->
-        <div style="padding:var(--s4);">
+        <div style="padding:var(--s3) var(--s4) var(--s4);">
           <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:var(--s3);">
-            <div style="font-size:13px;font-weight:var(--font-weight-semibold);color:var(--ink2);" id="queue-list-label">All bookings</div>
+            <div style="font-size:12px;font-weight:var(--font-weight-semibold);color:var(--ink2);" id="queue-list-label">All bookings</div>
             <div style="display:flex;gap:6px;">
               <span class="badge badge-green" id="active-badge">0 active</span>
               <span class="badge badge-red" id="queue-badge">0 awaiting</span>
@@ -2187,15 +2475,22 @@ hr.divider{border:none;border-top:1px solid var(--border);margin:var(--s4) 0;}
 
     <!-- WORKER MANAGEMENT -->
     <section class="screen" id="a-workers" style="top:43px;">
-      <div class="screen-scroll-nb" style="padding:var(--s4);">
-        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:var(--s4);">
-          <h2 style="font-size:18px;font-weight:var(--font-weight-bold);color:var(--ink);font-family:var(--font-family-heading);">Workers</h2>
-          <button onclick="showAddWorkerForm()" style="display:flex;align-items:center;gap:6px;padding:8px 14px;background:var(--green);border:none;border-radius:var(--r-pill);font-size:12px;font-weight:var(--font-weight-bold);color:#fff;cursor:pointer;font-family:var(--font-family-body);">
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M12 5v14M5 12h14" stroke="#fff" stroke-width="2" stroke-linecap="round"/></svg>
-            Add Worker
-          </button>
+      <div style="display:flex;align-items:center;justify-content:space-between;padding:12px var(--s4) 10px;background:var(--surface);border-bottom:1px solid var(--border);">
+        <h2 style="font-size:17px;font-weight:var(--font-weight-bold);color:var(--ink);font-family:var(--font-family-heading);margin:0;">Workers</h2>
+        <button onclick="showAddWorkerForm()" style="display:flex;align-items:center;gap:5px;padding:7px 14px;background:var(--navy);border:none;border-radius:var(--r-pill);font-size:12px;font-weight:var(--font-weight-bold);color:#fff;cursor:pointer;font-family:var(--font-family-body);">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M12 5v14M5 12h14" stroke="#fff" stroke-width="2.5" stroke-linecap="round"/></svg>
+          Add Worker
+        </button>
+      </div>
+      <div class="screen-scroll-nb">
+        <div class="wm-summary" id="wm-summary-row"></div>
+        <div class="wm-filters">
+          <button class="wm-filter active" id="wmf-all"       onclick="setWorkerFilter('all')">All</button>
+          <button class="wm-filter"        id="wmf-available" onclick="setWorkerFilter('available')">Available</button>
+          <button class="wm-filter"        id="wmf-busy"      onclick="setWorkerFilter('busy')">On Job</button>
+          <button class="wm-filter"        id="wmf-inactive"  onclick="setWorkerFilter('inactive')">Inactive</button>
         </div>
-        <div id="worker-management-list">
+        <div style="padding:0 var(--s4) var(--s4);" id="worker-management-list">
           <div style="text-align:center;padding:40px;color:var(--ink2);">Loading workers...</div>
         </div>
       </div>
@@ -2232,63 +2527,153 @@ hr.divider{border:none;border-top:1px solid var(--border);margin:var(--s4) 0;}
 
     <!-- FINANCIALS -->
     <section class="screen" id="a-financials" style="top:43px;">
-      <div class="screen-scroll-nb" style="padding:var(--s4);">
-        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:var(--s4);">
-          <h2 style="font-size:18px;font-weight:var(--font-weight-bold);color:var(--ink);font-family:var(--font-family-heading);">Financials · Jul 2026</h2>
-          <div style="display:flex;gap:6px;">
-            <button id="demo-reset-btn" style="padding:8px 12px;background:var(--green-light);border:none;border-radius:var(--r-pill);font-size:11px;font-weight:var(--font-weight-semibold);color:var(--green);cursor:pointer;">↺ Restore Demo</button>
-            <button id="demo-wipe-btn" style="padding:8px 12px;background:var(--danger-light);border:none;border-radius:var(--r-pill);font-size:11px;font-weight:var(--font-weight-semibold);color:var(--danger);cursor:pointer;">✕ Wipe All</button>
-            <button style="padding:8px 12px;background:var(--color-background-muted);border:none;border-radius:var(--r-pill);font-size:11px;font-weight:var(--font-weight-semibold);color:var(--ink2);cursor:pointer;">Export</button>
+      <div class="screen-scroll-nb" style="padding-bottom:40px;">
+
+        <!-- Header -->
+        <div style="padding:var(--s4) var(--s4) var(--s3);display:flex;align-items:flex-start;justify-content:space-between;">
+          <div>
+            <div style="font-size:11px;color:var(--ink2);text-transform:uppercase;letter-spacing:.05em;margin-bottom:2px;">Financials</div>
+            <div style="font-size:20px;font-weight:var(--font-weight-bold);color:var(--ink);font-family:var(--font-family-heading);">July 2026</div>
+          </div>
+          <div style="display:flex;gap:6px;margin-top:2px;">
+            <button id="demo-reset-btn" style="width:32px;height:32px;background:var(--green-light);border:none;border-radius:50%;font-size:15px;color:var(--green);cursor:pointer;display:flex;align-items:center;justify-content:center;">↺</button>
+            <button id="demo-wipe-btn" style="width:32px;height:32px;background:var(--danger-light);border:none;border-radius:50%;font-size:12px;color:var(--danger);cursor:pointer;display:flex;align-items:center;justify-content:center;">✕</button>
+            <button style="height:32px;padding:0 12px;background:var(--border);border:none;border-radius:var(--r-pill);font-size:11px;font-weight:var(--font-weight-semibold);color:var(--ink2);cursor:pointer;">↗ Export</button>
           </div>
         </div>
-        <!-- Live stats from real bookings -->
-        <div id="fin-live-stats"></div>
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:var(--s3);margin-bottom:var(--s4);">
-          <div class="card section-pad">
-            <div style="font-size:10px;color:var(--ink2);text-transform:uppercase;letter-spacing:.5px;">Revenue Collected</div>
-            <div style="font-size:20px;font-weight:var(--font-weight-bold);color:var(--ink);margin:4px 0;">AED 24K</div>
-            <div style="font-size:11px;color:var(--green);">↑ 14% vs Jun</div>
+
+        <!-- Period tabs -->
+        <div class="fin-tab-row">
+          <button class="fin-tab active">Month</button>
+          <button class="fin-tab">Quarter</button>
+          <button class="fin-tab">Year</button>
+        </div>
+
+        <!-- Hero revenue card -->
+        <div class="fin-hero-card">
+          <div style="font-size:10px;opacity:.55;text-transform:uppercase;letter-spacing:.1em;">Total Revenue · Jul 2026</div>
+          <div style="display:flex;align-items:baseline;gap:10px;margin-top:8px;">
+            <div style="font-size:34px;font-weight:var(--font-weight-bold);letter-spacing:-.03em;font-family:var(--font-family-heading);">AED 38.6K</div>
+            <div style="font-size:13px;color:#3de87a;font-weight:var(--font-weight-semibold);">↑ 18%</div>
           </div>
-          <div class="card section-pad">
-            <div style="font-size:10px;color:var(--ink2);text-transform:uppercase;letter-spacing:.5px;">Pending</div>
-            <div style="font-size:20px;font-weight:var(--font-weight-bold);color:var(--ink);margin:4px 0;">AED 8.5K</div>
-            <div style="font-size:11px;color:var(--gold);">7 orders</div>
+          <div style="font-size:11px;color:rgba(255,255,255,.45);margin-top:2px;">vs AED 32.7K last month · +AED 5.9K</div>
+          <div class="fin-spark">
+            <div class="fin-spark-bar" style="height:32%;"></div>
+            <div class="fin-spark-bar" style="height:46%;"></div>
+            <div class="fin-spark-bar" style="height:57%;"></div>
+            <div class="fin-spark-bar" style="height:68%;"></div>
+            <div class="fin-spark-bar" style="height:85%;"></div>
+            <div class="fin-spark-bar hi" style="height:100%;"></div>
           </div>
-          <div class="card section-pad">
-            <div style="font-size:10px;color:var(--ink2);text-transform:uppercase;letter-spacing:.5px;">Placement Fees</div>
-            <div style="font-size:20px;font-weight:var(--font-weight-bold);color:var(--ink);margin:4px 0;">AED 18K</div>
-            <div style="font-size:11px;color:var(--green);">↑ 22% vs Jun</div>
-          </div>
-          <div class="card section-pad">
-            <div style="font-size:10px;color:var(--ink2);text-transform:uppercase;letter-spacing:.5px;">Pipeline</div>
-            <div style="font-size:20px;font-weight:var(--font-weight-bold);color:var(--ink);margin:4px 0;">AED 32K</div>
-            <div style="font-size:11px;color:var(--gold);">12 proposals</div>
+          <div style="display:flex;justify-content:space-between;margin-top:5px;">
+            <span style="font-size:9px;opacity:.35;">Feb</span>
+            <span style="font-size:9px;opacity:.35;">Mar</span>
+            <span style="font-size:9px;opacity:.35;">Apr</span>
+            <span style="font-size:9px;opacity:.35;">May</span>
+            <span style="font-size:9px;opacity:.35;">Jun</span>
+            <span style="font-size:9px;color:#3de87a;font-weight:600;">Jul</span>
           </div>
         </div>
-        <!-- Revenue bars -->
-        <div style="font-size:14px;font-weight:var(--font-weight-bold);color:var(--ink);margin-bottom:var(--s3);">Revenue by Service</div>
-        <div class="card section-pad" style="margin-bottom:var(--s4);">
-          <div class="fin-bar-row"><div class="fin-bar-label">Home Cleaning</div><div class="fin-bar-track"><div class="fin-bar-fill" style="width:85%;background:var(--green);"></div></div><div class="fin-bar-amt">AED 9.8K</div></div>
-          <div class="fin-bar-row"><div class="fin-bar-label">Placement</div><div class="fin-bar-track"><div class="fin-bar-fill" style="width:72%;background:var(--green-mid);"></div></div><div class="fin-bar-amt">AED 8.2K</div></div>
-          <div class="fin-bar-row"><div class="fin-bar-label">Deep Cleaning</div><div class="fin-bar-track"><div class="fin-bar-fill" style="width:55%;background:var(--gold);"></div></div><div class="fin-bar-amt">AED 6.3K</div></div>
-          <div class="fin-bar-row"><div class="fin-bar-label">Maintenance</div><div class="fin-bar-track"><div class="fin-bar-fill" style="width:40%;background:var(--navy-mid);"></div></div><div class="fin-bar-amt">AED 4.5K</div></div>
-          <div class="fin-bar-row" style="margin:0;"><div class="fin-bar-label">Laundry</div><div class="fin-bar-track"><div class="fin-bar-fill" style="width:28%;background:var(--gold-mid);"></div></div><div class="fin-bar-amt">AED 2.8K</div></div>
-        </div>
-        <!-- Currency cards -->
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:var(--s3);">
-          <div style="background:linear-gradient(135deg,var(--navy-light),var(--navy));border-radius:var(--r-md);padding:var(--s4);color:#fff;">
-            <div style="font-size:16px;margin-bottom:4px;">🏙️</div>
-            <div style="font-size:11px;opacity:.65;font-family:var(--font-family-body);">Abu Dhabi</div>
-            <div style="font-size:18px;font-weight:var(--font-weight-bold);margin:4px 0;font-family:var(--font-family-heading);letter-spacing:-.02em;">AED 16K</div>
-            <div style="font-size:12px;color:var(--green-light);">↑ 12%</div>
+
+        <!-- Live stats (real booking data) -->
+        <div id="fin-live-stats" style="padding:0 var(--s4);"></div>
+
+        <!-- Static KPI cards -->
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:var(--s3);padding:var(--s3) var(--s4) 0;">
+          <div class="card fin-kpi-card" style="border-top:3px solid var(--green);">
+            <div class="fin-kpi-label">Collected</div>
+            <div class="fin-kpi-val">AED 24K</div>
+            <div class="fin-kpi-sub" style="color:var(--green);">↑ 14% vs Jun</div>
           </div>
-          <div style="background:linear-gradient(135deg,var(--gold),var(--gold-mid));border-radius:var(--r-md);padding:var(--s4);color:#fff;">
-            <div style="font-size:16px;margin-bottom:4px;">🌆</div>
-            <div style="font-size:11px;opacity:.75;font-family:var(--font-family-body);">Dubai</div>
-            <div style="font-size:18px;font-weight:var(--font-weight-bold);margin:4px 0;font-family:var(--font-family-heading);letter-spacing:-.02em;">AED 22.4K</div>
-            <div style="font-size:12px;color:var(--gold-tint);">↑ 8%</div>
+          <div class="card fin-kpi-card" style="border-top:3px solid var(--gold);">
+            <div class="fin-kpi-label">Pending</div>
+            <div class="fin-kpi-val">AED 8.5K</div>
+            <div class="fin-kpi-sub" style="color:var(--gold);">7 orders</div>
+          </div>
+          <div class="card fin-kpi-card" style="border-top:3px solid var(--navy);">
+            <div class="fin-kpi-label">Placement Fees</div>
+            <div class="fin-kpi-val">AED 18K</div>
+            <div class="fin-kpi-sub" style="color:var(--green);">↑ 22% vs Jun</div>
+          </div>
+          <div class="card fin-kpi-card" style="border-top:3px solid #8B5CF6;">
+            <div class="fin-kpi-label">Pipeline</div>
+            <div class="fin-kpi-val">AED 32K</div>
+            <div class="fin-kpi-sub" style="color:#8B5CF6;">12 proposals</div>
           </div>
         </div>
+
+        <!-- 6-Month Trend -->
+        <div style="padding:var(--s4) var(--s4) 0;">
+          <div style="font-size:14px;font-weight:var(--font-weight-bold);color:var(--ink);margin-bottom:var(--s3);font-family:var(--font-family-heading);">6-Month Trend</div>
+          <div class="card section-pad">
+            <div class="fin-trend-chart" style="height:80px;">
+              <div class="fin-trend-col">
+                <div class="fin-trend-amt">22K</div>
+                <div class="fin-trend-bar" style="height:30%;"></div>
+                <div class="fin-trend-lbl">Feb</div>
+              </div>
+              <div class="fin-trend-col">
+                <div class="fin-trend-amt">26K</div>
+                <div class="fin-trend-bar" style="height:44%;"></div>
+                <div class="fin-trend-lbl">Mar</div>
+              </div>
+              <div class="fin-trend-col">
+                <div class="fin-trend-amt">28K</div>
+                <div class="fin-trend-bar" style="height:54%;"></div>
+                <div class="fin-trend-lbl">Apr</div>
+              </div>
+              <div class="fin-trend-col">
+                <div class="fin-trend-amt">31K</div>
+                <div class="fin-trend-bar" style="height:67%;"></div>
+                <div class="fin-trend-lbl">May</div>
+              </div>
+              <div class="fin-trend-col">
+                <div class="fin-trend-amt">32.7K</div>
+                <div class="fin-trend-bar" style="height:84%;"></div>
+                <div class="fin-trend-lbl">Jun</div>
+              </div>
+              <div class="fin-trend-col">
+                <div class="fin-trend-amt" style="color:var(--green);font-weight:700;">38.6K</div>
+                <div class="fin-trend-bar hi" style="height:100%;"></div>
+                <div class="fin-trend-lbl" style="color:var(--green);font-weight:600;">Jul</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Revenue by Service -->
+        <div style="padding:var(--s4) var(--s4) 0;">
+          <div style="font-size:14px;font-weight:var(--font-weight-bold);color:var(--ink);margin-bottom:var(--s3);font-family:var(--font-family-heading);">Revenue by Service</div>
+          <div class="card section-pad">
+            <div class="fin-bar-row"><div class="fin-bar-label">Home Cleaning</div><div class="fin-bar-track"><div class="fin-bar-fill" style="width:85%;background:var(--green);"></div></div><div class="fin-bar-amt">AED 9.8K</div></div>
+            <div class="fin-bar-row"><div class="fin-bar-label">Placement</div><div class="fin-bar-track"><div class="fin-bar-fill" style="width:72%;background:#3B82F6;"></div></div><div class="fin-bar-amt">AED 8.2K</div></div>
+            <div class="fin-bar-row"><div class="fin-bar-label">Deep Cleaning</div><div class="fin-bar-track"><div class="fin-bar-fill" style="width:55%;background:var(--gold);"></div></div><div class="fin-bar-amt">AED 6.3K</div></div>
+            <div class="fin-bar-row"><div class="fin-bar-label">Maintenance</div><div class="fin-bar-track"><div class="fin-bar-fill" style="width:40%;background:#8B5CF6;"></div></div><div class="fin-bar-amt">AED 4.5K</div></div>
+            <div class="fin-bar-row" style="margin:0;"><div class="fin-bar-label">Laundry</div><div class="fin-bar-track"><div class="fin-bar-fill" style="width:28%;background:#EC4899;"></div></div><div class="fin-bar-amt">AED 2.8K</div></div>
+          </div>
+        </div>
+
+        <!-- By City -->
+        <div style="padding:var(--s4);">
+          <div style="font-size:14px;font-weight:var(--font-weight-bold);color:var(--ink);margin-bottom:var(--s3);font-family:var(--font-family-heading);">By City</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:var(--s3);">
+            <div style="background:linear-gradient(145deg,#0e2035,#163d5e);border-radius:var(--r-md);padding:16px;color:#fff;">
+              <div style="font-size:18px;margin-bottom:6px;">🏙️</div>
+              <div style="font-size:10px;opacity:.5;text-transform:uppercase;letter-spacing:.06em;">Abu Dhabi</div>
+              <div style="font-size:20px;font-weight:var(--font-weight-bold);margin:6px 0 2px;font-family:var(--font-family-heading);letter-spacing:-.02em;">AED 16K</div>
+              <div style="font-size:11px;color:#3de87a;margin-bottom:10px;">↑ 12% vs Jun</div>
+              <div style="height:3px;background:rgba(255,255,255,.12);border-radius:2px;"><div style="width:42%;height:100%;background:#3de87a;border-radius:2px;"></div></div>
+            </div>
+            <div style="background:linear-gradient(145deg,#7c5a0a,#c48a12);border-radius:var(--r-md);padding:16px;color:#fff;">
+              <div style="font-size:18px;margin-bottom:6px;">🌆</div>
+              <div style="font-size:10px;opacity:.6;text-transform:uppercase;letter-spacing:.06em;">Dubai</div>
+              <div style="font-size:20px;font-weight:var(--font-weight-bold);margin:6px 0 2px;font-family:var(--font-family-heading);letter-spacing:-.02em;">AED 22.4K</div>
+              <div style="font-size:11px;color:rgba(255,255,255,.85);margin-bottom:10px;">↑ 8% vs Jun</div>
+              <div style="height:3px;background:rgba(255,255,255,.18);border-radius:2px;"><div style="width:58%;height:100%;background:rgba(255,255,255,.9);border-radius:2px;"></div></div>
+            </div>
+          </div>
+        </div>
+
       </div>
     </section>
   </div><!-- /app-a -->
@@ -2892,7 +3277,13 @@ function setSvcName(name) {
     const photoId = svcPhotos[name] || svcPhotos['Home Cleaning'];
     heroImg.src = photoId.startsWith('http') ? photoId : 'https://images.unsplash.com/' + photoId + '?w=600&h=440&fit=crop&q=80';
   }
-  // update price
+  // toggle salon menu vs standard layout
+  const isSalon = name === 'Salon & Spa';
+  const stdEl = document.getElementById('svc-standard-content');
+  const salonEl = document.getElementById('salon-menu');
+  if (stdEl) stdEl.style.display = isSalon ? 'none' : 'block';
+  if (salonEl) salonEl.style.display = isSalon ? 'block' : 'none';
+  // update price (standard only)
   const priceEl = document.getElementById('svc-detail-price');
   if (priceEl) priceEl.textContent = 'From AED ' + svc.price.toLocaleString() + ' / hour';
   updateStep1Price();
@@ -3339,14 +3730,27 @@ function renderAdminQueue() {
   if (qfPend) qfPend.textContent = pending.length || '';
   if (qfAct) qfAct.textContent = active.length || '';
 
-  const statusLabels = {
-    pending:'Pending', assigned:'Assigned', on_way:'En Route',
-    in_progress:'In Progress', completed:'Completed', reviewed:'Done',
+  const svcIcon = {
+    'Home Cleaning':'🧹','Deep Cleaning':'🫧','Laundry & Ironing':'👕',
+    'AC Maintenance':'❄️','Plumbing':'🔧','Electrical':'⚡','Painting':'🎨',
+    'Pest Control':'🐛','Salon & Spa':'💅','Baby Sitting':'👶',
+    'Drivers':'🚗','Shoe Cleaning':'👟',
   };
-  const statusClass = {
-    pending:'badge-gold', assigned:'badge-green', on_way:'badge-green',
-    in_progress:'badge-green', completed:'badge-navy', reviewed:'badge-navy',
+  const statusMeta = {
+    pending:    { label:'Pending',     dot:'var(--danger)',  bg:'rgba(220,53,69,.08)',   color:'var(--danger)' },
+    assigned:   { label:'Assigned',    dot:'#1A7A46',        bg:'rgba(26,122,70,.08)',   color:'var(--green)'  },
+    on_way:     { label:'En Route',    dot:'#1A7A46',        bg:'rgba(26,122,70,.08)',   color:'var(--green)'  },
+    in_progress:{ label:'In Progress', dot:'#F59E0B',        bg:'rgba(245,158,11,.08)',  color:'#B45309'       },
+    completed:  { label:'Completed',   dot:'var(--ink3)',    bg:'var(--surface)',        color:'var(--ink2)'   },
+    reviewed:   { label:'Done',        dot:'var(--ink3)',    bg:'var(--surface)',        color:'var(--ink2)'   },
   };
+  const borderColor = {
+    pending:'var(--danger)', assigned:'var(--green)', on_way:'var(--green)',
+    in_progress:'#F59E0B', completed:'var(--border)', reviewed:'var(--border)',
+  };
+
+  // Search filter
+  const searchQ = (document.getElementById('queue-search')?.value || '').toLowerCase().trim();
 
   // All bookings combined, filtered by active tab
   let all;
@@ -3355,30 +3759,63 @@ function renderAdminQueue() {
   else if (typeof queueFilter !== 'undefined' && queueFilter === 'completed') all = [...done];
   else all = [...pending, ...active, ...done];
 
+  if (searchQ) {
+    all = all.filter(b =>
+      b.customerName?.toLowerCase().includes(searchQ) ||
+      b.ref?.toLowerCase().includes(searchQ) ||
+      b.service?.toLowerCase().includes(searchQ)
+    );
+  }
+
   if (!all.length) {
-    el.innerHTML = `<div style="text-align:center;padding:40px;color:var(--ink2);">No bookings in this category.</div>`;
+    el.innerHTML = `<div style="text-align:center;padding:40px;color:var(--ink2);">No bookings found.</div>`;
     return;
   }
 
-  el.innerHTML = all.map((b, i) => `
-    <div class="card section-pad" style="margin-bottom:var(--s3);${b.status==='pending'?'border-left:4px solid var(--danger);':b.status==='on_way'||b.status==='in_progress'?'border-left:4px solid var(--green);':''}">
-      <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:var(--s2);">
-        <div>
-          <div style="font-size:var(--text-base);font-weight:var(--font-weight-bold);color:var(--ink);font-family:var(--font-family-heading);">${b.customerName}</div>
-          <div style="font-size:var(--text-xs);color:var(--ink2);">${b.ref} · ${b.date} · ${b.time}</div>
+  el.innerHTML = all.map(b => {
+    const sm = statusMeta[b.status] || statusMeta.completed;
+    const bc = borderColor[b.status] || 'var(--border)';
+    const icon = svcIcon[b.service] || '🏠';
+    return `
+    <div class="card q-card" style="border-left-color:${bc};">
+      <!-- top row: service + status pill -->
+      <div class="q-card-top">
+        <div class="q-svc-row">
+          <span class="q-svc-icon">${icon}</span>
+          <div>
+            <div class="q-svc-name">${b.service}</div>
+            <div class="q-ref">${b.ref}</div>
+          </div>
         </div>
-        <span class="badge ${statusClass[b.status]||'badge-navy'}">${statusLabels[b.status]||b.status}</span>
+        <span class="q-status-pill" style="background:${sm.bg};color:${sm.color};">
+          <span class="q-dot" style="background:${sm.dot};"></span>${sm.label}
+        </span>
       </div>
-      <div style="font-size:var(--text-sm);color:var(--ink);font-weight:var(--font-weight-semibold);margin-bottom:4px;">${b.service}</div>
-      <div style="font-size:var(--text-xs);color:var(--ink2);margin-bottom:var(--s3);">${b.address} · ${b.hours} hrs${b.workerName ? ' · <strong>' + b.workerName + '</strong>' : ''}</div>
-      <div style="font-size:var(--text-base);font-weight:var(--font-weight-bold);color:var(--ink);font-family:var(--font-family-heading);margin-bottom:var(--s3);">AED ${b.totalPrice.toLocaleString()}</div>
-      <div style="display:flex;gap:var(--s2);">
-        ${b.status === 'pending' ? `<button class="btn-primary" style="flex:1;height:38px;font-size:var(--text-sm);" onclick="openAssignSheet(${b.id})">Assign Worker</button>` : ''}
-        ${['assigned','on_way','in_progress'].includes(b.status) ? `<button class="btn-ghost" style="flex:1;height:38px;font-size:var(--text-sm);" onclick="openReassignSheet(${b.id})">Reassign</button>` : ''}
-        <button class="btn-ghost" style="flex:1;height:38px;font-size:var(--text-sm);" onclick="viewBookingDetail(${b.id})">Detail</button>
+      <!-- customer + price -->
+      <div class="q-mid">
+        <div class="q-customer">${b.customerName}</div>
+        <div class="q-price">AED ${b.totalPrice.toLocaleString()}</div>
       </div>
-    </div>
-  `).join('');
+      <!-- meta: address -->
+      <div class="q-meta">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5S10.62 6.5 12 6.5s2.5 1.12 2.5 2.5S13.38 11.5 12 11.5z" fill="currentColor"/></svg>
+        <span>${b.address}</span>
+      </div>
+      <!-- meta: date + time + hours -->
+      <div class="q-meta">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><rect x="3" y="4" width="18" height="18" rx="2" ry="2" stroke="currentColor" stroke-width="2"/><line x1="16" y1="2" x2="16" y2="6" stroke="currentColor" stroke-width="2"/><line x1="8" y1="2" x2="8" y2="6" stroke="currentColor" stroke-width="2"/><line x1="3" y1="10" x2="21" y2="10" stroke="currentColor" stroke-width="2"/></svg>
+        <span>${b.date} · ${b.time} · ${b.hours} hrs</span>
+      </div>
+      <!-- worker chip -->
+      ${b.workerName ? `<div class="q-worker-chip"><svg width="11" height="11" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="4" fill="currentColor"/><path d="M4 20c0-4 3.58-7 8-7s8 3 8 7" stroke="currentColor" stroke-width="2" fill="none"/></svg>${b.workerName}</div>` : ''}
+      <!-- actions -->
+      <div class="q-actions">
+        ${b.status === 'pending' ? `<button class="btn-primary" style="flex:1;height:36px;font-size:12px;" onclick="openAssignSheet(${b.id})">Assign Worker</button>` : ''}
+        ${['assigned','on_way','in_progress'].includes(b.status) ? `<button class="btn-ghost" style="flex:1;height:36px;font-size:12px;" onclick="openReassignSheet(${b.id})">Reassign</button>` : ''}
+        <button class="btn-ghost" style="flex:1;height:36px;font-size:12px;" onclick="viewBookingDetail(${b.id})">Details</button>
+      </div>
+    </div>`;
+  }).join('');
 }
 
 /* ═══════════════════════════════════════
@@ -3391,10 +3828,7 @@ function setQueueFilter(f) {
   ['all','pending','active','completed'].forEach(id => {
     const btn = document.getElementById('qf-' + id);
     if (!btn) return;
-    const on = id === f;
-    btn.style.borderBottomColor = on ? 'var(--green)' : 'transparent';
-    btn.style.color = on ? 'var(--green)' : 'var(--ink2)';
-    btn.style.fontWeight = on ? 'var(--font-weight-bold)' : 'var(--font-weight-semibold)';
+    btn.classList.toggle('active', id === f);
   });
   const label = document.getElementById('queue-list-label');
   const labels = { all:'All bookings', pending:'Pending dispatch', active:'Active jobs', completed:'Completed' };
@@ -3426,37 +3860,123 @@ function viewBookingDetail(bookingId) {
 /* ═══════════════════════════════════════
    ADMIN — WORKER MANAGEMENT
 ═══════════════════════════════════════ */
+let workerFilter = 'all';
+
+function setWorkerFilter(f) {
+  workerFilter = f;
+  ['all','available','busy','inactive'].forEach(id => {
+    const btn = document.getElementById('wmf-' + id);
+    if (btn) btn.classList.toggle('active', id === f);
+  });
+  renderWorkerManagement();
+}
+
 function renderWorkerManagement() {
   const el = document.getElementById('worker-management-list');
   if (!el) return;
-  const workers = TAP.getAllWorkers();
-  const statusColor = { available:'var(--green)', busy:'var(--gold)', inactive:'var(--ink3)' };
-  const statusLabel = { available:'Available', busy:'On Job', inactive:'Inactive' };
-  el.innerHTML = workers.map(w => `
-    <div class="card section-pad" style="margin-bottom:var(--s3);">
-      <div style="display:flex;align-items:center;gap:var(--s3);">
-        <div class="avatar avatar-sm" style="background:${w.color};padding:0;overflow:hidden;">${w.photo ? `<img src="${w.photo}" style="width:100%;height:100%;object-fit:cover;" loading="lazy">` : w.avatar}</div>
-        <div style="flex:1;">
-          <div style="font-size:var(--text-base);font-weight:var(--font-weight-bold);color:var(--ink);font-family:var(--font-family-heading);">${w.name}</div>
-          <div style="font-size:var(--text-xs);color:var(--ink2);">${w.role}</div>
-          <div style="display:flex;align-items:center;gap:6px;margin-top:4px;">
-            <div style="width:7px;height:7px;border-radius:50%;background:${statusColor[w.status]};"></div>
-            <span style="font-size:var(--text-xs);color:${statusColor[w.status]};">${statusLabel[w.status]}</span>
-            <span style="font-size:var(--text-xs);color:var(--ink3);">· ★ ${w.rating}</span>
+  const allWorkers = TAP.getAllWorkers();
+
+  // Summary stats
+  const summaryEl = document.getElementById('wm-summary-row');
+  if (summaryEl) {
+    const avail = allWorkers.filter(w => w.status === 'available').length;
+    const busy  = allWorkers.filter(w => w.status === 'busy').length;
+    summaryEl.innerHTML = `
+      <div class="wm-stat-box"><div class="wm-stat-val">${allWorkers.length}</div><div class="wm-stat-lbl">Total</div></div>
+      <div class="wm-stat-box hi"><div class="wm-stat-val">${avail}</div><div class="wm-stat-lbl">Available</div></div>
+      <div class="wm-stat-box warn"><div class="wm-stat-val">${busy}</div><div class="wm-stat-lbl">On Job</div></div>
+    `;
+  }
+
+  const statusMeta = {
+    available: { label:'Available', dot:'var(--green)',  bg:'rgba(26,122,70,.09)', color:'var(--green)'  },
+    busy:      { label:'On Job',    dot:'#F59E0B',       bg:'rgba(245,158,11,.09)',color:'#B45309'       },
+    inactive:  { label:'Inactive',  dot:'var(--ink3)',   bg:'var(--surface)',      color:'var(--ink3)'   },
+  };
+
+  let workers = workerFilter === 'all' ? allWorkers
+    : allWorkers.filter(w => w.status === workerFilter);
+
+  if (!workers.length) {
+    el.innerHTML = `<div style="text-align:center;padding:40px;color:var(--ink2);">No workers in this category.</div>`;
+    return;
+  }
+
+  el.innerHTML = workers.map(w => {
+    const jobs     = TAP.getWorkerJobs(w.id);
+    const done     = jobs.filter(b => ['completed','reviewed'].includes(b.status)).length;
+    const active   = jobs.filter(b => ['assigned','on_way','in_progress'].includes(b.status)).length;
+    const earnings = jobs.filter(b => ['completed','reviewed'].includes(b.status))
+                        .reduce((s, b) => s + (b.totalPrice || 0), 0);
+    const sm = statusMeta[w.status] || statusMeta.inactive;
+
+    return `
+    <div class="card wm-card">
+      <div class="wm-top">
+        <div class="wm-avatar-wrap">
+          <div class="wm-avatar" style="background:${w.color||'var(--navy)'};">
+            ${w.photo ? `<img src="${w.photo}" loading="lazy">` : (w.avatar || w.name[0])}
           </div>
+          <div class="wm-status-dot" style="background:${sm.dot};"></div>
         </div>
-        ${w.status !== 'inactive' ? `<button onclick="deactivateWorker('${w.id}')" style="padding:6px 12px;background:var(--danger-light);border:none;border-radius:var(--r-pill);font-size:11px;font-weight:var(--font-weight-bold);color:var(--danger);cursor:pointer;">Deactivate</button>` : `<span class="badge badge-navy">Inactive</span>`}
+        <div style="flex:1;min-width:0;">
+          <div class="wm-name">${w.name}</div>
+          <div class="wm-role">${w.role}</div>
+          <div style="margin-top:4px;font-size:11px;color:var(--gold);">★ ${w.rating || '—'}</div>
+        </div>
+        <div class="wm-status-pill-wrap">
+          <span class="q-status-pill" style="background:${sm.bg};color:${sm.color};">
+            <span class="q-dot" style="background:${sm.dot};"></span>${sm.label}
+          </span>
+        </div>
       </div>
-      <div style="margin-top:var(--s3);padding-top:var(--s3);border-top:1px solid var(--border);">
-        <div style="font-size:var(--text-xs);color:var(--ink2);">${TAP.getWorkerJobs(w.id).filter(b=>['completed','reviewed'].includes(b.status)).length} completed jobs</div>
+      <div class="wm-metrics">
+        <div class="wm-metric">
+          <div class="wm-metric-val">${done}</div>
+          <div class="wm-metric-lbl">Jobs Done</div>
+        </div>
+        <div class="wm-metric">
+          <div class="wm-metric-val">${active}</div>
+          <div class="wm-metric-lbl">Active</div>
+        </div>
+        <div class="wm-metric">
+          <div class="wm-metric-val">${earnings >= 1000 ? (earnings/1000).toFixed(1)+'K' : earnings}</div>
+          <div class="wm-metric-lbl">AED Earned</div>
+        </div>
       </div>
-    </div>
-  `).join('');
+      <div class="wm-actions">
+        ${w.status !== 'inactive'
+          ? `<button class="btn-ghost" style="flex:1;height:36px;font-size:12px;" onclick="deactivateWorker('${w.id}')">Deactivate</button>`
+          : `<button class="btn-ghost" style="flex:1;height:36px;font-size:12px;opacity:.5;" disabled>Inactive</button>`}
+        <button class="btn-primary" style="flex:2;height:36px;font-size:12px;" onclick="viewWorkerJobs('${w.id}')">View Jobs</button>
+      </div>
+    </div>`;
+  }).join('');
 }
 
 function deactivateWorker(wid) {
   TAP.deactivateWorker(wid);
   showToast('Worker deactivated.');
+}
+
+function viewWorkerJobs(wid) {
+  const w = TAP.getAllWorkers().find(x => x.id === wid);
+  if (!w) return;
+  const jobs = TAP.getWorkerJobs(wid);
+  const done = jobs.filter(b => ['completed','reviewed'].includes(b.status));
+  const active = jobs.filter(b => ['assigned','on_way','in_progress'].includes(b.status));
+  const el = document.getElementById('sheet-detail-body');
+  if (!el) return;
+  el.innerHTML = `
+    <div style="font-size:16px;font-weight:var(--font-weight-bold);color:var(--ink);font-family:var(--font-family-heading);margin-bottom:4px;">${w.name}</div>
+    <div style="font-size:12px;color:var(--ink2);margin-bottom:16px;">${w.role} · ★ ${w.rating}</div>
+    ${active.length ? `<div style="font-size:12px;font-weight:var(--font-weight-bold);color:var(--green);margin-bottom:8px;">Active (${active.length})</div>
+      ${active.map(b=>`<div style="padding:10px 0;border-bottom:1px solid var(--border);font-size:13px;"><strong>${b.service}</strong><div style="font-size:11px;color:var(--ink2);">${b.date} · ${b.time} · ${b.address}</div></div>`).join('')}` : ''}
+    ${done.length ? `<div style="font-size:12px;font-weight:var(--font-weight-bold);color:var(--ink2);margin:12px 0 8px;">Completed (${done.length})</div>
+      ${done.slice(0,6).map(b=>`<div style="padding:10px 0;border-bottom:1px solid var(--border);font-size:13px;">${b.service}<div style="font-size:11px;color:var(--ink2);">${b.date} · AED ${b.totalPrice}</div></div>`).join('')}` : ''}
+    ${!jobs.length ? `<div style="text-align:center;padding:32px;color:var(--ink2);">No jobs yet.</div>` : ''}
+  `;
+  openSheet('detail');
 }
 
 function showAddWorkerForm() {
@@ -3504,26 +4024,26 @@ function renderFinancials() {
 
   const el = document.getElementById('fin-live-stats');
   if (el) el.innerHTML = `
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:var(--s3);margin-bottom:var(--s4);">
-      <div class="card section-pad">
-        <div style="font-size:var(--text-xs);color:var(--ink2);text-transform:uppercase;letter-spacing:.05em;font-family:var(--font-family-heading);">Revenue</div>
-        <div style="font-size:var(--text-xl);font-weight:var(--font-weight-bold);color:var(--ink);font-family:var(--font-family-heading);letter-spacing:var(--ls-xl);margin:4px 0;">${revenue > 0 ? 'AED ' + revenue.toFixed(0) : 'AED 5.2K'}</div>
-        <div style="font-size:var(--text-xs);color:var(--green);">↑ ${completed.length} completed</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:var(--s3);margin-bottom:var(--s3);">
+      <div class="card fin-kpi-card" style="border-top:3px solid var(--green);">
+        <div class="fin-kpi-label">Revenue</div>
+        <div class="fin-kpi-val">${revenue > 0 ? 'AED ' + (revenue/1000).toFixed(1) + 'K' : 'AED 1.5K'}</div>
+        <div class="fin-kpi-sub" style="color:var(--green);">↑ ${completed.length} completed</div>
       </div>
-      <div class="card section-pad">
-        <div style="font-size:var(--text-xs);color:var(--ink2);text-transform:uppercase;letter-spacing:.05em;font-family:var(--font-family-heading);">Pending</div>
-        <div style="font-size:var(--text-xl);font-weight:var(--font-weight-bold);color:var(--ink);font-family:var(--font-family-heading);letter-spacing:var(--ls-xl);margin:4px 0;">${pending > 0 ? 'AED ' + pending.toFixed(0) : 'AED 1.8K'}</div>
-        <div style="font-size:var(--text-xs);color:var(--gold);">${TAP.getPendingBookings().length} orders</div>
+      <div class="card fin-kpi-card" style="border-top:3px solid var(--gold);">
+        <div class="fin-kpi-label">Pending</div>
+        <div class="fin-kpi-val">${pending > 0 ? 'AED ' + (pending/1000).toFixed(1) + 'K' : 'AED 16.8K'}</div>
+        <div class="fin-kpi-sub" style="color:var(--gold);">${TAP.getPendingBookings().length} orders</div>
       </div>
-      <div class="card section-pad">
-        <div style="font-size:var(--text-xs);color:var(--ink2);text-transform:uppercase;letter-spacing:.05em;font-family:var(--font-family-heading);">Active Now</div>
-        <div style="font-size:var(--text-xl);font-weight:var(--font-weight-bold);color:var(--ink);font-family:var(--font-family-heading);letter-spacing:var(--ls-xl);margin:4px 0;">${active > 0 ? 'AED ' + active.toFixed(0) : 'AED 3.4K'}</div>
-        <div style="font-size:var(--text-xs);color:var(--green);">${TAP.getAssignedBookings().length} in progress</div>
+      <div class="card fin-kpi-card" style="border-top:3px solid #3B82F6;">
+        <div class="fin-kpi-label">Active Now</div>
+        <div class="fin-kpi-val">${active > 0 ? 'AED ' + (active/1000).toFixed(1) + 'K' : 'AED 1.8K'}</div>
+        <div class="fin-kpi-sub" style="color:#3B82F6;">${TAP.getAssignedBookings().length} in progress</div>
       </div>
-      <div class="card section-pad">
-        <div style="font-size:var(--text-xs);color:var(--ink2);text-transform:uppercase;letter-spacing:.05em;font-family:var(--font-family-heading);">Total Bookings</div>
-        <div style="font-size:var(--text-xl);font-weight:var(--font-weight-bold);color:var(--ink);font-family:var(--font-family-heading);letter-spacing:var(--ls-xl);margin:4px 0;">${all.length || 0}</div>
-        <div style="font-size:var(--text-xs);color:var(--ink2);">all time</div>
+      <div class="card fin-kpi-card" style="border-top:3px solid #8B5CF6;">
+        <div class="fin-kpi-label">Total Bookings</div>
+        <div class="fin-kpi-val">${all.length || 0}</div>
+        <div class="fin-kpi-sub" style="color:#8B5CF6;">all time</div>
       </div>
     </div>
   `;
@@ -3935,7 +4455,7 @@ document.addEventListener('DOMContentLoaded', () => {
     setTimeout(() => {
       splash.classList.add('fade-out');
       setTimeout(() => splash.classList.add('gone'), 650);
-    }, 2800);
+    }, 5000);
   }
 
   // Force-seed on first load if localStorage is empty or stale
