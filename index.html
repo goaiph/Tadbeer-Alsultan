@@ -691,15 +691,13 @@ html,body{
 .svc-select-card{
   background:var(--card);border-radius:var(--r-md);
   border:1px solid var(--border);box-shadow:var(--sh-card);
-  padding:var(--s4);cursor:pointer;transition:all .2s;
-  display:flex;flex-direction:column;align-items:flex-start;gap:var(--s2);
+  cursor:pointer;transition:all .2s;overflow:hidden;
+  display:flex;flex-direction:column;align-items:flex-start;
 }
 .svc-select-card:active{transform:scale(.97);}
-.svc-select-card .svc-icon-wrap{
-  width:48px;height:48px;border-radius:var(--r-sm);
-  display:flex;align-items:center;justify-content:center;
-  font-size:24px;
-}
+.svc-select-img{height:100px;width:100%;overflow:hidden;}
+.svc-select-img img{width:100%;height:100%;object-fit:cover;}
+.svc-select-body{padding:var(--s3);display:flex;flex-direction:column;gap:2px;}
 .svc-select-card .svc-name{font-size:var(--text-base);font-weight:var(--font-weight-bold);color:var(--ink);line-height:1.35;font-family:var(--font-family-heading);letter-spacing:var(--ls-base);}
 .svc-select-card .svc-from{font-size:var(--text-xs);color:var(--ink2);font-family:var(--font-family-body);margin-top:2px;}
 
@@ -767,7 +765,7 @@ html,body{
   overflow:hidden;cursor:pointer;transition:all .2s;
 }
 .svc-card:active{transform:scale(.97);}
-.svc-card-img{height:72px;display:flex;align-items:center;justify-content:center;font-size:28px;}
+.svc-card-img{height:110px;overflow:hidden;}
 .svc-card-body{padding:var(--s2) var(--s2) var(--s3);}
 .svc-card-name{font-size:var(--text-sm);font-weight:var(--font-weight-bold);color:var(--ink);line-height:1.3;font-family:var(--font-family-heading);letter-spacing:var(--ls-sm);}
 .svc-card-price{font-size:var(--text-xs);color:var(--ink2);margin-top:3px;font-family:var(--font-family-body);}
@@ -919,7 +917,7 @@ hr.divider{border:none;border-top:1px solid var(--border);margin:var(--s4) 0;}
     <div class="sw-arabic">تدبير السلطان</div>
   </div>
   <div class="splash-bar"><div class="splash-bar-fill"></div></div>
-  <div class="splash-version">v1.0 · Iraq · UAE</div>
+  <div class="splash-version">v1.0 · UAE</div>
 </div>
 <div id="shell">
 <div id="phone">
@@ -932,6 +930,7 @@ hr.divider{border:none;border-top:1px solid var(--border);margin:var(--s4) 0;}
       <button class="app-btn" onclick="switchApp('w')">Worker</button>
       <button class="app-btn" onclick="switchApp('a')">⚙ Admin</button>
     </div>
+    <button id="demo-play-btn" onclick="runDemo()" style="padding:5px 11px;background:linear-gradient(135deg,var(--gold),var(--gold-mid));border:none;border-radius:var(--r-pill);font-size:var(--text-xs);font-weight:var(--font-weight-bold);color:#fff;cursor:pointer;white-space:nowrap;box-shadow:var(--sh-gold);letter-spacing:.01em;">▶ Demo</button>
   </div>
 
   <!-- ════════════════════════════════════
@@ -942,13 +941,31 @@ hr.divider{border:none;border-top:1px solid var(--border);margin:var(--s4) 0;}
     <!-- HOME -->
     <section class="screen active" id="c-home">
       <div class="screen-scroll">
-        <div class="hero">
-          <h1>What service do you need today?</h1>
-          <div class="search-bar">
+
+        <!-- HERO: greeting + location + search -->
+        <div class="hero" style="padding-bottom:22px;">
+          <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px;">
+            <div>
+              <div style="font-size:13px;color:rgba(255,255,255,.65);margin-bottom:3px;">Good morning 👋</div>
+              <h1 style="margin:0;font-size:24px;line-height:1.2;">Sarah Al Zaabi</h1>
+            </div>
+            <div style="width:42px;height:42px;border-radius:50%;background:rgba(255,255,255,.18);border:2px solid rgba(255,255,255,.3);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:14px;font-weight:700;color:#fff;letter-spacing:-.5px;">SA</div>
+          </div>
+          <div style="display:inline-flex;align-items:center;gap:5px;background:rgba(255,255,255,.12);border-radius:var(--r-pill);padding:5px 10px;margin-bottom:14px;cursor:pointer;">
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z" fill="rgba(255,255,255,.5)"/><circle cx="12" cy="9" r="2.5" fill="#fff"/></svg>
+            <span style="font-size:11px;color:rgba(255,255,255,.9);font-weight:var(--font-weight-semibold);">Al Khalidiyah, Abu Dhabi</span>
+            <svg width="10" height="10" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="rgba(255,255,255,.7)" stroke-width="2.5" stroke-linecap="round"/></svg>
+          </div>
+          <div class="search-bar" onclick="showToast('🔍 Type to search any service')">
             <svg width="16" height="16" fill="none" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8" stroke="rgba(255,255,255,.7)" stroke-width="2"/><path d="M21 21l-4.35-4.35" stroke="rgba(255,255,255,.7)" stroke-width="2" stroke-linecap="round"/></svg>
             Search for a service...
           </div>
         </div>
+
+        <!-- ACTIVE BOOKING BANNER (populated by JS) -->
+        <div id="home-active-strip" style="margin:var(--s3) var(--s4) 0;display:none;"></div>
+
+        <!-- CREDITS BAR -->
         <div class="credits-bar">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><polygon points="12,2 15,9 22,9 16.5,14 18.5,21 12,17 5.5,21 7.5,14 2,9 9,9" fill="#C8921A"/></svg>
           <div class="credits-info">
@@ -958,55 +975,172 @@ hr.divider{border:none;border-top:1px solid var(--border);margin:var(--s4) 0;}
           </div>
           <div class="credits-redeem">160 pts to next reward</div>
         </div>
-        <div class="cat-scroll">
+
+        <!-- PROMO BANNER -->
+        <div style="margin:var(--s3) var(--s4) 0;">
+          <div style="background:linear-gradient(135deg,#0C1A28,#1a3a5c);border-radius:var(--r-md);padding:var(--s4);display:flex;align-items:center;gap:var(--s4);overflow:hidden;position:relative;">
+            <div style="position:absolute;right:-18px;top:-18px;width:90px;height:90px;border-radius:50%;background:rgba(255,255,255,.04);pointer-events:none;"></div>
+            <div style="position:absolute;right:28px;bottom:-28px;width:72px;height:72px;border-radius:50%;background:rgba(200,146,26,.1);pointer-events:none;"></div>
+            <div style="flex:1;min-width:0;">
+              <div style="font-size:9px;color:var(--gold);text-transform:uppercase;letter-spacing:1px;font-weight:var(--font-weight-bold);margin-bottom:5px;">Limited Offer</div>
+              <div style="font-size:16px;font-weight:var(--font-weight-bold);color:#fff;line-height:1.3;margin-bottom:5px;">Get 20% off<br>your next booking</div>
+              <div style="font-size:11px;color:rgba(255,255,255,.55);">Use code <span style="color:var(--gold);font-weight:var(--font-weight-bold);">UAE20</span> at checkout</div>
+            </div>
+            <button onclick="showToast('✓ Code UAE20 saved — apply it at checkout!')" style="background:var(--gold);border:none;border-radius:var(--r-sm);padding:9px 14px;font-size:12px;font-weight:var(--font-weight-bold);color:#fff;cursor:pointer;white-space:nowrap;flex-shrink:0;">Claim →</button>
+          </div>
+          <div style="display:flex;justify-content:center;gap:5px;margin-top:8px;">
+            <div style="width:18px;height:4px;border-radius:2px;background:var(--green);"></div>
+            <div style="width:6px;height:4px;border-radius:2px;background:var(--border);"></div>
+            <div style="width:6px;height:4px;border-radius:2px;background:var(--border);"></div>
+          </div>
+        </div>
+
+        <!-- TRUST STRIP -->
+        <div style="display:flex;align-items:center;justify-content:center;gap:14px;margin:var(--s3) var(--s4) 0;padding:10px var(--s3);background:var(--surface);border-radius:var(--r-md);border:1px solid var(--border);">
+          <div style="display:flex;align-items:center;gap:4px;">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" fill="var(--green)"/></svg>
+            <span style="font-size:10px;color:var(--ink2);font-weight:var(--font-weight-semibold);">Verified</span>
+          </div>
+          <div style="width:1px;height:12px;background:var(--border);"></div>
+          <div style="display:flex;align-items:center;gap:4px;">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" fill="var(--green)"/><path d="M8 12l3 3 5-5" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <span style="font-size:10px;color:var(--ink2);font-weight:var(--font-weight-semibold);">Insured</span>
+          </div>
+          <div style="width:1px;height:12px;background:var(--border);"></div>
+          <div style="display:flex;align-items:center;gap:4px;">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><rect x="3" y="11" width="18" height="11" rx="2" fill="var(--green)"/><path d="M7 11V7a5 5 0 0110 0v4" stroke="var(--green)" stroke-width="2" stroke-linecap="round"/></svg>
+            <span style="font-size:10px;color:var(--ink2);font-weight:var(--font-weight-semibold);">Background Checked</span>
+          </div>
+        </div>
+
+        <!-- CATEGORIES -->
+        <div class="cat-scroll" style="margin-top:var(--s4);">
           <button class="pill-btn active">All</button>
           <button class="pill-btn">Cleaning</button>
           <button class="pill-btn">Laundry</button>
           <button class="pill-btn">Maintenance</button>
+          <button class="pill-btn">Wellness</button>
           <button class="pill-btn">Childcare</button>
         </div>
+
+        <!-- ON-DEMAND SERVICES -->
         <div class="section-hdr">
           <h3>On-Demand Services</h3>
           <button class="see-all">See all</button>
         </div>
         <div class="svc-grid">
-          <div class="svc-card" onclick="goSvcSelect('Home Cleaning')">
-            <div class="svc-card-img" style="background:linear-gradient(150deg,#EBF5EF,#C8E6D5);">
-              <svg width="36" height="36" viewBox="0 0 24 24" fill="none"><path d="M3 12L12 3l9 9" stroke="#1A7A46" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M5 10v9a1 1 0 001 1h4v-4h4v4h4a1 1 0 001-1v-9" stroke="#1A7A46" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <div class="svc-card" onclick="goSvcSelect('Home Cleaning')" style="position:relative;">
+            <div style="position:absolute;top:8px;left:8px;z-index:1;background:var(--green);color:#fff;font-size:9px;font-weight:var(--font-weight-bold);padding:2px 7px;border-radius:var(--r-pill);letter-spacing:.3px;">POPULAR</div>
+            <div class="svc-card-img">
+              <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=300&h=220&fit=crop&q=80" style="width:100%;height:100%;object-fit:cover;" loading="lazy">
             </div>
-            <div class="svc-card-body"><div class="svc-card-name">Home Cleaning</div><div class="svc-card-price">From IQD 25K</div></div>
+            <div class="svc-card-body">
+              <div class="svc-card-name">Home Cleaning</div>
+              <div class="svc-card-price">From AED 60/hr</div>
+              <div style="display:flex;align-items:center;gap:3px;margin-top:3px;"><span style="color:#F5A623;font-size:10px;">★</span><span style="font-size:10px;color:var(--ink2);">4.9 · 3.2K</span></div>
+            </div>
           </div>
           <div class="svc-card" onclick="cGo('c-svc-select','c-home');setSvc('Laundry')">
-            <div class="svc-card-img" style="background:linear-gradient(150deg,#EBF5EF,#C8E6D5);">
-              <svg width="36" height="36" viewBox="0 0 24 24" fill="none"><rect x="2" y="3" width="20" height="18" rx="3" stroke="#1A7A46" stroke-width="1.8"/><circle cx="12" cy="12" r="4" stroke="#1A7A46" stroke-width="1.8"/><circle cx="6" cy="7" r="1" fill="#1A7A46"/></svg>
+            <div class="svc-card-img">
+              <img src="https://images.unsplash.com/photo-1567113463300-102a7eb3cb26?w=300&h=220&fit=crop&q=80" style="width:100%;height:100%;object-fit:cover;" loading="lazy">
             </div>
-            <div class="svc-card-body"><div class="svc-card-name">Laundry & Shoe</div><div class="svc-card-price">From IQD 15K</div></div>
+            <div class="svc-card-body">
+              <div class="svc-card-name">Laundry & Shoe</div>
+              <div class="svc-card-price">From AED 40/hr</div>
+              <div style="display:flex;align-items:center;gap:3px;margin-top:3px;"><span style="color:#F5A623;font-size:10px;">★</span><span style="font-size:10px;color:var(--ink2);">4.8 · 1.8K</span></div>
+            </div>
           </div>
           <div class="svc-card" onclick="cGo('c-svc-detail','c-home');setSvcName('Pest Control')">
-            <div class="svc-card-img" style="background:linear-gradient(150deg,#FDF3E0,#F5D9A0);">
-              <svg width="36" height="36" viewBox="0 0 24 24" fill="none"><path d="M12 2C9 2 7 5 7 8c0 2 .8 3.5 2 4.5V18a3 3 0 006 0v-5.5c1.2-1 2-2.5 2-4.5 0-3-2-6-5-6z" stroke="#C8921A" stroke-width="1.8" stroke-linecap="round"/><path d="M7 9H4M7 12H2M17 9h3M17 12h4" stroke="#C8921A" stroke-width="1.8" stroke-linecap="round"/></svg>
+            <div class="svc-card-img">
+              <img src="https://images.unsplash.com/photo-1585771724684-38269d6639fd?w=300&h=220&fit=crop&q=80" style="width:100%;height:100%;object-fit:cover;" loading="lazy">
             </div>
-            <div class="svc-card-body"><div class="svc-card-name">Pest Control</div><div class="svc-card-price">From IQD 40K</div></div>
+            <div class="svc-card-body">
+              <div class="svc-card-name">Pest Control</div>
+              <div class="svc-card-price">From AED 120</div>
+              <div style="display:flex;align-items:center;gap:3px;margin-top:3px;"><span style="color:#F5A623;font-size:10px;">★</span><span style="font-size:10px;color:var(--ink2);">4.7 · 890</span></div>
+            </div>
           </div>
           <div class="svc-card" onclick="cGo('c-svc-detail','c-home');setSvcName('Salon & Spa')">
-            <div class="svc-card-img" style="background:linear-gradient(150deg,#FDF3E0,#F5D9A0);">
-              <svg width="36" height="36" viewBox="0 0 24 24" fill="none"><path d="M20 7c0 4.4-3.6 8-8 8S4 11.4 4 7" stroke="#C8921A" stroke-width="1.8" stroke-linecap="round"/><path d="M12 15v6M8 21h8" stroke="#C8921A" stroke-width="1.8" stroke-linecap="round"/><path d="M8 4c0-1.1.9-2 2-2h4a2 2 0 010 4H10a2 2 0 01-2-2z" stroke="#C8921A" stroke-width="1.8"/></svg>
+            <div class="svc-card-img">
+              <img src="https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?w=300&h=220&fit=crop&q=80" style="width:100%;height:100%;object-fit:cover;" loading="lazy">
             </div>
-            <div class="svc-card-body"><div class="svc-card-name">Salon & Spa</div><div class="svc-card-price">From IQD 30K</div></div>
+            <div class="svc-card-body">
+              <div class="svc-card-name">Salon & Spa</div>
+              <div class="svc-card-price">From AED 90/hr</div>
+              <div style="display:flex;align-items:center;gap:3px;margin-top:3px;"><span style="color:#F5A623;font-size:10px;">★</span><span style="font-size:10px;color:var(--ink2);">4.9 · 2.1K</span></div>
+            </div>
           </div>
           <div class="svc-card" onclick="cGo('c-svc-detail','c-home');setSvcName('AC Repair')">
-            <div class="svc-card-img" style="background:linear-gradient(150deg,#E6EFF8,#C5D8EC);">
-              <svg width="36" height="36" viewBox="0 0 24 24" fill="none"><rect x="2" y="6" width="20" height="10" rx="3" stroke="#0C1A28" stroke-width="1.8"/><path d="M6 11h12M12 6V4M8 6V4M16 6V4M12 16v2M8 16v2M16 16v2" stroke="#0C1A28" stroke-width="1.8" stroke-linecap="round"/></svg>
+            <div class="svc-card-img">
+              <img src="https://images.unsplash.com/photo-1621905252507-b35492cc74b4?w=300&h=220&fit=crop&q=80" style="width:100%;height:100%;object-fit:cover;" loading="lazy">
             </div>
-            <div class="svc-card-body"><div class="svc-card-name">AC Repair</div><div class="svc-card-price">From IQD 35K</div></div>
+            <div class="svc-card-body">
+              <div class="svc-card-name">AC Repair</div>
+              <div class="svc-card-price">From AED 80/hr</div>
+              <div style="display:flex;align-items:center;gap:3px;margin-top:3px;"><span style="color:#F5A623;font-size:10px;">★</span><span style="font-size:10px;color:var(--ink2);">4.8 · 1.4K</span></div>
+            </div>
           </div>
           <div class="svc-card" onclick="cGo('c-svc-detail','c-home');setSvcName('Handyman')">
-            <div class="svc-card-img" style="background:linear-gradient(150deg,#F0FAF4,#C8E6D5);">
-              <svg width="36" height="36" viewBox="0 0 24 24" fill="none"><path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94l-6.91 6.91a2.12 2.12 0 01-3-3l6.91-6.91a6 6 0 017.94-7.94l-3.76 3.76z" stroke="#1A7A46" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <div class="svc-card-img">
+              <img src="https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=300&h=220&fit=crop&q=80" style="width:100%;height:100%;object-fit:cover;" loading="lazy">
             </div>
-            <div class="svc-card-body"><div class="svc-card-name">Handyman</div><div class="svc-card-price">From IQD 20K</div></div>
+            <div class="svc-card-body">
+              <div class="svc-card-name">Handyman</div>
+              <div class="svc-card-price">From AED 70/hr</div>
+              <div style="display:flex;align-items:center;gap:3px;margin-top:3px;"><span style="color:#F5A623;font-size:10px;">★</span><span style="font-size:10px;color:var(--ink2);">4.7 · 1.1K</span></div>
+            </div>
           </div>
         </div>
+
+        <!-- TOP RATED NEAR YOU -->
+        <div class="section-hdr" style="margin-top:var(--s4);">
+          <h3>Top Rated Near You</h3>
+          <button class="see-all">See all</button>
+        </div>
+        <div style="display:flex;gap:var(--s3);overflow-x:auto;padding:0 var(--s4) var(--s2);scrollbar-width:none;-ms-overflow-style:none;">
+          <div style="flex-shrink:0;width:116px;background:var(--surface);border:1px solid var(--border);border-radius:var(--r-md);padding:var(--s3);text-align:center;cursor:pointer;" onclick="showToast('Fatima R. — Available now')">
+            <div style="position:relative;display:inline-block;margin-bottom:8px;">
+              <img src="https://randomuser.me/api/portraits/women/44.jpg" style="width:50px;height:50px;border-radius:50%;object-fit:cover;display:block;border:2px solid var(--green-light);">
+              <div style="position:absolute;bottom:1px;right:1px;width:11px;height:11px;border-radius:50%;background:#22c55e;border:2px solid var(--surface);"></div>
+            </div>
+            <div style="font-size:12px;font-weight:var(--font-weight-bold);color:var(--ink);">Fatima R.</div>
+            <div style="font-size:10px;color:var(--ink2);margin:2px 0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">Home Cleaning</div>
+            <div style="font-size:10px;color:#F5A623;font-weight:var(--font-weight-bold);">★ 4.9</div>
+            <div style="font-size:9px;color:var(--green);margin-top:2px;">0.8 km away</div>
+          </div>
+          <div style="flex-shrink:0;width:116px;background:var(--surface);border:1px solid var(--border);border-radius:var(--r-md);padding:var(--s3);text-align:center;cursor:pointer;" onclick="showToast('Zainab K. — Available now')">
+            <div style="position:relative;display:inline-block;margin-bottom:8px;">
+              <img src="https://randomuser.me/api/portraits/women/65.jpg" style="width:50px;height:50px;border-radius:50%;object-fit:cover;display:block;border:2px solid var(--green-light);">
+              <div style="position:absolute;bottom:1px;right:1px;width:11px;height:11px;border-radius:50%;background:#22c55e;border:2px solid var(--surface);"></div>
+            </div>
+            <div style="font-size:12px;font-weight:var(--font-weight-bold);color:var(--ink);">Zainab K.</div>
+            <div style="font-size:10px;color:var(--ink2);margin:2px 0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">Cleaning & Laundry</div>
+            <div style="font-size:10px;color:#F5A623;font-weight:var(--font-weight-bold);">★ 4.9</div>
+            <div style="font-size:9px;color:var(--green);margin-top:2px;">1.2 km away</div>
+          </div>
+          <div style="flex-shrink:0;width:116px;background:var(--surface);border:1px solid var(--border);border-radius:var(--r-md);padding:var(--s3);text-align:center;cursor:pointer;" onclick="showToast('Rania H. — Available now')">
+            <div style="position:relative;display:inline-block;margin-bottom:8px;">
+              <img src="https://randomuser.me/api/portraits/women/28.jpg" style="width:50px;height:50px;border-radius:50%;object-fit:cover;display:block;border:2px solid var(--green-light);">
+              <div style="position:absolute;bottom:1px;right:1px;width:11px;height:11px;border-radius:50%;background:#22c55e;border:2px solid var(--surface);"></div>
+            </div>
+            <div style="font-size:12px;font-weight:var(--font-weight-bold);color:var(--ink);">Rania H.</div>
+            <div style="font-size:10px;color:var(--ink2);margin:2px 0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">Salon & Wellness</div>
+            <div style="font-size:10px;color:#F5A623;font-weight:var(--font-weight-bold);">★ 4.9</div>
+            <div style="font-size:9px;color:var(--green);margin-top:2px;">2.1 km away</div>
+          </div>
+          <div style="flex-shrink:0;width:116px;background:var(--surface);border:1px solid var(--border);border-radius:var(--r-md);padding:var(--s3);text-align:center;cursor:pointer;" onclick="showToast('Abdullah M. — Available now')">
+            <div style="position:relative;display:inline-block;margin-bottom:8px;">
+              <img src="https://randomuser.me/api/portraits/men/32.jpg" style="width:50px;height:50px;border-radius:50%;object-fit:cover;display:block;border:2px solid var(--border);">
+              <div style="position:absolute;bottom:1px;right:1px;width:11px;height:11px;border-radius:50%;background:#22c55e;border:2px solid var(--surface);"></div>
+            </div>
+            <div style="font-size:12px;font-weight:var(--font-weight-bold);color:var(--ink);">Abdullah M.</div>
+            <div style="font-size:10px;color:var(--ink2);margin:2px 0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">Deep Cleaning</div>
+            <div style="font-size:10px;color:#F5A623;font-weight:var(--font-weight-bold);">★ 4.8</div>
+            <div style="font-size:9px;color:var(--ink2);margin-top:2px;">3.4 km away</div>
+          </div>
+        </div>
+
+        <!-- LONG-TERM PLACEMENTS -->
         <div class="section-hdr" style="margin-top:var(--s4);">
           <h3>Long-term Placements</h3>
           <button class="see-all">View all</button>
@@ -1014,25 +1148,26 @@ hr.divider{border:none;border-top:1px solid var(--border);margin:var(--s4) 0;}
         <div class="placement-scroll">
           <div class="placement-chip" onclick="cGo('c-placement','c-home')">
             <div class="pc-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="4" stroke="#1A7A46" stroke-width="1.8"/><path d="M6 20c0-3.3 2.7-6 6-6s6 2.7 6 6" stroke="#1A7A46" stroke-width="1.8" stroke-linecap="round"/><path d="M9 10c-.5.5-.8 1.2-.8 2" stroke="#1A7A46" stroke-width="1.5" stroke-linecap="round"/></svg></div>
-            <div class="pc-name">Nanny</div><div class="pc-price">200K/mo</div>
+            <div class="pc-name">Nanny</div><div class="pc-price">AED 2K/mo</div>
           </div>
           <div class="placement-chip" onclick="cGo('c-placement','c-home')">
             <div class="pc-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none"><path d="M6 2h12v5a6 6 0 01-12 0V2z" stroke="#C8921A" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M6 7H3M18 7h3M12 13v8M9 21h6" stroke="#C8921A" stroke-width="1.8" stroke-linecap="round"/></svg></div>
-            <div class="pc-name">Cook</div><div class="pc-price">180K/mo</div>
+            <div class="pc-name">Cook</div><div class="pc-price">AED 1.8K/mo</div>
           </div>
           <div class="placement-chip" onclick="cGo('c-placement','c-home')">
             <div class="pc-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none"><rect x="2" y="8" width="20" height="10" rx="3" stroke="#0C1A28" stroke-width="1.8"/><path d="M6 8V6a2 2 0 012-2h8a2 2 0 012 2v2" stroke="#0C1A28" stroke-width="1.8"/><circle cx="7" cy="18" r="2" fill="#0C1A28"/><circle cx="17" cy="18" r="2" fill="#0C1A28"/></svg></div>
-            <div class="pc-name">Driver</div><div class="pc-price">220K/mo</div>
+            <div class="pc-name">Driver</div><div class="pc-price">AED 2.2K/mo</div>
           </div>
           <div class="placement-chip" onclick="cGo('c-placement','c-home')">
             <div class="pc-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none"><path d="M3 6h13M3 12h9M3 18h13" stroke="#1A7A46" stroke-width="1.8" stroke-linecap="round"/><path d="M19 3l2 2-8 8-3 1 1-3 8-8z" stroke="#1A7A46" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-            <div class="pc-name">Housemaid</div><div class="pc-price">200K/mo</div>
+            <div class="pc-name">Housemaid</div><div class="pc-price">AED 2K/mo</div>
           </div>
           <div class="placement-chip" onclick="cGo('c-placement','c-home')">
             <div class="pc-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="7" r="4" stroke="#C8921A" stroke-width="1.8"/><path d="M6 21v-1a6 6 0 0112 0v1" stroke="#C8921A" stroke-width="1.8" stroke-linecap="round"/><path d="M4 13c0 1.1.9 2 2 2s2-.9 2-2" stroke="#C8921A" stroke-width="1.8" stroke-linecap="round"/></svg></div>
-            <div class="pc-name">Elderly Carer</div><div class="pc-price">250K/mo</div>
+            <div class="pc-name">Elderly Carer</div><div class="pc-price">AED 2.5K/mo</div>
           </div>
         </div>
+
         <div style="height:var(--nav-h)"></div>
       </div>
     </section>
@@ -1051,39 +1186,53 @@ hr.divider{border:none;border-top:1px solid var(--border);margin:var(--s4) 0;}
         </div>
         <div class="svc-select-grid">
           <div class="svc-select-card" onclick="cGo('c-svc-detail','c-svc-select');setSvcName('Home Cleaning')">
-            <div class="svc-icon-wrap" style="background:linear-gradient(135deg,#EBF5EF,#C8E6D5);"><svg width="28" height="28" viewBox="0 0 24 24" fill="none"><path d="M3 12L12 3l9 9" stroke="#1A7A46" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M5 10v9a1 1 0 001 1h4v-4h4v4h4a1 1 0 001-1v-9" stroke="#1A7A46" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-            <div class="svc-name">Home Cleaning</div>
-            <div class="svc-from">From IQD 25,000/hr</div>
+            <div class="svc-select-img"><img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=300&h=200&fit=crop&q=80" loading="lazy"></div>
+            <div class="svc-select-body">
+              <div class="svc-name">Home Cleaning</div>
+              <div class="svc-from">From AED 60/hr</div>
+            </div>
           </div>
           <div class="svc-select-card" onclick="cGo('c-svc-detail','c-svc-select');setSvcName('Furniture Cleaning')">
-            <div class="svc-icon-wrap" style="background:linear-gradient(135deg,#FDF3E0,#F5D9A0);"><svg width="28" height="28" viewBox="0 0 24 24" fill="none"><rect x="2" y="10" width="20" height="8" rx="3" stroke="#C8921A" stroke-width="1.8"/><path d="M5 10V7a2 2 0 012-2h10a2 2 0 012 2v3" stroke="#C8921A" stroke-width="1.8" stroke-linecap="round"/><path d="M2 14h20M6 18v2M18 18v2" stroke="#C8921A" stroke-width="1.8" stroke-linecap="round"/></svg></div>
-            <div class="svc-name">Furniture Cleaning</div>
-            <div class="svc-from">From IQD 30,000/hr</div>
+            <div class="svc-select-img"><img src="https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=300&h=200&fit=crop&q=80" loading="lazy"></div>
+            <div class="svc-select-body">
+              <div class="svc-name">Furniture Cleaning</div>
+              <div class="svc-from">From AED 80/hr</div>
+            </div>
           </div>
           <div class="svc-select-card" onclick="cGo('c-svc-detail','c-svc-select');setSvcName('House Keeping')">
-            <div class="svc-icon-wrap" style="background:linear-gradient(135deg,#EBF5EF,#C8E6D5);"><svg width="28" height="28" viewBox="0 0 24 24" fill="none"><path d="M3 21l4-4M7 17l10-10a2 2 0 012.8 2.8L9.8 19.8" stroke="#1A7A46" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M14 3l3 3" stroke="#1A7A46" stroke-width="1.8" stroke-linecap="round"/><path d="M5 19c0 1.1.9 2 2 2h4" stroke="#1A7A46" stroke-width="1.8" stroke-linecap="round"/></svg></div>
-            <div class="svc-name">House Keeping</div>
-            <div class="svc-from">From IQD 22,000/hr</div>
+            <div class="svc-select-img"><img src="https://images.unsplash.com/photo-1527515545081-5db817172677?w=300&h=200&fit=crop&q=80" loading="lazy"></div>
+            <div class="svc-select-body">
+              <div class="svc-name">House Keeping</div>
+              <div class="svc-from">From AED 55/hr</div>
+            </div>
           </div>
           <div class="svc-select-card" onclick="cGo('c-svc-detail','c-svc-select');setSvcName('Deep Cleaning')">
-            <div class="svc-icon-wrap" style="background:linear-gradient(135deg,#E6EFF8,#C5D8EC);"><svg width="28" height="28" viewBox="0 0 24 24" fill="none"><path d="M4 4h6v6H4zM14 4h6v6h-6zM4 14h6v6H4z" stroke="#0C1A28" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M14 17h6M17 14v6" stroke="#0C1A28" stroke-width="1.8" stroke-linecap="round"/></svg></div>
-            <div class="svc-name">Deep Cleaning</div>
-            <div class="svc-from">From IQD 45,000/hr</div>
+            <div class="svc-select-img"><img src="https://images.unsplash.com/photo-1628177142898-93e36e4e3a50?w=300&h=200&fit=crop&q=80" loading="lazy"></div>
+            <div class="svc-select-body">
+              <div class="svc-name">Deep Cleaning</div>
+              <div class="svc-from">From AED 100/hr</div>
+            </div>
           </div>
           <div class="svc-select-card" onclick="cGo('c-svc-detail','c-svc-select');setSvcName('Laundry & Dry Cleaning')">
-            <div class="svc-icon-wrap" style="background:linear-gradient(135deg,#F0FAF4,#C8E6D5);"><svg width="28" height="28" viewBox="0 0 24 24" fill="none"><path d="M3 6l3-3h5l1 3-4 2v10a1 1 0 001 1h4a1 1 0 001-1V8l-4-2 1-3h5l3 3" stroke="#1A7A46" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-            <div class="svc-name">Laundry & Dry Cleaning</div>
-            <div class="svc-from">From IQD 15,000</div>
+            <div class="svc-select-img"><img src="https://images.unsplash.com/photo-1567113463300-102a7eb3cb26?w=300&h=200&fit=crop&q=80" loading="lazy"></div>
+            <div class="svc-select-body">
+              <div class="svc-name">Laundry & Dry Cleaning</div>
+              <div class="svc-from">From AED 40</div>
+            </div>
           </div>
           <div class="svc-select-card" onclick="cGo('c-svc-detail','c-svc-select');setSvcName('Shoes Cleaning')">
-            <div class="svc-icon-wrap" style="background:linear-gradient(135deg,#FDF3E0,#F5D9A0);"><svg width="28" height="28" viewBox="0 0 24 24" fill="none"><path d="M2 17c0 1.1.9 2 2 2h16a2 2 0 002-2v-1l-4-6H8L4 15l-2 2z" stroke="#C8921A" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M8 11V7a4 4 0 018 0v4" stroke="#C8921A" stroke-width="1.8" stroke-linecap="round"/><path d="M6 17h3M11 17h6" stroke="#C8921A" stroke-width="1.8" stroke-linecap="round"/></svg></div>
-            <div class="svc-name">Shoes Cleaning</div>
-            <div class="svc-from">From IQD 8,000/pair</div>
+            <div class="svc-select-img"><img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=300&h=200&fit=crop&q=80" loading="lazy"></div>
+            <div class="svc-select-body">
+              <div class="svc-name">Shoes Cleaning</div>
+              <div class="svc-from">From AED 25/pair</div>
+            </div>
           </div>
           <div class="svc-select-card" onclick="cGo('c-svc-detail','c-svc-select');setSvcName('Car Wash at Home')">
-            <div class="svc-icon-wrap" style="background:linear-gradient(135deg,#E6EFF8,#C5D8EC);"><svg width="28" height="28" viewBox="0 0 24 24" fill="none"><path d="M5 11l1.5-4.5h11L19 11" stroke="#0C1A28" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><rect x="2" y="11" width="20" height="7" rx="2" stroke="#0C1A28" stroke-width="1.8"/><circle cx="7" cy="18" r="2" fill="#0C1A28"/><circle cx="17" cy="18" r="2" fill="#0C1A28"/><path d="M4 8.5h16" stroke="#0C1A28" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="2 2"/></svg></div>
-            <div class="svc-name">Car Wash at Home</div>
-            <div class="svc-from">From IQD 12,000</div>
+            <div class="svc-select-img"><img src="https://images.unsplash.com/photo-1520340356584-f9917d1eea6f?w=300&h=200&fit=crop&q=80" loading="lazy"></div>
+            <div class="svc-select-body">
+              <div class="svc-name">Car Wash at Home</div>
+              <div class="svc-from">From AED 35</div>
+            </div>
           </div>
         </div>
       </div>
@@ -1098,18 +1247,19 @@ hr.divider{border:none;border-top:1px solid var(--border);margin:var(--s4) 0;}
         <h2 id="svc-detail-title">Home Cleaning</h2>
       </div>
       <div class="screen-scroll-nb">
-        <div style="height:200px;background:linear-gradient(150deg,#1A7A46 0%,var(--green-dark) 40%,var(--green-dark) 100%);display:flex;align-items:center;justify-content:center;">
-          <svg width="80" height="80" viewBox="0 0 24 24" fill="none" opacity="0.9"><path d="M3 12L12 3l9 9" stroke="#fff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M5 10v9a1 1 0 001 1h4v-4h4v4h4a1 1 0 001-1v-9" stroke="#fff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <div style="height:220px;overflow:hidden;position:relative;">
+          <img id="svc-detail-hero-img" src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&h=440&fit=crop&q=80" style="width:100%;height:100%;object-fit:cover;" loading="lazy">
+          <div style="position:absolute;inset:0;background:linear-gradient(to bottom,transparent 40%,rgba(0,0,0,.45));"></div>
         </div>
         <div style="padding:var(--s4);">
           <h2 id="svc-detail-name" style="font-size:22px;font-weight:var(--font-weight-bold);color:var(--ink);margin-bottom:var(--s2);">Home Cleaning</h2>
           <div class="rating-row" style="margin-bottom:var(--s4);">
             <span class="stars">★★★★★</span>
             <span class="rating-num">4.9</span>
-            <span class="rating-cnt">· 1,240+ jobs · Baghdad</span>
+            <span class="rating-cnt">· 1,240+ jobs · Abu Dhabi</span>
           </div>
           <div style="background:linear-gradient(90deg,var(--green),var(--green-mid));border-radius:var(--r-md);padding:14px var(--s4);margin-bottom:var(--s4);">
-            <div style="font-size:16px;font-weight:var(--font-weight-bold);color:#fff;">From IQD 25,000 / hour</div>
+            <div style="font-size:16px;font-weight:var(--font-weight-bold);color:#fff;">From AED 60 / hour</div>
             <div style="font-size:12px;color:rgba(255,255,255,.8);margin-top:2px;">Materials included · No hidden charges</div>
           </div>
           <div class="card section-pad" style="margin-bottom:var(--s4);">
@@ -1174,7 +1324,7 @@ hr.divider{border:none;border-top:1px solid var(--border);margin:var(--s4) 0;}
           <!-- Materials -->
           <div class="form-group">
             <label>Do you need cleaning materials?</label>
-            <div style="font-size:12px;color:var(--ink2);margin-bottom:8px;">An additional charge of IQD 5,000 applies for materials.</div>
+            <div style="font-size:12px;color:var(--ink2);margin-bottom:8px;">An additional charge of AED 30 applies for materials.</div>
             <div style="display:flex;gap:var(--s2);">
               <button class="pill-btn active" id="mat-no" onclick="selectMat(false)">No</button>
               <button class="pill-btn" id="mat-yes" onclick="selectMat(true)">Yes</button>
@@ -1294,8 +1444,8 @@ hr.divider{border:none;border-top:1px solid var(--border);margin:var(--s4) 0;}
             <div id="contract-summary" style="background:var(--gold);border-radius:var(--r-md);padding:var(--s3) var(--s4);color:#fff;">
               <div style="font-size:11px;opacity:.85;">YEARLY CONTRACT ESTIMATE</div>
               <div id="yearly-visits" style="font-size:18px;font-weight:var(--font-weight-bold);margin-top:4px;">52 visits/year</div>
-              <div id="yearly-total" style="font-size:15px;font-weight:var(--font-weight-bold);margin-top:2px;">IQD 1,040,000 total</div>
-              <div id="yearly-save" style="font-size:12px;opacity:.85;margin-top:2px;">You save IQD 260,000</div>
+              <div id="yearly-total" style="font-size:15px;font-weight:var(--font-weight-bold);margin-top:2px;">AED 15,600 total</div>
+              <div id="yearly-save" style="font-size:12px;opacity:.85;margin-top:2px;">You save AED 3,900</div>
             </div>
           </div>
 
@@ -1310,9 +1460,9 @@ hr.divider{border:none;border-top:1px solid var(--border);margin:var(--s4) 0;}
         <div class="sticky-footer-row">
           <div>
             <div class="sticky-price-label">Estimated price</div>
-            <div class="sticky-price-val" id="step1-price">IQD 125,000</div>
+            <div class="sticky-price-val" id="step1-price">AED 300</div>
           </div>
-          <div style="text-align:right;font-size:11px;color:var(--ink2);">5 hrs × IQD 25,000</div>
+          <div style="text-align:right;font-size:11px;color:var(--ink2);">5 hrs × AED 60</div>
         </div>
         <button class="btn-primary" onclick="cGo('c-booking-step2','c-booking-step1')">Continue → Address</button>
       </div>
@@ -1349,15 +1499,13 @@ hr.divider{border:none;border-top:1px solid var(--border);margin:var(--s4) 0;}
           <div class="form-group">
             <label>City</label>
             <select>
-              <option>Baghdad</option>
-              <option>Basra</option>
-              <option>Mosul</option>
-              <option>Erbil</option>
-              <option>Najaf</option>
-              <option>Karbala</option>
-              <option>Kirkuk</option>
               <option>Abu Dhabi</option>
               <option>Dubai</option>
+              <option>Sharjah</option>
+              <option>Ajman</option>
+              <option>Ras Al Khaimah</option>
+              <option>Fujairah</option>
+              <option>Umm Al Quwain</option>
             </select>
           </div>
           <!-- Area -->
@@ -1382,7 +1530,7 @@ hr.divider{border:none;border-top:1px solid var(--border);margin:var(--s4) 0;}
               <div style="width:32px;height:32px;background:var(--green-light);border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M3 12L12 3l9 9" stroke="#1A7A46" stroke-width="2" stroke-linecap="round"/><path d="M5 10v9a1 1 0 001 1h4v-4h4v4h4a1 1 0 001-1v-9" stroke="#1A7A46" stroke-width="2" stroke-linecap="round"/></svg></div>
               <div style="flex:1;">
                 <div style="font-size:13px;font-weight:var(--font-weight-semibold);color:var(--ink);">Home</div>
-                <div style="font-size:12px;color:var(--ink2);">Al-Mansour, Baghdad</div>
+                <div style="font-size:12px;color:var(--ink2);">Al Khalidiyah, Abu Dhabi</div>
               </div>
               <div style="width:20px;height:20px;border-radius:50%;background:var(--green);display:flex;align-items:center;justify-content:center;">
                 <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 5l2 2 4-4" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
@@ -1483,7 +1631,7 @@ hr.divider{border:none;border-top:1px solid var(--border);margin:var(--s4) 0;}
             </div>
             <div style="display:flex;align-items:center;gap:10px;padding:8px 0;">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z" stroke="#1A7A46" stroke-width="2"/><circle cx="12" cy="9" r="2.5" stroke="#1A7A46" stroke-width="2"/></svg>
-              <div style="font-size:13px;font-weight:var(--font-weight-semibold);color:var(--green);">Al-Mansour, Baghdad, Iraq</div>
+              <div style="font-size:13px;font-weight:var(--font-weight-semibold);color:var(--green);">Al Khalidiyah, Abu Dhabi, UAE</div>
             </div>
           </div>
           <!-- Map preview -->
@@ -1509,7 +1657,7 @@ hr.divider{border:none;border-top:1px solid var(--border);margin:var(--s4) 0;}
             </div>
             <div id="promo-applied" style="display:none;margin-top:var(--s3);display:none;">
               <div style="display:flex;align-items:center;justify-content:space-between;background:var(--green-light);border-radius:var(--r-sm);padding:10px var(--s3);">
-                <div style="font-size:13px;font-weight:var(--font-weight-semibold);color:var(--green);">✓ TAP10 applied — IQD 12,500 off</div>
+                <div style="font-size:13px;font-weight:var(--font-weight-semibold);color:var(--green);">✓ TAP10 applied — AED 30 off</div>
                 <button onclick="removePromo()" style="background:none;border:none;font-size:16px;cursor:pointer;color:var(--ink2);">×</button>
               </div>
             </div>
@@ -1530,29 +1678,28 @@ hr.divider{border:none;border-top:1px solid var(--border);margin:var(--s4) 0;}
             <div class="pay-option" id="pay-zain" onclick="selectPay('zain')">
               <div class="pay-radio"></div>
               <div class="pay-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><rect x="5" y="2" width="14" height="20" rx="3" stroke="#52606D" stroke-width="1.8"/><circle cx="12" cy="17" r="1.5" fill="#52606D"/><path d="M9 6h6" stroke="#52606D" stroke-width="1.8" stroke-linecap="round"/></svg></div>
-              <div><div class="pay-label">ZainCash</div><div class="pay-sub">Pay via ZainCash wallet</div></div>
+              <div><div class="pay-label">Apple Pay</div><div class="pay-sub">Pay via Apple Pay</div></div>
             </div>
           </div>
           <!-- Payment Summary -->
           <div class="card section-pad" style="margin-bottom:var(--s3);">
             <div style="font-size:14px;font-weight:var(--font-weight-bold);color:var(--ink);margin-bottom:var(--s3);">Payment Summary</div>
-            <div class="summary-row"><span class="sum-label">Service Charges</span><span class="sum-val">IQD 125,000</span></div>
-            <div class="summary-row" id="promo-row" style="display:none;"><span class="sum-label">Discount (TAP10)</span><span class="sum-val red">−IQD 12,500</span></div>
-            <div class="summary-row"><span class="sum-label">Sub Total</span><span class="sum-val" id="subtotal-val">IQD 125,000</span></div>
-            <div class="summary-row"><span class="sum-label">Service Fee</span><span class="sum-val">IQD 5,000</span></div>
-            <div class="summary-row"><span class="sum-label">VAT (5%)</span><span class="sum-val" id="vat-val">IQD 6,250</span></div>
+            <div class="summary-row"><span class="sum-label">Service Charges</span><span class="sum-val">AED 300</span></div>
+            <div class="summary-row" id="promo-row" style="display:none;"><span class="sum-label">Discount (TAP10)</span><span class="sum-val red">−AED 30</span></div>
+            <div class="summary-row"><span class="sum-label">Sub Total</span><span class="sum-val" id="subtotal-val">AED 300</span></div>
+            <div class="summary-row"><span class="sum-label">VAT (5%)</span><span class="sum-val" id="vat-val">AED 15</span></div>
             <div style="display:flex;justify-content:space-between;align-items:center;padding:12px 0 0;">
               <div style="font-size:16px;font-weight:var(--font-weight-bold);color:var(--ink);">Total to pay</div>
               <div>
-                <div style="font-size:11px;color:var(--ink3);text-align:right;text-decoration:line-through;" id="old-total">IQD 136,250</div>
-                <div style="font-size:20px;font-weight:var(--font-weight-bold);color:var(--ink);" id="final-total">IQD 136,250</div>
+                <div style="font-size:11px;color:var(--ink3);text-align:right;text-decoration:line-through;" id="old-total">AED 315</div>
+                <div style="font-size:20px;font-weight:var(--font-weight-bold);color:var(--ink);" id="final-total">AED 315</div>
               </div>
             </div>
           </div>
         </div>
       </div>
       <div class="sticky-footer">
-        <button id="confirm-btn" class="btn-primary" onclick="confirmBooking()">Confirm Booking · IQD 136,250</button>
+        <button id="confirm-btn" class="btn-primary" onclick="confirmBooking()">Confirm Booking · AED 315</button>
       </div>
     </section>
 
@@ -1706,7 +1853,7 @@ hr.divider{border:none;border-top:1px solid var(--border);margin:var(--s4) 0;}
               <button class="step-num-btn" onclick="adjWorkers(-1)">−</button>
               <div class="step-num-val" id="workers-count">1</div>
               <button class="step-num-btn" onclick="adjWorkers(1)">+</button>
-              <div style="font-size:12px;color:var(--ink2);margin-left:var(--s2);">× IQD 200,000/mo each</div>
+              <div style="font-size:12px;color:var(--ink2);margin-left:var(--s2);">× AED 2,000/mo each</div>
             </div>
           </div>
           <div class="form-group">
@@ -1726,8 +1873,8 @@ hr.divider{border:none;border-top:1px solid var(--border);margin:var(--s4) 0;}
           </div>
           <div style="background:linear-gradient(135deg,var(--green),var(--green-mid));border-radius:var(--r-md);padding:var(--s4);margin:var(--s4) 0;color:#fff;">
             <div style="font-size:11px;opacity:.8;letter-spacing:.5px;">ESTIMATED TOTAL</div>
-            <div id="place-total" style="font-size:28px;font-weight:var(--font-weight-bold);margin:4px 0;">IQD 4,800,000</div>
-            <div style="font-size:12px;opacity:.8;">2 years · 1 worker · IQD 200,000/mo</div>
+            <div id="place-total" style="font-size:28px;font-weight:var(--font-weight-bold);margin:4px 0;">AED 36,000</div>
+            <div style="font-size:12px;opacity:.8;">2 years · 1 worker · AED 2,000/mo</div>
           </div>
           <button class="btn-primary" onclick="cToast('placement')">Submit Placement Request</button>
         </div>
@@ -1770,24 +1917,121 @@ hr.divider{border:none;border-top:1px solid var(--border);margin:var(--s4) 0;}
     <!-- WORKER HOME -->
     <section class="screen active" id="w-home">
       <div class="screen-scroll">
-        <div style="background:linear-gradient(150deg,var(--navy),var(--navy-light));padding:var(--s5) var(--s4) var(--s6);">
-          <div style="font-size:22px;font-weight:var(--font-weight-bold);color:#fff;margin-bottom:4px;font-family:var(--font-family-heading);">Welcome, Fatima 👋</div>
-          <div style="font-size:14px;color:rgba(255,255,255,.7);">Home Cleaning Specialist · Baghdad</div>
-        </div>
-        <div style="padding:var(--s4);">
-          <div class="stats-card" style="margin-bottom:var(--s4);">
-            <div class="stat-item"><div class="stat-val" id="w-stat-earnings">IQD 75K</div><div class="stat-label">Today's Earnings</div></div>
-            <div class="stat-item"><div class="stat-val" id="w-stat-jobs">3</div><div class="stat-label">Jobs Done</div></div>
-            <div class="stat-item"><div class="stat-val">4.9 ★</div><div class="stat-label">Star Rating</div></div>
-          </div>
-          <div class="card section-pad" style="margin-bottom:var(--s4);display:flex;align-items:center;gap:var(--s3);">
-            <div style="width:10px;height:10px;border-radius:50%;background:var(--green);flex-shrink:0;box-shadow:0 0 0 4px rgba(26,122,70,.2);"></div>
-            <div style="flex:1;">
-              <div style="font-size:var(--text-sm);font-weight:var(--font-weight-bold);color:var(--ink);">Live location sharing ON</div>
-              <div style="font-size:var(--text-xs);color:var(--ink2);">Customers can see your real-time location</div>
+
+        <!-- HERO: photo + greeting + stats -->
+        <div style="background:linear-gradient(150deg,var(--navy),var(--navy-light));padding:var(--s5) var(--s4) var(--s5);position:relative;overflow:hidden;">
+          <div style="position:absolute;right:-25px;top:-25px;width:120px;height:120px;border-radius:50%;background:rgba(255,255,255,.04);pointer-events:none;"></div>
+          <div style="position:absolute;left:-20px;bottom:-30px;width:90px;height:90px;border-radius:50%;background:rgba(255,255,255,.04);pointer-events:none;"></div>
+
+          <!-- Profile row -->
+          <div style="display:flex;align-items:center;gap:var(--s3);margin-bottom:var(--s4);position:relative;">
+            <div style="position:relative;flex-shrink:0;">
+              <img id="w-hero-photo" src="https://randomuser.me/api/portraits/women/44.jpg" style="width:56px;height:56px;border-radius:50%;object-fit:cover;border:2.5px solid rgba(255,255,255,.35);">
+              <div style="position:absolute;bottom:1px;right:1px;width:13px;height:13px;border-radius:50%;background:#22c55e;border:2.5px solid var(--navy);"></div>
             </div>
-            <button style="background:var(--green-light);border:none;border-radius:var(--r-pill);padding:6px 12px;font-size:12px;font-weight:var(--font-weight-bold);color:var(--green);cursor:pointer;">ON</button>
+            <div style="flex:1;min-width:0;">
+              <div style="font-size:12px;color:rgba(255,255,255,.6);margin-bottom:3px;">Good morning 👋</div>
+              <div style="font-size:20px;font-weight:var(--font-weight-bold);color:#fff;font-family:var(--font-family-heading);line-height:1.2;" id="w-hero-name">Fatima R.</div>
+              <div style="font-size:12px;color:rgba(255,255,255,.6);margin-top:1px;" id="w-hero-role">Home Cleaning Specialist</div>
+            </div>
+            <div style="background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.18);border-radius:var(--r-sm);padding:8px 10px;text-align:center;flex-shrink:0;">
+              <div style="font-size:9px;color:rgba(255,255,255,.55);text-transform:uppercase;letter-spacing:.4px;">Rating</div>
+              <div style="font-size:17px;font-weight:var(--font-weight-bold);color:#F5A623;" id="w-hero-rating">4.9 ★</div>
+            </div>
           </div>
+
+          <!-- KPI row -->
+          <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:var(--s2);position:relative;">
+            <div style="background:rgba(255,255,255,.1);border-radius:var(--r-sm);padding:10px var(--s2);text-align:center;">
+              <div style="font-size:16px;font-weight:var(--font-weight-bold);color:#fff;" id="w-stat-earnings">AED 850</div>
+              <div style="font-size:9px;color:rgba(255,255,255,.55);margin-top:2px;">Earnings</div>
+            </div>
+            <div style="background:rgba(255,255,255,.1);border-radius:var(--r-sm);padding:10px var(--s2);text-align:center;">
+              <div style="font-size:16px;font-weight:var(--font-weight-bold);color:#fff;" id="w-stat-jobs">3</div>
+              <div style="font-size:9px;color:rgba(255,255,255,.55);margin-top:2px;">Jobs Done</div>
+            </div>
+            <div style="background:rgba(255,255,255,.1);border-radius:var(--r-sm);padding:10px var(--s2);text-align:center;">
+              <div style="font-size:16px;font-weight:var(--font-weight-bold);color:#22c55e;">7 🔥</div>
+              <div style="font-size:9px;color:rgba(255,255,255,.55);margin-top:2px;">Day Streak</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- CONTENT -->
+        <div style="padding:var(--s4);">
+
+          <!-- Availability card -->
+          <div class="card section-pad" style="margin-bottom:var(--s4);">
+            <div style="display:flex;align-items:center;gap:var(--s3);">
+              <div style="width:10px;height:10px;border-radius:50%;background:#22c55e;flex-shrink:0;box-shadow:0 0 0 4px rgba(34,197,94,.18);"></div>
+              <div style="flex:1;">
+                <div style="font-size:13px;font-weight:var(--font-weight-bold);color:var(--ink);">Available for new jobs</div>
+                <div style="font-size:11px;color:var(--ink2);">Live location ON · Abu Dhabi area</div>
+              </div>
+              <button onclick="showToast('✓ Status updated')" style="background:var(--green-light);border:none;border-radius:var(--r-pill);padding:6px 14px;font-size:12px;font-weight:var(--font-weight-bold);color:var(--green);cursor:pointer;">ON</button>
+            </div>
+          </div>
+
+          <!-- Today's schedule -->
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:var(--s2);">
+            <div style="font-size:14px;font-weight:var(--font-weight-bold);color:var(--ink);">Today's Schedule</div>
+            <div style="font-size:11px;color:var(--ink2);">Mon, Aug 3</div>
+          </div>
+          <div class="card section-pad" style="margin-bottom:var(--s4);">
+            <div style="display:flex;gap:var(--s3);align-items:flex-start;padding:0 0 12px;border-bottom:1px solid var(--border);">
+              <div style="width:38px;text-align:center;flex-shrink:0;padding-top:2px;">
+                <div style="font-size:11px;font-weight:var(--font-weight-bold);color:var(--ink);">9:00</div>
+                <div style="font-size:9px;color:var(--ink2);">AM</div>
+              </div>
+              <div style="width:2px;min-height:40px;border-radius:2px;background:var(--green);flex-shrink:0;margin-top:4px;align-self:stretch;"></div>
+              <div style="flex:1;">
+                <div style="font-size:13px;font-weight:var(--font-weight-semibold);color:var(--ink);">Home Cleaning · 3 hrs</div>
+                <div style="font-size:11px;color:var(--ink2);margin-top:1px;">Al Khalidiyah, Abu Dhabi</div>
+                <span style="display:inline-block;margin-top:5px;font-size:9px;background:var(--green-light);color:var(--green);padding:2px 8px;border-radius:var(--r-pill);font-weight:var(--font-weight-bold);">COMPLETED</span>
+              </div>
+            </div>
+            <div style="display:flex;gap:var(--s3);align-items:flex-start;padding:12px 0 12px;border-bottom:1px solid var(--border);">
+              <div style="width:38px;text-align:center;flex-shrink:0;padding-top:2px;">
+                <div style="font-size:11px;font-weight:var(--font-weight-bold);color:var(--ink);">1:30</div>
+                <div style="font-size:9px;color:var(--ink2);">PM</div>
+              </div>
+              <div style="width:2px;min-height:40px;border-radius:2px;background:var(--gold);flex-shrink:0;margin-top:4px;align-self:stretch;"></div>
+              <div style="flex:1;">
+                <div style="font-size:13px;font-weight:var(--font-weight-semibold);color:var(--ink);">Deep Cleaning · 4 hrs</div>
+                <div style="font-size:11px;color:var(--ink2);margin-top:1px;">Al Mushrif, Abu Dhabi</div>
+                <span style="display:inline-block;margin-top:5px;font-size:9px;background:#FEF9EC;color:var(--gold);padding:2px 8px;border-radius:var(--r-pill);font-weight:var(--font-weight-bold);">COMPLETED</span>
+              </div>
+            </div>
+            <div style="display:flex;gap:var(--s3);align-items:flex-start;padding:12px 0 0;">
+              <div style="width:38px;text-align:center;flex-shrink:0;padding-top:2px;">
+                <div style="font-size:11px;font-weight:var(--font-weight-bold);color:var(--green);">6:00</div>
+                <div style="font-size:9px;color:var(--ink2);">PM</div>
+              </div>
+              <div style="width:2px;min-height:40px;border-radius:2px;background:var(--border);border:1px dashed var(--green);flex-shrink:0;margin-top:4px;align-self:stretch;"></div>
+              <div style="flex:1;">
+                <div style="font-size:13px;font-weight:var(--font-weight-semibold);color:var(--ink);">House Keeping · 2 hrs</div>
+                <div style="font-size:11px;color:var(--ink2);margin-top:1px;">Yas Island, Abu Dhabi</div>
+                <span style="display:inline-block;margin-top:5px;font-size:9px;background:var(--green-light);color:var(--green);padding:2px 8px;border-radius:var(--r-pill);font-weight:var(--font-weight-bold);">UPCOMING</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Quick actions -->
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:var(--s3);margin-bottom:var(--s4);">
+            <button onclick="wNavTo('w-jobs')" style="background:var(--surface);border:1px solid var(--border);border-radius:var(--r-md);padding:var(--s3);text-align:left;cursor:pointer;">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" style="margin-bottom:6px;display:block;"><rect x="3" y="3" width="18" height="18" rx="2" stroke="var(--green)" stroke-width="1.8"/><path d="M7 8h10M7 12h6M7 16h8" stroke="var(--green)" stroke-width="1.8" stroke-linecap="round"/></svg>
+              <div style="font-size:13px;font-weight:var(--font-weight-bold);color:var(--ink);">Job History</div>
+              <div style="font-size:11px;color:var(--ink2);margin-top:1px;">View all past jobs</div>
+            </button>
+            <button onclick="wNavTo('w-earn')" style="background:var(--surface);border:1px solid var(--border);border-radius:var(--r-md);padding:var(--s3);text-align:left;cursor:pointer;">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" style="margin-bottom:6px;display:block;"><rect x="2" y="7" width="20" height="14" rx="2" stroke="var(--gold)" stroke-width="1.8"/><path d="M16 7V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v2" stroke="var(--gold)" stroke-width="1.8"/><path d="M12 12v4M10 14h4" stroke="var(--gold)" stroke-width="1.8" stroke-linecap="round"/></svg>
+              <div style="font-size:13px;font-weight:var(--font-weight-bold);color:var(--ink);">My Earnings</div>
+              <div style="font-size:11px;color:var(--ink2);margin-top:1px;">AED 1,200 this week</div>
+            </button>
+          </div>
+
+          <!-- Incoming / next job -->
+          <div style="font-size:14px;font-weight:var(--font-weight-bold);color:var(--ink);margin-bottom:var(--s3);">Incoming Jobs</div>
           <div id="w-incoming-area"></div>
         </div>
         <div style="height:var(--nav-h)"></div>
@@ -1813,7 +2057,7 @@ hr.divider{border:none;border-top:1px solid var(--border);margin:var(--s4) 0;}
             <div class="avatar" style="background:linear-gradient(135deg,#1E3348,#0C1A28);">K</div>
             <div style="flex:1;">
               <div style="font-size:15px;font-weight:var(--font-weight-bold);color:var(--ink);">Khalid A.</div>
-              <div style="font-size:12px;color:var(--ink2);">Al-Khalidiya St., Baghdad · Gate: #4821</div>
+              <div style="font-size:12px;color:var(--ink2);">Al Khalidiyah St., Abu Dhabi · Apt: #4821</div>
             </div>
           </div>
           <div style="display:flex;gap:var(--s2);">
@@ -1849,15 +2093,15 @@ hr.divider{border:none;border-top:1px solid var(--border);margin:var(--s4) 0;}
       <div class="screen-scroll">
         <div style="padding:var(--s4);">
           <div class="stats-card" style="margin-bottom:var(--s4);">
-            <div class="stat-item"><div class="stat-val">IQD<br>450K</div><div class="stat-label">This Week</div></div>
+            <div class="stat-item"><div class="stat-val">AED<br>1,200</div><div class="stat-label">This Week</div></div>
             <div class="stat-item"><div class="stat-val">18</div><div class="stat-label">Jobs This Week</div></div>
-            <div class="stat-item"><div class="stat-val">25K</div><div class="stat-label">Avg per Job</div></div>
+            <div class="stat-item"><div class="stat-val">AED 67</div><div class="stat-label">Avg per Job</div></div>
           </div>
           <div style="font-size:14px;font-weight:var(--font-weight-bold);color:var(--ink);margin-bottom:var(--s3);">Past Payouts</div>
           <div class="card section-pad">
-            <div class="summary-row"><span class="sum-label">Jul 21–27, 2026</span><div style="text-align:right;"><div class="sum-val">IQD 450,000</div><div style="font-size:11px;color:var(--ink2);">Bank transfer</div></div></div>
-            <div class="summary-row"><span class="sum-label">Jul 14–20, 2026</span><div style="text-align:right;"><div class="sum-val">IQD 520,000</div><div style="font-size:11px;color:var(--ink2);">Bank transfer</div></div></div>
-            <div class="summary-row" style="border:none;"><span class="sum-label">Jul 7–13, 2026</span><div style="text-align:right;"><div class="sum-val">IQD 380,000</div><div style="font-size:11px;color:var(--ink2);">Bank transfer</div></div></div>
+            <div class="summary-row"><span class="sum-label">Jul 21–27, 2026</span><div style="text-align:right;"><div class="sum-val">AED 1,200</div><div style="font-size:11px;color:var(--ink2);">Bank transfer</div></div></div>
+            <div class="summary-row"><span class="sum-label">Jul 14–20, 2026</span><div style="text-align:right;"><div class="sum-val">AED 1,380</div><div style="font-size:11px;color:var(--ink2);">Bank transfer</div></div></div>
+            <div class="summary-row" style="border:none;"><span class="sum-label">Jul 7–13, 2026</span><div style="text-align:right;"><div class="sum-val">AED 1,010</div><div style="font-size:11px;color:var(--ink2);">Bank transfer</div></div></div>
           </div>
         </div>
       </div>
@@ -1897,16 +2141,67 @@ hr.divider{border:none;border-top:1px solid var(--border);margin:var(--s4) 0;}
 
     <!-- ORDER QUEUE -->
     <section class="screen active" id="a-queue" style="top:43px;">
-      <div class="screen-scroll-nb" style="padding:var(--s4);">
-        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:var(--s4);">
-          <h2 style="font-size:18px;font-weight:var(--font-weight-bold);color:var(--ink);font-family:var(--font-family-heading);">Order Queue</h2>
-          <div style="display:flex;gap:8px;align-items:center;">
-            <span class="badge badge-green" id="active-badge">0 active</span>
-            <span class="badge badge-red" id="queue-badge">0 awaiting</span>
+      <div class="screen-scroll-nb">
+
+        <!-- ADMIN DASHBOARD HEADER -->
+        <div style="background:linear-gradient(150deg,var(--green),var(--green-mid));padding:var(--s4) var(--s4) var(--s5);position:relative;overflow:hidden;">
+          <div style="position:absolute;right:-20px;top:-20px;width:110px;height:110px;border-radius:50%;background:rgba(255,255,255,.06);pointer-events:none;"></div>
+          <div style="position:absolute;left:30px;bottom:-35px;width:90px;height:90px;border-radius:50%;background:rgba(255,255,255,.06);pointer-events:none;"></div>
+
+          <!-- Greeting row -->
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:var(--s4);position:relative;">
+            <div>
+              <div style="font-size:12px;color:rgba(255,255,255,.65);margin-bottom:3px;">Mon, Aug 3 · Good morning 👋</div>
+              <div style="font-size:20px;font-weight:var(--font-weight-bold);color:#fff;font-family:var(--font-family-heading);">Operations Hub</div>
+            </div>
+            <div style="background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.2);border-radius:var(--r-md);padding:6px 12px;text-align:center;">
+              <div style="font-size:9px;color:rgba(255,255,255,.6);text-transform:uppercase;letter-spacing:.4px;">On Duty</div>
+              <div style="font-size:17px;font-weight:var(--font-weight-bold);color:#fff;" id="admin-workers-live">5</div>
+              <div style="font-size:9px;color:rgba(255,255,255,.6);">workers</div>
+            </div>
+          </div>
+
+          <!-- KPI row -->
+          <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:var(--s2);position:relative;">
+            <div style="background:rgba(255,255,255,.15);border-radius:var(--r-sm);padding:8px var(--s2);text-align:center;">
+              <div style="font-size:18px;font-weight:var(--font-weight-bold);color:#fff;" id="admin-kpi-total">12</div>
+              <div style="font-size:9px;color:rgba(255,255,255,.65);margin-top:1px;">Today</div>
+            </div>
+            <div style="background:rgba(255,255,255,.15);border-radius:var(--r-sm);padding:8px var(--s2);text-align:center;">
+              <div style="font-size:18px;font-weight:var(--font-weight-bold);color:#FEF08A;" id="admin-kpi-pending">0</div>
+              <div style="font-size:9px;color:rgba(255,255,255,.65);margin-top:1px;">Pending</div>
+            </div>
+            <div style="background:rgba(255,255,255,.15);border-radius:var(--r-sm);padding:8px var(--s2);text-align:center;">
+              <div style="font-size:18px;font-weight:var(--font-weight-bold);color:#86efac;" id="admin-kpi-active">0</div>
+              <div style="font-size:9px;color:rgba(255,255,255,.65);margin-top:1px;">Active</div>
+            </div>
+            <div style="background:rgba(255,255,255,.15);border-radius:var(--r-sm);padding:8px var(--s2);text-align:center;">
+              <div style="font-size:16px;font-weight:var(--font-weight-bold);color:#fff;" id="admin-kpi-revenue">AED 0</div>
+              <div style="font-size:9px;color:rgba(255,255,255,.65);margin-top:1px;">Revenue</div>
+            </div>
           </div>
         </div>
-        <div id="admin-queue-list">
-          <div style="text-align:center;padding:40px;color:var(--ink2);">Loading bookings...</div>
+
+        <!-- FILTER TABS -->
+        <div style="display:flex;gap:0;padding:0 var(--s4);background:var(--surface);border-bottom:1px solid var(--border);overflow-x:auto;scrollbar-width:none;">
+          <button id="qf-all" onclick="setQueueFilter('all')" style="padding:12px 14px;background:none;border:none;border-bottom:2px solid var(--green);font-size:12px;font-weight:var(--font-weight-bold);color:var(--green);cursor:pointer;white-space:nowrap;">All</button>
+          <button id="qf-pending" onclick="setQueueFilter('pending')" style="padding:12px 14px;background:none;border:none;border-bottom:2px solid transparent;font-size:12px;font-weight:var(--font-weight-semibold);color:var(--ink2);cursor:pointer;white-space:nowrap;">Pending <span id="qf-pending-count" class="badge badge-red" style="margin-left:4px;font-size:9px;"></span></button>
+          <button id="qf-active" onclick="setQueueFilter('active')" style="padding:12px 14px;background:none;border:none;border-bottom:2px solid transparent;font-size:12px;font-weight:var(--font-weight-semibold);color:var(--ink2);cursor:pointer;white-space:nowrap;">Active <span id="qf-active-count" class="badge badge-green" style="margin-left:4px;font-size:9px;"></span></button>
+          <button id="qf-completed" onclick="setQueueFilter('completed')" style="padding:12px 14px;background:none;border:none;border-bottom:2px solid transparent;font-size:12px;font-weight:var(--font-weight-semibold);color:var(--ink2);cursor:pointer;white-space:nowrap;">Completed</button>
+        </div>
+
+        <!-- QUEUE LIST -->
+        <div style="padding:var(--s4);">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:var(--s3);">
+            <div style="font-size:13px;font-weight:var(--font-weight-semibold);color:var(--ink2);" id="queue-list-label">All bookings</div>
+            <div style="display:flex;gap:6px;">
+              <span class="badge badge-green" id="active-badge">0 active</span>
+              <span class="badge badge-red" id="queue-badge">0 awaiting</span>
+            </div>
+          </div>
+          <div id="admin-queue-list">
+            <div style="text-align:center;padding:40px;color:var(--ink2);">Loading bookings...</div>
+          </div>
         </div>
       </div>
     </section>
@@ -1947,9 +2242,9 @@ hr.divider{border:none;border-top:1px solid var(--border);margin:var(--s4) 0;}
         <!-- Active jobs list -->
         <div style="font-size:14px;font-weight:var(--font-weight-bold);color:var(--ink);margin-bottom:var(--s3);">Active Jobs</div>
         <div class="card section-pad">
-          <div class="summary-row"><div><div style="font-size:13px;font-weight:var(--font-weight-semibold);color:var(--ink);">Fatima R. — Home Cleaning</div><div style="font-size:11px;color:var(--ink2);">Baghdad · Al-Mansour</div></div><span class="badge badge-green">En Route</span></div>
-          <div class="summary-row"><div><div style="font-size:13px;font-weight:var(--font-weight-semibold);color:var(--ink);">Omar S. — Laundry</div><div style="font-size:11px;color:var(--ink2);">Baghdad · Al-Karrada</div></div><span class="badge badge-gold">Active</span></div>
-          <div class="summary-row"><div><div style="font-size:13px;font-weight:var(--font-weight-semibold);color:var(--ink);">Aya M. — Maintenance</div><div style="font-size:11px;color:var(--ink2);">Baghdad · Al-Arasat</div></div><span class="badge badge-gold">Active</span></div>
+          <div class="summary-row"><div><div style="font-size:13px;font-weight:var(--font-weight-semibold);color:var(--ink);">Fatima R. — Home Cleaning</div><div style="font-size:11px;color:var(--ink2);">Abu Dhabi · Al Khalidiyah</div></div><span class="badge badge-green">En Route</span></div>
+          <div class="summary-row"><div><div style="font-size:13px;font-weight:var(--font-weight-semibold);color:var(--ink);">Omar S. — Laundry</div><div style="font-size:11px;color:var(--ink2);">Dubai · Jumeirah</div></div><span class="badge badge-gold">Active</span></div>
+          <div class="summary-row"><div><div style="font-size:13px;font-weight:var(--font-weight-semibold);color:var(--ink);">Aya M. — Maintenance</div><div style="font-size:11px;color:var(--ink2);">Abu Dhabi · Al Mushrif</div></div><span class="badge badge-gold">Active</span></div>
           <div class="summary-row"><div><div style="font-size:13px;font-weight:var(--font-weight-semibold);color:var(--ink);">Rania K. — Placement</div><div style="font-size:11px;color:var(--ink2);">Abu Dhabi, UAE</div></div><span class="badge badge-green">En Route</span></div>
           <div class="summary-row" style="border:none;"><div><div style="font-size:13px;font-weight:var(--font-weight-semibold);color:var(--ink);">Zaid A. — Home Cleaning</div><div style="font-size:11px;color:var(--ink2);">Dubai, UAE</div></div><span class="badge badge-gold">Active</span></div>
         </div>
@@ -1972,46 +2267,46 @@ hr.divider{border:none;border-top:1px solid var(--border);margin:var(--s4) 0;}
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:var(--s3);margin-bottom:var(--s4);">
           <div class="card section-pad">
             <div style="font-size:10px;color:var(--ink2);text-transform:uppercase;letter-spacing:.5px;">Revenue Collected</div>
-            <div style="font-size:20px;font-weight:var(--font-weight-bold);color:var(--ink);margin:4px 0;">2.4M IQD</div>
+            <div style="font-size:20px;font-weight:var(--font-weight-bold);color:var(--ink);margin:4px 0;">AED 24K</div>
             <div style="font-size:11px;color:var(--green);">↑ 14% vs Jun</div>
           </div>
           <div class="card section-pad">
             <div style="font-size:10px;color:var(--ink2);text-transform:uppercase;letter-spacing:.5px;">Pending</div>
-            <div style="font-size:20px;font-weight:var(--font-weight-bold);color:var(--ink);margin:4px 0;">850K IQD</div>
+            <div style="font-size:20px;font-weight:var(--font-weight-bold);color:var(--ink);margin:4px 0;">AED 8.5K</div>
             <div style="font-size:11px;color:var(--gold);">7 orders</div>
           </div>
           <div class="card section-pad">
             <div style="font-size:10px;color:var(--ink2);text-transform:uppercase;letter-spacing:.5px;">Placement Fees</div>
-            <div style="font-size:20px;font-weight:var(--font-weight-bold);color:var(--ink);margin:4px 0;">1.8M IQD</div>
+            <div style="font-size:20px;font-weight:var(--font-weight-bold);color:var(--ink);margin:4px 0;">AED 18K</div>
             <div style="font-size:11px;color:var(--green);">↑ 22% vs Jun</div>
           </div>
           <div class="card section-pad">
             <div style="font-size:10px;color:var(--ink2);text-transform:uppercase;letter-spacing:.5px;">Pipeline</div>
-            <div style="font-size:20px;font-weight:var(--font-weight-bold);color:var(--ink);margin:4px 0;">3.2M IQD</div>
+            <div style="font-size:20px;font-weight:var(--font-weight-bold);color:var(--ink);margin:4px 0;">AED 32K</div>
             <div style="font-size:11px;color:var(--gold);">12 proposals</div>
           </div>
         </div>
         <!-- Revenue bars -->
         <div style="font-size:14px;font-weight:var(--font-weight-bold);color:var(--ink);margin-bottom:var(--s3);">Revenue by Service</div>
         <div class="card section-pad" style="margin-bottom:var(--s4);">
-          <div class="fin-bar-row"><div class="fin-bar-label">Home Cleaning</div><div class="fin-bar-track"><div class="fin-bar-fill" style="width:85%;background:var(--green);"></div></div><div class="fin-bar-amt">980K IQD</div></div>
-          <div class="fin-bar-row"><div class="fin-bar-label">Placement</div><div class="fin-bar-track"><div class="fin-bar-fill" style="width:72%;background:var(--green-mid);"></div></div><div class="fin-bar-amt">820K IQD</div></div>
-          <div class="fin-bar-row"><div class="fin-bar-label">Deep Cleaning</div><div class="fin-bar-track"><div class="fin-bar-fill" style="width:55%;background:var(--gold);"></div></div><div class="fin-bar-amt">630K IQD</div></div>
-          <div class="fin-bar-row"><div class="fin-bar-label">Maintenance</div><div class="fin-bar-track"><div class="fin-bar-fill" style="width:40%;background:var(--navy-mid);"></div></div><div class="fin-bar-amt">450K IQD</div></div>
-          <div class="fin-bar-row" style="margin:0;"><div class="fin-bar-label">Laundry</div><div class="fin-bar-track"><div class="fin-bar-fill" style="width:28%;background:var(--gold-mid);"></div></div><div class="fin-bar-amt">280K IQD</div></div>
+          <div class="fin-bar-row"><div class="fin-bar-label">Home Cleaning</div><div class="fin-bar-track"><div class="fin-bar-fill" style="width:85%;background:var(--green);"></div></div><div class="fin-bar-amt">AED 9.8K</div></div>
+          <div class="fin-bar-row"><div class="fin-bar-label">Placement</div><div class="fin-bar-track"><div class="fin-bar-fill" style="width:72%;background:var(--green-mid);"></div></div><div class="fin-bar-amt">AED 8.2K</div></div>
+          <div class="fin-bar-row"><div class="fin-bar-label">Deep Cleaning</div><div class="fin-bar-track"><div class="fin-bar-fill" style="width:55%;background:var(--gold);"></div></div><div class="fin-bar-amt">AED 6.3K</div></div>
+          <div class="fin-bar-row"><div class="fin-bar-label">Maintenance</div><div class="fin-bar-track"><div class="fin-bar-fill" style="width:40%;background:var(--navy-mid);"></div></div><div class="fin-bar-amt">AED 4.5K</div></div>
+          <div class="fin-bar-row" style="margin:0;"><div class="fin-bar-label">Laundry</div><div class="fin-bar-track"><div class="fin-bar-fill" style="width:28%;background:var(--gold-mid);"></div></div><div class="fin-bar-amt">AED 2.8K</div></div>
         </div>
         <!-- Currency cards -->
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:var(--s3);">
           <div style="background:linear-gradient(135deg,var(--navy-light),var(--navy));border-radius:var(--r-md);padding:var(--s4);color:#fff;">
-            <div style="font-size:16px;margin-bottom:4px;">🇮🇶</div>
-            <div style="font-size:11px;opacity:.65;font-family:var(--font-family-body);">Iraq</div>
-            <div style="font-size:18px;font-weight:var(--font-weight-bold);margin:4px 0;font-family:var(--font-family-heading);letter-spacing:-.02em;">1.6M IQD</div>
+            <div style="font-size:16px;margin-bottom:4px;">🏙️</div>
+            <div style="font-size:11px;opacity:.65;font-family:var(--font-family-body);">Abu Dhabi</div>
+            <div style="font-size:18px;font-weight:var(--font-weight-bold);margin:4px 0;font-family:var(--font-family-heading);letter-spacing:-.02em;">AED 16K</div>
             <div style="font-size:12px;color:var(--green-light);">↑ 12%</div>
           </div>
           <div style="background:linear-gradient(135deg,var(--gold),var(--gold-mid));border-radius:var(--r-md);padding:var(--s4);color:#fff;">
-            <div style="font-size:16px;margin-bottom:4px;">🇦🇪</div>
-            <div style="font-size:11px;opacity:.75;font-family:var(--font-family-body);">UAE</div>
-            <div style="font-size:18px;font-weight:var(--font-weight-bold);margin:4px 0;font-family:var(--font-family-heading);letter-spacing:-.02em;">AED 22,400</div>
+            <div style="font-size:16px;margin-bottom:4px;">🌆</div>
+            <div style="font-size:11px;opacity:.75;font-family:var(--font-family-body);">Dubai</div>
+            <div style="font-size:18px;font-weight:var(--font-weight-bold);margin:4px 0;font-family:var(--font-family-heading);letter-spacing:-.02em;">AED 22.4K</div>
             <div style="font-size:12px;color:var(--gold-tint);">↑ 8%</div>
           </div>
         </div>
@@ -2066,31 +2361,31 @@ const TAP = (() => {
   const KEY = 'tap_state_v2';
 
   const SERVICES = {
-    'Home Cleaning':        { price: 25000, icon: '🏠', category: 'Cleaning' },
-    'Furniture Cleaning':   { price: 30000, icon: '🛋', category: 'Cleaning' },
-    'House Keeping':        { price: 22000, icon: '🧹', category: 'Cleaning' },
-    'Deep Cleaning':        { price: 45000, icon: '🧽', category: 'Cleaning' },
-    'Laundry & Dry Cleaning':{ price: 15000, icon: '👕', category: 'Laundry' },
-    'Shoes Cleaning':       { price: 8000,  icon: '👟', category: 'Laundry' },
-    'Car Wash at Home':     { price: 12000, icon: '🚗', category: 'Cleaning' },
-    'Pest Control':         { price: 40000, icon: '🐜', category: 'Cleaning' },
-    'Salon & Spa':          { price: 30000, icon: '💅', category: 'Wellness' },
-    'AC Repair':            { price: 35000, icon: '❄️', category: 'Maintenance' },
-    'Handyman':             { price: 20000, icon: '🔧', category: 'Maintenance' },
+    'Home Cleaning':        { price: 60,  icon: '🏠', category: 'Cleaning' },
+    'Furniture Cleaning':   { price: 80,  icon: '🛋', category: 'Cleaning' },
+    'House Keeping':        { price: 55,  icon: '🧹', category: 'Cleaning' },
+    'Deep Cleaning':        { price: 100, icon: '🧽', category: 'Cleaning' },
+    'Laundry & Dry Cleaning':{ price: 40, icon: '👕', category: 'Laundry' },
+    'Shoes Cleaning':       { price: 25,  icon: '👟', category: 'Laundry' },
+    'Car Wash at Home':     { price: 35,  icon: '🚗', category: 'Cleaning' },
+    'Pest Control':         { price: 120, icon: '🐜', category: 'Cleaning' },
+    'Salon & Spa':          { price: 90,  icon: '💅', category: 'Wellness' },
+    'AC Repair':            { price: 80,  icon: '❄️', category: 'Maintenance' },
+    'Handyman':             { price: 70,  icon: '🔧', category: 'Maintenance' },
   };
 
   const WORKERS = [
-    { id:'w1', name:'Fatima R.',   role:'Home Cleaning Specialist', rating:4.9, status:'available', avatar:'F', color:'var(--gold)' },
-    { id:'w2', name:'Abdullah M.', role:'Deep Cleaning Specialist',  rating:4.8, status:'available', avatar:'A', color:'var(--navy-mid)' },
-    { id:'w3', name:'Zainab K.',   role:'Cleaning & Laundry',       rating:4.9, status:'available', avatar:'Z', color:'var(--green-mid)' },
-    { id:'w4', name:'Omar S.',     role:'Handyman & Maintenance',   rating:4.7, status:'busy',      avatar:'O', color:'var(--gold-mid)' },
-    { id:'w5', name:'Rania H.',    role:'Salon & Wellness',         rating:4.9, status:'available', avatar:'R', color:'var(--navy-light)' },
+    { id:'w1', name:'Fatima R.',   role:'Home Cleaning Specialist', rating:4.9, status:'available', avatar:'F', color:'var(--gold)',       photo:'https://randomuser.me/api/portraits/women/44.jpg' },
+    { id:'w2', name:'Abdullah M.', role:'Deep Cleaning Specialist',  rating:4.8, status:'available', avatar:'A', color:'var(--navy-mid)',   photo:'https://randomuser.me/api/portraits/men/32.jpg' },
+    { id:'w3', name:'Zainab K.',   role:'Cleaning & Laundry',       rating:4.9, status:'available', avatar:'Z', color:'var(--green-mid)',  photo:'https://randomuser.me/api/portraits/women/65.jpg' },
+    { id:'w4', name:'Omar S.',     role:'Handyman & Maintenance',   rating:4.7, status:'busy',      avatar:'O', color:'var(--gold-mid)',   photo:'https://randomuser.me/api/portraits/men/48.jpg' },
+    { id:'w5', name:'Rania H.',    role:'Salon & Wellness',         rating:4.9, status:'available', avatar:'R', color:'var(--navy-light)', photo:'https://randomuser.me/api/portraits/women/28.jpg' },
   ];
 
   const PROMOS = {
     'TAP10':  { type:'percent', value:10, label:'10% off' },
-    'IRAQ20': { type:'percent', value:20, label:'20% off' },
-    'NEW50':  { type:'fixed',   value:50000, label:'IQD 50,000 off' },
+    'UAE20':  { type:'percent', value:20, label:'20% off' },
+    'NEW50':  { type:'fixed',   value:200, label:'AED 200 off' },
   };
 
   function seedData() {
@@ -2112,9 +2407,9 @@ const TAP = (() => {
         // 1 — Completed + reviewed (yesterday, 5★)
         {
           id:1001, ref:'TAP-1001', service:'Home Cleaning', hours:4, cleaners:2,
-          materials:true, freq:'once', address:'Al-Mansour, Baghdad',
+          materials:true, freq:'once', address:'Al Khalidiyah, Abu Dhabi',
           date:dateStr(-1), time:'9:00 AM – 9:30 AM', payMethod:'card', promo:null,
-          basePrice:200000, totalPrice:221000, vatAmount:10000,
+          basePrice:480, totalPrice:536, vatAmount:26,
           yearlyPrefs:null, status:'reviewed', workerId:'w1', workerName:'Fatima R.',
           customerName:'Ahmad Al-Rashidi', createdAt:d(-2), updatedAt:d(-1,14),
           rating:5, review:'Fatima was absolutely incredible. The apartment has never looked this clean. Will definitely book again!',
@@ -2123,9 +2418,9 @@ const TAP = (() => {
         // 2 — Completed, awaiting review
         {
           id:1002, ref:'TAP-1002', service:'Deep Cleaning', hours:6, cleaners:1,
-          materials:true, freq:'once', address:'Al-Karrada, Baghdad',
+          materials:true, freq:'once', address:'Jumeirah, Dubai',
           date:dateStr(-1), time:'11:00 AM – 11:30 AM', payMethod:'cash', promo:'TAP10',
-          basePrice:270000, totalPrice:256500, vatAmount:12500,
+          basePrice:600, totalPrice:595, vatAmount:28,
           yearlyPrefs:null, status:'completed', workerId:'w3', workerName:'Zainab K.',
           customerName:'Layla Mustafa', createdAt:d(-2), updatedAt:d(-1,18),
           rating:null, review:null, notes:'Focus on kitchen and bathrooms.',
@@ -2133,9 +2428,9 @@ const TAP = (() => {
         // 3 — In progress RIGHT NOW
         {
           id:1003, ref:'TAP-1003', service:'AC Repair', hours:2, cleaners:1,
-          materials:false, freq:'once', address:'Al-Arasat, Baghdad',
+          materials:false, freq:'once', address:'Mirdif, Dubai',
           date:dateStr(0), time:'10:00 AM – 10:30 AM', payMethod:'zain', promo:null,
-          basePrice:70000, totalPrice:83250, vatAmount:3750,
+          basePrice:160, totalPrice:168, vatAmount:8,
           yearlyPrefs:null, status:'in_progress', workerId:'w4', workerName:'Omar S.',
           customerName:'Hassan Karimi', createdAt:d(-1), updatedAt:d(0,10),
           rating:null, review:null, notes:'Unit on 3rd floor, apartment 12.',
@@ -2143,9 +2438,9 @@ const TAP = (() => {
         // 4 — Worker en route
         {
           id:1004, ref:'TAP-1004', service:'Home Cleaning', hours:3, cleaners:1,
-          materials:false, freq:'weekly', address:'Kadhimiya, Baghdad',
+          materials:false, freq:'weekly', address:'Al Mushrif, Abu Dhabi',
           date:dateStr(0), time:'1:00 PM – 1:30 PM', payMethod:'card', promo:null,
-          basePrice:67500, totalPrice:81563, vatAmount:3563,
+          basePrice:162, totalPrice:170, vatAmount:8,
           yearlyPrefs:null, status:'on_way', workerId:'w1', workerName:'Fatima R.',
           customerName:'Noor Al-Saadi', createdAt:d(-1), updatedAt:d(0,12,30),
           rating:null, review:null, notes:'Key is with building security.',
@@ -2153,9 +2448,9 @@ const TAP = (() => {
         // 5 — Assigned, not started yet
         {
           id:1005, ref:'TAP-1005', service:'Salon & Spa', hours:2, cleaners:1,
-          materials:false, freq:'once', address:'Al-Jadriya, Baghdad',
-          date:dateStr(0), time:'3:00 PM – 3:30 PM', payMethod:'cash', promo:'IRAQ20',
-          basePrice:60000, totalPrice:58800, vatAmount:2800,
+          materials:false, freq:'once', address:'Al Reem Island, Abu Dhabi',
+          date:dateStr(0), time:'3:00 PM – 3:30 PM', payMethod:'cash', promo:'UAE20',
+          basePrice:144, totalPrice:151, vatAmount:7,
           yearlyPrefs:null, status:'assigned', workerId:'w5', workerName:'Rania H.',
           customerName:'Sara Al-Jubouri', createdAt:d(0,8), updatedAt:d(0,9),
           rating:null, review:null, notes:'',
@@ -2163,9 +2458,9 @@ const TAP = (() => {
         // 6 — PENDING (just came in, needs dispatch)
         {
           id:1006, ref:'TAP-1006', service:'Pest Control', hours:3, cleaners:1,
-          materials:true, freq:'once', address:'Al-Ameriya, Baghdad',
+          materials:true, freq:'once', address:'Yas Island, Abu Dhabi',
           date:dateStr(0), time:'5:00 PM – 5:30 PM', payMethod:'card', promo:null,
-          basePrice:120000, totalPrice:141750, vatAmount:6750,
+          basePrice:360, totalPrice:410, vatAmount:20,
           yearlyPrefs:null, status:'pending', workerId:null, workerName:null,
           customerName:'Khalid Al-Tamimi', createdAt:d(0,9,15), updatedAt:d(0,9,15),
           rating:null, review:null, notes:'Bad ant infestation in kitchen.',
@@ -2173,9 +2468,9 @@ const TAP = (() => {
         // 7 — PENDING (urgent, 2 hrs ago)
         {
           id:1007, ref:'TAP-1007', service:'Deep Cleaning', hours:5, cleaners:2,
-          materials:true, freq:'once', address:'Al-Zayouna, Baghdad',
+          materials:true, freq:'once', address:'Business Bay, Dubai',
           date:dateStr(1), time:'9:00 AM – 9:30 AM', payMethod:'zain', promo:null,
-          basePrice:450000, totalPrice:529750, vatAmount:24750,
+          basePrice:1000, totalPrice:1082, vatAmount:52,
           yearlyPrefs:null, status:'pending', workerId:null, workerName:null,
           customerName:'Mariam Al-Azzawi', createdAt:d(0,7,30), updatedAt:d(0,7,30),
           rating:null, review:null, notes:'Moving out clean — very thorough needed.',
@@ -2183,9 +2478,9 @@ const TAP = (() => {
         // 8 — PENDING (just submitted)
         {
           id:1008, ref:'TAP-1008', service:'Car Wash at Home', hours:1, cleaners:1,
-          materials:false, freq:'once', address:'Al-Mansour, Baghdad',
+          materials:false, freq:'once', address:'JLT, Dubai',
           date:dateStr(0), time:'6:00 PM – 6:30 PM', payMethod:'cash', promo:null,
-          basePrice:12000, totalPrice:17600, vatAmount:600,
+          basePrice:35, totalPrice:37, vatAmount:2,
           yearlyPrefs:null, status:'pending', workerId:null, workerName:null,
           customerName:'Yusuf Nasir', createdAt:d(0,9,45), updatedAt:d(0,9,45),
           rating:null, review:null, notes:'SUV, silver Toyota Fortuner.',
@@ -2193,9 +2488,9 @@ const TAP = (() => {
         // 9 — Yearly contract, assigned, future date
         {
           id:1009, ref:'TAP-1009', service:'House Keeping', hours:4, cleaners:1,
-          materials:false, freq:'yearly', address:'Al-Arasat, Baghdad',
+          materials:false, freq:'yearly', address:'Khalifa City, Abu Dhabi',
           date:dateStr(2), time:'10:00 AM – 10:30 AM', payMethod:'card', promo:null,
-          basePrice:70400, totalPrice:82160, vatAmount:3360,
+          basePrice:176, totalPrice:185, vatAmount:9,
           yearlyPrefs:{ duration:'2 Years', nationality:'Filipino', hospitality:'Professional' },
           status:'assigned', workerId:'w3', workerName:'Zainab K.',
           customerName:'Dr. Reem Al-Samarrai', createdAt:d(-1), updatedAt:d(0,8),
@@ -2204,9 +2499,9 @@ const TAP = (() => {
         // 10 — Completed with 4★ review
         {
           id:1010, ref:'TAP-1010', service:'Handyman', hours:3, cleaners:1,
-          materials:true, freq:'once', address:'Sadr City, Baghdad',
+          materials:true, freq:'once', address:'Al Quoz, Dubai',
           date:dateStr(-3), time:'2:00 PM – 2:30 PM', payMethod:'cash', promo:null,
-          basePrice:60000, totalPrice:72000, vatAmount:3000,
+          basePrice:210, totalPrice:252, vatAmount:12,
           yearlyPrefs:null, status:'reviewed', workerId:'w4', workerName:'Omar S.',
           customerName:'Ali Hasan', createdAt:d(-4), updatedAt:d(-3,17),
           rating:4, review:'Good work, fixed the door and the broken shelf. Came on time.',
@@ -2217,7 +2512,7 @@ const TAP = (() => {
           id:1011, ref:'TAP-1011', service:'Home Cleaning', hours:5, cleaners:3,
           materials:true, freq:'multi', address:'Al Nahyan, Abu Dhabi, UAE',
           date:dateStr(1), time:'9:00 AM – 9:30 AM', payMethod:'card', promo:'TAP10',
-          basePrice:318750, totalPrice:360619, vatAmount:16119,
+          basePrice:716, totalPrice:752, vatAmount:36,
           yearlyPrefs:null, status:'assigned', workerId:'w2', workerName:'Abdullah M.',
           customerName:'Fatima Al-Mazrouei', createdAt:d(-1), updatedAt:d(0,7),
           rating:null, review:null, notes:'Villa. 4 bedrooms, 3 bathrooms.',
@@ -2225,9 +2520,9 @@ const TAP = (() => {
         // 12 — Laundry, completed + reviewed
         {
           id:1012, ref:'TAP-1012', service:'Laundry & Dry Cleaning', hours:2, cleaners:1,
-          materials:false, freq:'once', address:'Al-Karada, Baghdad',
+          materials:false, freq:'once', address:'Bur Dubai, Dubai',
           date:dateStr(-2), time:'11:00 AM – 11:30 AM', payMethod:'zain', promo:null,
-          basePrice:30000, totalPrice:38500, vatAmount:1500,
+          basePrice:80, totalPrice:84, vatAmount:4,
           yearlyPrefs:null, status:'reviewed', workerId:'w3', workerName:'Zainab K.',
           customerName:'Omar Fadhel', createdAt:d(-3), updatedAt:d(-2,14),
           rating:5, review:'Fast and careful with my suits. Great service!',
@@ -2245,21 +2540,21 @@ const TAP = (() => {
         ],
         worker: {
           w1: [
-            { id:10, msg:'New job assigned: Home Cleaning at Kadhimiya, Baghdad — today 1:00 PM', read:false, ts:d(0,12,30) },
+            { id:10, msg:'New job assigned: Home Cleaning at Al Mushrif, Abu Dhabi — today 1:00 PM', read:false, ts:d(0,12,30) },
           ],
           w4: [
-            { id:11, msg:'New job assigned: AC Repair at Al-Arasat, Baghdad — today 10:00 AM', read:true, ts:d(0,9,30) },
+            { id:11, msg:'New job assigned: AC Repair at Mirdif, Dubai — today 10:00 AM', read:true, ts:d(0,9,30) },
           ],
         },
       },
       workers: [
-        { id:'w1', name:'Fatima R.',   role:'Home Cleaning Specialist', rating:4.9, status:'busy',      avatar:'F', color:'var(--gold)' },
-        { id:'w2', name:'Abdullah M.', role:'Deep Cleaning Specialist',  rating:4.8, status:'busy',      avatar:'A', color:'var(--navy-mid)' },
-        { id:'w3', name:'Zainab K.',   role:'Cleaning & Laundry',       rating:4.9, status:'busy',      avatar:'Z', color:'var(--green-mid)' },
-        { id:'w4', name:'Omar S.',     role:'Handyman & Maintenance',   rating:4.7, status:'busy',      avatar:'O', color:'var(--gold-mid)' },
-        { id:'w5', name:'Rania H.',    role:'Salon & Wellness',         rating:4.9, status:'busy',      avatar:'R', color:'var(--navy-light)' },
-        { id:'w6', name:'Bilal A.',    role:'Pest Control & Outdoor',   rating:4.6, status:'available', avatar:'B', color:'var(--green)' },
-        { id:'w7', name:'Hana M.',     role:'House Keeping',            rating:4.8, status:'available', avatar:'H', color:'var(--gold)' },
+        { id:'w1', name:'Fatima R.',   role:'Home Cleaning Specialist', rating:4.9, status:'busy',      avatar:'F', color:'var(--gold)',       photo:'https://randomuser.me/api/portraits/women/44.jpg' },
+        { id:'w2', name:'Abdullah M.', role:'Deep Cleaning Specialist',  rating:4.8, status:'busy',      avatar:'A', color:'var(--navy-mid)',   photo:'https://randomuser.me/api/portraits/men/32.jpg' },
+        { id:'w3', name:'Zainab K.',   role:'Cleaning & Laundry',       rating:4.9, status:'busy',      avatar:'Z', color:'var(--green-mid)',  photo:'https://randomuser.me/api/portraits/women/65.jpg' },
+        { id:'w4', name:'Omar S.',     role:'Handyman & Maintenance',   rating:4.7, status:'busy',      avatar:'O', color:'var(--gold-mid)',   photo:'https://randomuser.me/api/portraits/men/48.jpg' },
+        { id:'w5', name:'Rania H.',    role:'Salon & Wellness',         rating:4.9, status:'busy',      avatar:'R', color:'var(--navy-light)', photo:'https://randomuser.me/api/portraits/women/28.jpg' },
+        { id:'w6', name:'Bilal A.',    role:'Pest Control & Outdoor',   rating:4.6, status:'available', avatar:'B', color:'var(--green)',      photo:'https://randomuser.me/api/portraits/men/57.jpg' },
+        { id:'w7', name:'Hana M.',     role:'House Keeping',            rating:4.8, status:'available', avatar:'H', color:'var(--gold)',       photo:'https://randomuser.me/api/portraits/women/82.jpg' },
       ],
       currentBooking: null,
       reviewData: null,
@@ -2314,7 +2609,7 @@ const TAP = (() => {
       cleaners: data.cleaners || 1,
       materials: data.materials || false,
       freq: data.freq || 'once',
-      address: data.address || 'Al-Mansour, Baghdad',
+      address: data.address || 'Al Khalidiyah, Abu Dhabi',
       date: data.date || 'Thu, Jul 31',
       time: data.time || '9:00 AM – 9:30 AM',
       payMethod: data.payMethod || 'card',
@@ -2543,6 +2838,7 @@ function cGo(to, from) {
   if (to === 'c-bookings') renderCustomerBookings();
   if (to === 'c-notifications') renderCustomerNotifications();
   if (to === 'c-review') renderReviewScreen();
+  if (to === 'c-home') renderHomeActiveStrip();
 }
 
 function cBack() {
@@ -2598,12 +2894,28 @@ function setSvcName(name) {
   const svc = TAP.SERVICES[name] || { price: 25000 };
   document.getElementById('svc-detail-title').textContent = name;
   document.getElementById('svc-detail-name').textContent = name;
-  // update hero icon
-  const heroIcon = document.getElementById('svc-hero-icon');
-  if (heroIcon) heroIcon.textContent = svc.icon || '🏠';
+  // update hero photo
+  const svcPhotos = {
+    'Home Cleaning':          'photo-1558618666-fcd25c85cd64',
+    'Furniture Cleaning':     'photo-1555041469-a586c61ea9bc',
+    'House Keeping':          'photo-1527515545081-5db817172677',
+    'Deep Cleaning':          'photo-1628177142898-93e36e4e3a50',
+    'Laundry & Dry Cleaning': 'photo-1567113463300-102a7eb3cb26',
+    'Shoes Cleaning':         'photo-1542291026-7eec264c27ff',
+    'Car Wash at Home':       'photo-1520340356584-f9917d1eea6f',
+    'Pest Control':           'photo-1585771724684-38269d6639fd',
+    'Salon & Spa':            'photo-1570172619644-dfd03ed5d881',
+    'AC Repair':              'photo-1621905252507-b35492cc74b4',
+    'Handyman':               'photo-1504307651254-35680f356dfd',
+  };
+  const heroImg = document.getElementById('svc-detail-hero-img');
+  if (heroImg) {
+    const photoId = svcPhotos[name] || svcPhotos['Home Cleaning'];
+    heroImg.src = 'https://images.unsplash.com/' + photoId + '?w=600&h=440&fit=crop&q=80';
+  }
   // update price
   const priceEl = document.getElementById('svc-detail-price');
-  if (priceEl) priceEl.textContent = 'From IQD ' + svc.price.toLocaleString() + ' / hour';
+  if (priceEl) priceEl.textContent = 'From AED ' + svc.price.toLocaleString() + ' / hour';
   updateStep1Price();
 }
 
@@ -2621,13 +2933,13 @@ function updateReviewSvc() {
    BOOKING CONFIRMATION — creates real booking
 ═══════════════════════════════════════ */
 function confirmBooking() {
-  const svc = TAP.SERVICES[currentSvcName] || { price: 25000 };
+  const svc = TAP.SERVICES[currentSvcName] || { price: 60 };
   const basePrice = svc.price * currentHours * currentCleaners;
   let disc = 0;
   if (currentFreq === 'weekly') disc = 0.10;
   if (currentFreq === 'multi')  disc = 0.15;
   if (currentFreq === 'yearly') disc = 0.20;
-  const matCost = hasMaterials ? 5000 : 0;
+  const matCost = hasMaterials ? 30 : 0;
   let subtotal = Math.round(basePrice * (1 - disc)) + matCost;
   if (promoApplied && appliedPromoCode) {
     const promo = TAP.PROMOS[appliedPromoCode];
@@ -2657,7 +2969,7 @@ function confirmBooking() {
     cleaners: currentCleaners,
     materials: hasMaterials,
     freq: currentFreq,
-    address: 'Al-Mansour, Baghdad',
+    address: 'Al Khalidiyah, Abu Dhabi',
     date: dateStr,
     time: timeStr,
     payMethod,
@@ -2695,7 +3007,7 @@ function renderConfirmedScreen() {
     <div class="summary-row"><span class="sum-label">Booking Ref</span><span class="sum-val" style="color:var(--green);font-family:var(--font-family-heading);">${b.ref}</span></div>
     <div class="summary-row"><span class="sum-label">Service</span><span class="sum-val">${b.service}</span></div>
     <div class="summary-row"><span class="sum-label">Date & Time</span><span class="sum-val">${b.date} · ${b.time}</span></div>
-    <div class="summary-row"><span class="sum-label">Total Paid</span><span class="sum-val" style="color:var(--green);">IQD ${b.totalPrice.toLocaleString()}</span></div>
+    <div class="summary-row"><span class="sum-label">Total Paid</span><span class="sum-val" style="color:var(--green);">AED ${b.totalPrice.toLocaleString()}</span></div>
     <div class="summary-row" style="border:none;"><span class="sum-label">Status</span><span class="badge badge-gold">Pending Dispatch</span></div>
   `;
   const credEl = document.getElementById('confirmed-credits');
@@ -2735,7 +3047,7 @@ function renderCustomerBookings() {
         <span class="badge ${statusClasses[b.status]||'badge-navy'}">${statusLabels[b.status]||b.status}</span>
       </div>
       <div style="font-size:var(--text-sm);color:var(--ink2);margin-bottom:var(--s3);">${b.hours} hrs · ${b.address}${b.workerName ? ' · ' + b.workerName : ''}</div>
-      <div style="font-size:var(--text-base);font-weight:var(--font-weight-bold);color:var(--ink);font-family:var(--font-family-heading);margin-bottom:var(--s3);">IQD ${b.totalPrice.toLocaleString()}</div>
+      <div style="font-size:var(--text-base);font-weight:var(--font-weight-bold);color:var(--ink);font-family:var(--font-family-heading);margin-bottom:var(--s3);">AED ${b.totalPrice.toLocaleString()}</div>
       <div style="display:flex;gap:var(--s2);">
         ${['on_way','in_progress'].includes(b.status) ? `<button class="btn-primary" style="height:38px;font-size:var(--text-sm);flex:1;" onclick="openTrackingForBooking(${b.id})">Track live</button>` : ''}
         ${b.status === 'completed' ? `<button class="btn-primary" style="height:38px;font-size:var(--text-sm);flex:1;" onclick="openReviewForBooking(${b.id})">Leave review</button>` : ''}
@@ -2880,6 +3192,19 @@ function renderWorkerHome() {
   const incomingEl = document.getElementById('w-incoming-area');
   if (!incomingEl) return;
 
+  // Sync hero to active worker
+  const wData = TAP.getAllWorkers().find(w => w.id === activeWorkerId);
+  if (wData) {
+    const heroPhoto = document.getElementById('w-hero-photo');
+    const heroName  = document.getElementById('w-hero-name');
+    const heroRole  = document.getElementById('w-hero-role');
+    const heroRating = document.getElementById('w-hero-rating');
+    if (heroPhoto && wData.photo) heroPhoto.src = wData.photo;
+    if (heroName) heroName.textContent = wData.name;
+    if (heroRole) heroRole.textContent = wData.role;
+    if (heroRating) heroRating.textContent = wData.rating + ' ★';
+  }
+
   if (activeJob) {
     incomingEl.innerHTML = `
       <div class="card section-pad" style="border:2px solid var(--green);margin-bottom:var(--s4);">
@@ -2894,7 +3219,7 @@ function renderWorkerHome() {
         </div>
         <div style="background:var(--green-tint);border-radius:var(--r-sm);padding:10px var(--s3);margin-bottom:var(--s3);">
           <div style="font-size:var(--text-sm);font-weight:var(--font-weight-bold);color:var(--green);">${activeJob.service}</div>
-          <div style="font-size:var(--text-sm);font-weight:var(--font-weight-bold);color:var(--ink);">IQD ${activeJob.totalPrice.toLocaleString()} · ${activeJob.hours} hrs</div>
+          <div style="font-size:var(--text-sm);font-weight:var(--font-weight-bold);color:var(--ink);">AED ${activeJob.totalPrice.toLocaleString()} · ${activeJob.hours} hrs</div>
           <div style="font-size:var(--text-xs);color:var(--ink2);margin-top:3px;">${activeJob.date} · ${activeJob.time}</div>
         </div>
         <button class="btn-primary" style="height:44px;font-size:var(--text-sm);" onclick="wGo('w-job','w-home');loadActiveJob(${activeJob.id})">View Active Job</button>
@@ -2916,7 +3241,7 @@ function renderWorkerHome() {
   const todayEarnings = todayJobs.reduce((s, b) => s + (b.totalPrice || 0), 0);
   const statEarnings = document.getElementById('w-stat-earnings');
   const statJobs = document.getElementById('w-stat-jobs');
-  if (statEarnings) statEarnings.textContent = 'IQD ' + (todayEarnings || 75000).toLocaleString();
+  if (statEarnings) statEarnings.textContent = 'AED ' + (todayEarnings || 850).toLocaleString();
   if (statJobs) statJobs.textContent = todayJobs.length || 3;
 }
 
@@ -2934,7 +3259,7 @@ function loadActiveJob(bookingId) {
     <div class="summary-row"><span class="sum-label">Customer</span><span class="sum-val">${b.customerName}</span></div>
     <div class="summary-row"><span class="sum-label">Service</span><span class="sum-val">${b.service}</span></div>
     <div class="summary-row"><span class="sum-label">Duration</span><span class="sum-val">${b.hours} hours</span></div>
-    <div class="summary-row"><span class="sum-label">Your Earnings</span><span class="sum-val" style="color:var(--green);">IQD ${b.totalPrice.toLocaleString()}</span></div>
+    <div class="summary-row"><span class="sum-label">Your Earnings</span><span class="sum-val" style="color:var(--green);">AED ${b.totalPrice.toLocaleString()}</span></div>
     <div class="summary-row"><span class="sum-label">Address</span><span class="sum-val" style="max-width:160px;text-align:right;font-size:12px;">${b.address}</span></div>
     <div class="summary-row" style="border:none;"><span class="sum-label">Schedule</span><span class="sum-val">${b.date} · ${b.time}</span></div>
   `;
@@ -2991,7 +3316,7 @@ function renderWorkerJobHistory() {
         <span class="badge badge-green">Done</span>
       </div>
       ${b.rating ? `<div style="color:var(--gold);font-size:14px;margin-bottom:6px;">${'★'.repeat(b.rating)}${'☆'.repeat(5-b.rating)}</div>` : ''}
-      <div style="font-size:var(--text-sm);font-weight:var(--font-weight-bold);color:var(--green);">IQD ${b.totalPrice.toLocaleString()} earned</div>
+      <div style="font-size:var(--text-sm);font-weight:var(--font-weight-bold);color:var(--green);">AED ${b.totalPrice.toLocaleString()} earned</div>
     </div>
   `).join('');
 }
@@ -3012,9 +3337,28 @@ function renderAdminQueue() {
     badge.textContent = pending.length + ' awaiting';
     badge.className = 'badge ' + (pending.length > 0 ? 'badge-red' : 'badge-green');
   }
-
   const activeBadge = document.getElementById('active-badge');
   if (activeBadge) activeBadge.textContent = active.length + ' active';
+
+  // KPI bar
+  const allBookings = TAP.getAllBookings();
+  const revenue = done.reduce((s, b) => s + (b.totalPrice || 0), 0);
+  const kpiTotal = document.getElementById('admin-kpi-total');
+  const kpiPending = document.getElementById('admin-kpi-pending');
+  const kpiActive = document.getElementById('admin-kpi-active');
+  const kpiRevenue = document.getElementById('admin-kpi-revenue');
+  const kpiWorkers = document.getElementById('admin-workers-live');
+  if (kpiTotal) kpiTotal.textContent = allBookings.length;
+  if (kpiPending) kpiPending.textContent = pending.length;
+  if (kpiActive) kpiActive.textContent = active.length;
+  if (kpiRevenue) kpiRevenue.textContent = revenue >= 1000 ? 'AED ' + (revenue/1000).toFixed(1) + 'K' : 'AED ' + revenue;
+  if (kpiWorkers) kpiWorkers.textContent = TAP.getAllWorkers().filter(w => w.status === 'available').length;
+
+  // Filter tab counts
+  const qfPend = document.getElementById('qf-pending-count');
+  const qfAct = document.getElementById('qf-active-count');
+  if (qfPend) qfPend.textContent = pending.length || '';
+  if (qfAct) qfAct.textContent = active.length || '';
 
   const statusLabels = {
     pending:'Pending', assigned:'Assigned', on_way:'En Route',
@@ -3025,11 +3369,15 @@ function renderAdminQueue() {
     in_progress:'badge-green', completed:'badge-navy', reviewed:'badge-navy',
   };
 
-  // All bookings combined, newest first
-  const all = [...pending, ...active, ...done];
+  // All bookings combined, filtered by active tab
+  let all;
+  if (typeof queueFilter !== 'undefined' && queueFilter === 'pending') all = [...pending];
+  else if (typeof queueFilter !== 'undefined' && queueFilter === 'active') all = [...active];
+  else if (typeof queueFilter !== 'undefined' && queueFilter === 'completed') all = [...done];
+  else all = [...pending, ...active, ...done];
 
   if (!all.length) {
-    el.innerHTML = `<div style="text-align:center;padding:40px;color:var(--ink2);">No bookings yet. Have a customer book a service!</div>`;
+    el.innerHTML = `<div style="text-align:center;padding:40px;color:var(--ink2);">No bookings in this category.</div>`;
     return;
   }
 
@@ -3044,7 +3392,7 @@ function renderAdminQueue() {
       </div>
       <div style="font-size:var(--text-sm);color:var(--ink);font-weight:var(--font-weight-semibold);margin-bottom:4px;">${b.service}</div>
       <div style="font-size:var(--text-xs);color:var(--ink2);margin-bottom:var(--s3);">${b.address} · ${b.hours} hrs${b.workerName ? ' · <strong>' + b.workerName + '</strong>' : ''}</div>
-      <div style="font-size:var(--text-base);font-weight:var(--font-weight-bold);color:var(--ink);font-family:var(--font-family-heading);margin-bottom:var(--s3);">IQD ${b.totalPrice.toLocaleString()}</div>
+      <div style="font-size:var(--text-base);font-weight:var(--font-weight-bold);color:var(--ink);font-family:var(--font-family-heading);margin-bottom:var(--s3);">AED ${b.totalPrice.toLocaleString()}</div>
       <div style="display:flex;gap:var(--s2);">
         ${b.status === 'pending' ? `<button class="btn-primary" style="flex:1;height:38px;font-size:var(--text-sm);" onclick="openAssignSheet(${b.id})">Assign Worker</button>` : ''}
         ${['assigned','on_way','in_progress'].includes(b.status) ? `<button class="btn-ghost" style="flex:1;height:38px;font-size:var(--text-sm);" onclick="openReassignSheet(${b.id})">Reassign</button>` : ''}
@@ -3052,6 +3400,27 @@ function renderAdminQueue() {
       </div>
     </div>
   `).join('');
+}
+
+/* ═══════════════════════════════════════
+   ADMIN — QUEUE FILTER
+═══════════════════════════════════════ */
+let queueFilter = 'all';
+
+function setQueueFilter(f) {
+  queueFilter = f;
+  ['all','pending','active','completed'].forEach(id => {
+    const btn = document.getElementById('qf-' + id);
+    if (!btn) return;
+    const on = id === f;
+    btn.style.borderBottomColor = on ? 'var(--green)' : 'transparent';
+    btn.style.color = on ? 'var(--green)' : 'var(--ink2)';
+    btn.style.fontWeight = on ? 'var(--font-weight-bold)' : 'var(--font-weight-semibold)';
+  });
+  const label = document.getElementById('queue-list-label');
+  const labels = { all:'All bookings', pending:'Pending dispatch', active:'Active jobs', completed:'Completed' };
+  if (label) label.textContent = labels[f];
+  renderAdminQueue();
 }
 
 /* ═══════════════════════════════════════
@@ -3069,7 +3438,7 @@ function viewBookingDetail(bookingId) {
     <div class="summary-row"><span class="sum-label">Duration</span><span class="sum-val">${b.hours} hrs · ${b.cleaners} cleaner${b.cleaners>1?'s':''}</span></div>
     <div class="summary-row"><span class="sum-label">Materials</span><span class="sum-val">${b.materials?'Yes':'No'}</span></div>
     <div class="summary-row"><span class="sum-label">Payment</span><span class="sum-val">${b.payMethod==='cash'?'Cash on Arrival':b.payMethod==='zain'?'ZainCash':'Card'}</span></div>
-    <div class="summary-row" style="border:none;"><span class="sum-label">Total</span><span class="sum-val" style="font-size:18px;font-weight:var(--font-weight-bold);font-family:var(--font-family-heading);">IQD ${b.totalPrice.toLocaleString()}</span></div>
+    <div class="summary-row" style="border:none;"><span class="sum-label">Total</span><span class="sum-val" style="font-size:18px;font-weight:var(--font-weight-bold);font-family:var(--font-family-heading);">AED ${b.totalPrice.toLocaleString()}</span></div>
     ${b.rating ? `<div style="margin-top:12px;padding-top:12px;border-top:1px solid var(--border);"><div style="color:var(--gold);font-size:18px;">${'★'.repeat(b.rating)}${'☆'.repeat(5-b.rating)}</div>${b.review?`<div style="font-size:13px;color:var(--ink2);margin-top:6px;">"${b.review}"</div>`:''}</div>` : ''}
   `;
   openSheet('detail');
@@ -3087,7 +3456,7 @@ function renderWorkerManagement() {
   el.innerHTML = workers.map(w => `
     <div class="card section-pad" style="margin-bottom:var(--s3);">
       <div style="display:flex;align-items:center;gap:var(--s3);">
-        <div class="avatar avatar-sm" style="background:${w.color};">${w.avatar}</div>
+        <div class="avatar avatar-sm" style="background:${w.color};padding:0;overflow:hidden;">${w.photo ? `<img src="${w.photo}" style="width:100%;height:100%;object-fit:cover;" loading="lazy">` : w.avatar}</div>
         <div style="flex:1;">
           <div style="font-size:var(--text-base);font-weight:var(--font-weight-bold);color:var(--ink);font-family:var(--font-family-heading);">${w.name}</div>
           <div style="font-size:var(--text-xs);color:var(--ink2);">${w.role}</div>
@@ -3159,17 +3528,17 @@ function renderFinancials() {
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:var(--s3);margin-bottom:var(--s4);">
       <div class="card section-pad">
         <div style="font-size:var(--text-xs);color:var(--ink2);text-transform:uppercase;letter-spacing:.05em;font-family:var(--font-family-heading);">Revenue</div>
-        <div style="font-size:var(--text-xl);font-weight:var(--font-weight-bold);color:var(--ink);font-family:var(--font-family-heading);letter-spacing:var(--ls-xl);margin:4px 0;">${revenue > 0 ? 'IQD ' + (revenue/1000).toFixed(0)+'K' : '2.4M IQD'}</div>
+        <div style="font-size:var(--text-xl);font-weight:var(--font-weight-bold);color:var(--ink);font-family:var(--font-family-heading);letter-spacing:var(--ls-xl);margin:4px 0;">${revenue > 0 ? 'AED ' + revenue.toFixed(0) : 'AED 5.2K'}</div>
         <div style="font-size:var(--text-xs);color:var(--green);">↑ ${completed.length} completed</div>
       </div>
       <div class="card section-pad">
         <div style="font-size:var(--text-xs);color:var(--ink2);text-transform:uppercase;letter-spacing:.05em;font-family:var(--font-family-heading);">Pending</div>
-        <div style="font-size:var(--text-xl);font-weight:var(--font-weight-bold);color:var(--ink);font-family:var(--font-family-heading);letter-spacing:var(--ls-xl);margin:4px 0;">${pending > 0 ? 'IQD ' + (pending/1000).toFixed(0)+'K' : '850K IQD'}</div>
+        <div style="font-size:var(--text-xl);font-weight:var(--font-weight-bold);color:var(--ink);font-family:var(--font-family-heading);letter-spacing:var(--ls-xl);margin:4px 0;">${pending > 0 ? 'AED ' + pending.toFixed(0) : 'AED 1.8K'}</div>
         <div style="font-size:var(--text-xs);color:var(--gold);">${TAP.getPendingBookings().length} orders</div>
       </div>
       <div class="card section-pad">
         <div style="font-size:var(--text-xs);color:var(--ink2);text-transform:uppercase;letter-spacing:.05em;font-family:var(--font-family-heading);">Active Now</div>
-        <div style="font-size:var(--text-xl);font-weight:var(--font-weight-bold);color:var(--ink);font-family:var(--font-family-heading);letter-spacing:var(--ls-xl);margin:4px 0;">${active > 0 ? 'IQD ' + (active/1000).toFixed(0)+'K' : '1.8M IQD'}</div>
+        <div style="font-size:var(--text-xl);font-weight:var(--font-weight-bold);color:var(--ink);font-family:var(--font-family-heading);letter-spacing:var(--ls-xl);margin:4px 0;">${active > 0 ? 'AED ' + active.toFixed(0) : 'AED 3.4K'}</div>
         <div style="font-size:var(--text-xs);color:var(--green);">${TAP.getAssignedBookings().length} in progress</div>
       </div>
       <div class="card section-pad">
@@ -3215,7 +3584,7 @@ function renderWorkerSheet(workers, title) {
   const statusColors = { available:'var(--green)', busy:'var(--gold)', inactive:'var(--ink3)' };
   list.innerHTML = workers.map(w => `
     <div class="worker-row" onclick="assignWorkerToBooking('${w.id}')">
-      <div class="avatar avatar-sm" style="background:${w.color};">${w.avatar}</div>
+      <div class="avatar avatar-sm" style="background:${w.color};padding:0;overflow:hidden;">${w.photo ? `<img src="${w.photo}" style="width:100%;height:100%;object-fit:cover;" loading="lazy">` : w.avatar}</div>
       <div style="flex:1;">
         <div style="font-size:var(--text-sm);font-weight:var(--font-weight-bold);color:var(--ink);font-family:var(--font-family-heading);">${w.name}</div>
         <div style="font-size:var(--text-xs);color:var(--ink2);">${w.role} · ★ ${w.rating}</div>
@@ -3281,18 +3650,18 @@ function selectCircle(el, group, val) {
 }
 
 function updateStep1Price() {
-  const svc = TAP.SERVICES[currentSvcName] || { price: 25000 };
+  const svc = TAP.SERVICES[currentSvcName] || { price: 60 };
   const base = svc.price;
   let disc = 0;
   if (currentFreq === 'weekly') disc = 0.10;
   if (currentFreq === 'multi')  disc = 0.15;
   if (currentFreq === 'yearly') disc = 0.20;
-  const mat = hasMaterials ? 5000 : 0;
+  const mat = hasMaterials ? 30 : 0;
   const price = Math.round((base * currentHours * currentCleaners * (1 - disc)) + mat);
   const el = document.getElementById('step1-price');
-  if (el) el.textContent = 'IQD ' + price.toLocaleString();
+  if (el) el.textContent = 'AED ' + price.toLocaleString();
   const subEl = document.getElementById('step1-price-sub');
-  if (subEl) subEl.textContent = currentHours + ' hrs × IQD ' + base.toLocaleString();
+  if (subEl) subEl.textContent = currentHours + ' hrs × AED ' + base.toLocaleString();
 }
 
 function selectMat(val) {
@@ -3332,7 +3701,7 @@ function selectDur(d) {
 
 function updateYearlyContract() {
   const visits = yearlyDur * 52;
-  const svc = TAP.SERVICES[currentSvcName] || { price: 25000 };
+  const svc = TAP.SERVICES[currentSvcName] || { price: 60 };
   const base = svc.price * currentHours * currentCleaners;
   const disc = base * 0.20;
   const total = (base - disc) * visits;
@@ -3341,8 +3710,8 @@ function updateYearlyContract() {
   const yt = document.getElementById('yearly-total');
   const ys = document.getElementById('yearly-save');
   if (ve) ve.textContent = visits + ' visits';
-  if (yt) yt.textContent = 'IQD ' + Math.round(total).toLocaleString() + ' total';
-  if (ys) ys.textContent = 'You save IQD ' + Math.round(save).toLocaleString();
+  if (yt) yt.textContent = 'AED ' + Math.round(total).toLocaleString() + ' total';
+  if (ys) ys.textContent = 'You save AED ' + Math.round(save).toLocaleString();
 }
 
 function toggleChip(el, group) {
@@ -3429,13 +3798,13 @@ function removePromo() {
 }
 
 function recalcStep4() {
-  const svc = TAP.SERVICES[currentSvcName] || { price: 25000 };
+  const svc = TAP.SERVICES[currentSvcName] || { price: 60 };
   let subtotal = svc.price * currentHours * currentCleaners;
   let disc = 0;
   if (currentFreq === 'weekly') disc = 0.10;
   if (currentFreq === 'multi')  disc = 0.15;
   if (currentFreq === 'yearly') disc = 0.20;
-  subtotal = Math.round(subtotal * (1 - disc)) + (hasMaterials ? 5000 : 0);
+  subtotal = Math.round(subtotal * (1 - disc)) + (hasMaterials ? 30 : 0);
   if (promoApplied && appliedPromoCode) {
     const promo = TAP.PROMOS[appliedPromoCode];
     if (promo) {
@@ -3444,16 +3813,15 @@ function recalcStep4() {
     }
   }
   const vat = Math.round(subtotal * 0.05);
-  const svcFee = 5000;
-  const total = subtotal + vat + svcFee;
+  const total = subtotal + vat;
   const sub = document.getElementById('subtotal-val');
   const vatEl = document.getElementById('vat-val');
   const finalEl = document.getElementById('final-total');
   const btnEl = document.getElementById('confirm-btn');
-  if (sub) sub.textContent = 'IQD ' + subtotal.toLocaleString();
-  if (vatEl) vatEl.textContent = 'IQD ' + vat.toLocaleString();
-  if (finalEl) finalEl.textContent = 'IQD ' + total.toLocaleString();
-  if (btnEl) btnEl.textContent = 'Confirm Booking · IQD ' + total.toLocaleString();
+  if (sub) sub.textContent = 'AED ' + subtotal.toLocaleString();
+  if (vatEl) vatEl.textContent = 'AED ' + vat.toLocaleString();
+  if (finalEl) finalEl.textContent = 'AED ' + total.toLocaleString();
+  if (btnEl) btnEl.textContent = 'Confirm Booking · AED ' + total.toLocaleString();
 }
 
 /* ═══════════════════════════════════════
@@ -3481,8 +3849,8 @@ function selectPlaceType(t) {
 }
 
 function updatePlaceTotal() {
-  const total = workers * 200000 * 12 * placeDur;
-  document.getElementById('place-total').textContent = 'IQD ' + total.toLocaleString();
+  const total = workers * 1500 * 12 * placeDur;
+  document.getElementById('place-total').textContent = 'AED ' + total.toLocaleString();
 }
 
 /* ═══════════════════════════════════════
@@ -3508,13 +3876,13 @@ function showToast(msg) {
 ═══════════════════════════════════════ */
 function initTrackMap() {
   if (maps['track']) { maps['track'].invalidateSize(); return; }
-  const m = L.map('track-map', { zoomControl: false, attributionControl: false }).setView([33.34, 44.40], 14);
+  const m = L.map('track-map', { zoomControl: false, attributionControl: false }).setView([24.4539, 54.3773], 14);
   L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(m);
   const workerIcon = L.divIcon({ html: '<div style="background:#1A7A46;width:34px;height:34px;border-radius:50%;border:3px solid #fff;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(0,0,0,.3);"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M5 11l1.5-4.5h11L19 11" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><rect x="2" y="11" width="20" height="7" rx="2" stroke="#fff" stroke-width="2"/><circle cx="7" cy="18" r="1.5" fill="#fff"/><circle cx="17" cy="18" r="1.5" fill="#fff"/></svg></div>', iconSize:[34,34], iconAnchor:[17,17], className:'' });
   const homeIcon = L.divIcon({ html: '<div style="background:#0C1A28;width:34px;height:34px;border-radius:50%;border:3px solid #fff;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(0,0,0,.3);"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M3 12L12 3l9 9" stroke="#fff" stroke-width="2" stroke-linecap="round"/><path d="M5 10v9a1 1 0 001 1h4v-4h4v4h4a1 1 0 001-1v-9" stroke="#fff" stroke-width="2" stroke-linecap="round"/></svg></div>', iconSize:[34,34], iconAnchor:[17,17], className:'' });
-  let lat = 33.330, lng = 44.390;
+  let lat = 24.4480, lng = 54.3700;
   const workerMarker = L.marker([lat, lng], { icon: workerIcon }).addTo(m);
-  L.marker([33.34, 44.40], { icon: homeIcon }).addTo(m);
+  L.marker([24.4539, 54.3773], { icon: homeIcon }).addTo(m);
   if (trackInterval) clearInterval(trackInterval);
   trackInterval = setInterval(() => { lat += 0.001; lng += 0.0008; workerMarker.setLatLng([lat, lng]); }, 2000);
   maps['track'] = m;
@@ -3531,9 +3899,9 @@ function initTrackMap() {
 function initWorkerMap() {
   const mapId = 'worker-map';
   if (maps[mapId]) { maps[mapId].invalidateSize(); return; }
-  const m = L.map(mapId, { zoomControl:false, attributionControl:false }).setView([33.34, 44.40], 13);
+  const m = L.map(mapId, { zoomControl:false, attributionControl:false }).setView([24.4539, 54.3773], 13);
   L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(m);
-  const a = [33.320, 44.380], b = [33.355, 44.412];
+  const a = [24.4480, 54.3700], b = [24.4600, 54.3850];
   L.polyline([a, b], { color:'#1A7A46', weight:3, dashArray:'8,4' }).addTo(m);
   const wIcon = L.divIcon({ html:'<div style="background:#1A7A46;width:30px;height:30px;border-radius:50%;border:2px solid #fff;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 6px rgba(0,0,0,.25);"><svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path d="M5 11l1.5-4.5h11L19 11" stroke="#fff" stroke-width="2" stroke-linecap="round"/><rect x="2" y="11" width="20" height="7" rx="2" stroke="#fff" stroke-width="2"/><circle cx="7" cy="18" r="1.5" fill="#fff"/><circle cx="17" cy="18" r="1.5" fill="#fff"/></svg></div>', iconSize:[30,30], iconAnchor:[15,15], className:'' });
   const cIcon = L.divIcon({ html:'<div style="background:#C8921A;width:30px;height:30px;border-radius:50%;border:2px solid #fff;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 6px rgba(0,0,0,.25);"><svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path d="M3 12L12 3l9 9" stroke="#fff" stroke-width="2" stroke-linecap="round"/><path d="M5 10v9a1 1 0 001 1h4v-4h4v4h4a1 1 0 001-1v-9" stroke="#fff" stroke-width="2" stroke-linecap="round"/></svg></div>', iconSize:[30,30], iconAnchor:[15,15], className:'' });
@@ -3547,10 +3915,10 @@ function initReviewMap() {
   if (maps[mapId]) { maps[mapId].invalidateSize(); return; }
   const container = document.getElementById(mapId);
   if (!container) return;
-  const m = L.map(mapId, { zoomControl:false, attributionControl:false }).setView([33.34, 44.40], 14);
+  const m = L.map(mapId, { zoomControl:false, attributionControl:false }).setView([24.4539, 54.3773], 14);
   L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(m);
   const icon = L.divIcon({ html:'<div style="background:var(--danger);width:28px;height:28px;border-radius:50% 50% 50% 0;transform:rotate(-45deg);border:2px solid #fff;box-shadow:0 2px 6px rgba(0,0,0,.3);"></div>', iconSize:[28,28], iconAnchor:[14,28], className:'' });
-  L.marker([33.34, 44.40], { icon }).addTo(m);
+  L.marker([24.4539, 54.3773], { icon }).addTo(m);
   maps[mapId] = m;
 }
 
@@ -3559,13 +3927,13 @@ function initOpsMap() {
   if (maps[mapId]) { maps[mapId].invalidateSize(); return; }
   const container = document.getElementById(mapId);
   if (!container) return;
-  const m = L.map(mapId, { zoomControl:false, attributionControl:false }).setView([28, 48], 4);
+  const m = L.map(mapId, { zoomControl:false, attributionControl:false }).setView([24.7, 54.6], 8);
   L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(m);
   // Plot active jobs from real state
   const active = TAP.getAssignedBookings();
   const coords = [
-    [33.34, 44.40], [33.30, 44.38], [33.36, 44.45],
-    [24.45, 54.37], [25.20, 55.27],
+    [24.4539, 54.3773], [25.2048, 55.2708], [24.4698, 54.6119],
+    [24.4670, 54.3880], [25.1972, 55.2744],
   ];
   const colors = ['#1A7A46','#15663A','#C8921A','#0C1A28','#1A7A46'];
   coords.forEach((c, i) => {
@@ -3602,6 +3970,7 @@ document.addEventListener('DOMContentLoaded', () => {
   updateStep1Price();
   updateYearlyContract();
   updateCNav('c-home');
+  renderHomeActiveStrip();
   renderNotificationBadges();
   renderAdminQueue();
   renderWorkerHome();
@@ -3626,6 +3995,97 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   };
 });
+
+/* ═══════════════════════════════════════
+   HOME ACTIVE BOOKING STRIP
+═══════════════════════════════════════ */
+function renderHomeActiveStrip() {
+  const el = document.getElementById('home-active-strip');
+  if (!el) return;
+  const active = TAP.getAllBookings().find(b => ['on_way','in_progress','assigned'].includes(b.status));
+  if (!active) { el.style.display = 'none'; return; }
+  const w = TAP.getAllWorkers().find(x => x.id === active.workerId);
+  const statusMap = { assigned:'Worker assigned', on_way:'On the way', in_progress:'In progress' };
+  const statusColor = active.status === 'on_way' ? 'var(--green)' : active.status === 'in_progress' ? 'var(--gold)' : 'var(--navy-mid)';
+  const photoHtml = w && w.photo
+    ? `<img src="${w.photo}" style="width:38px;height:38px;border-radius:50%;object-fit:cover;border:2px solid ${statusColor};">`
+    : `<div style="width:38px;height:38px;border-radius:50%;background:var(--green-light);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;color:var(--green);">${w ? w.avatar : '?'}</div>`;
+  el.style.display = 'block';
+  el.innerHTML = `
+    <div onclick="openTrackingForBooking(${active.id})" style="background:var(--surface);border:1.5px solid ${statusColor};border-radius:var(--r-md);padding:12px var(--s3);display:flex;align-items:center;gap:var(--s3);cursor:pointer;">
+      <div style="position:relative;flex-shrink:0;">
+        ${photoHtml}
+        <div style="position:absolute;bottom:0;right:0;width:10px;height:10px;border-radius:50%;background:${statusColor};border:2px solid var(--surface);"></div>
+      </div>
+      <div style="flex:1;min-width:0;">
+        <div style="font-size:12px;font-weight:var(--font-weight-bold);color:var(--ink);">${w ? w.name : 'Worker'} · ${active.service}</div>
+        <div style="font-size:11px;color:var(--ink2);margin-top:1px;">${active.address}</div>
+        <div style="font-size:11px;color:${statusColor};font-weight:var(--font-weight-semibold);margin-top:2px;">● ${statusMap[active.status]}${active.status==='on_way' ? ' · ETA 12 min' : ''}</div>
+      </div>
+      <div style="flex-shrink:0;">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M9 18l6-6-6-6" stroke="var(--ink2)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+    </div>`;
+}
+
+/* ═══════════════════════════════════════
+   AUTO-PLAY DEMO SEQUENCE
+═══════════════════════════════════════ */
+function runDemo() {
+  const btn = document.getElementById('demo-play-btn');
+  if (btn) { btn.textContent = '⏳ Running…'; btn.style.opacity = '.65'; btn.disabled = true; }
+
+  // Fresh state so booking 1006 (Pest Control, Yas Island) is pending
+  TAP.reset();
+
+  // Step 1 — Customer home
+  switchApp('c');
+  cGo('c-home');
+  showToast('📲 New booking: Pest Control — Yas Island, Abu Dhabi');
+
+  // Step 2 — Admin receives it
+  setTimeout(() => {
+    switchApp('a');
+    aNavTo('a-queue');
+    renderAdminQueue();
+    showToast('🔔 Admin dashboard — 3 pending bookings awaiting dispatch');
+  }, 2500);
+
+  // Step 3 — Admin assigns Bilal A. to job 1006
+  setTimeout(() => {
+    TAP.assignWorkerToBooking(1006, 'w6');
+    renderAdminQueue();
+    showToast('✓ Bilal A. dispatched to Pest Control — Yas Island');
+  }, 5000);
+
+  // Step 4 — Worker receives the job
+  setTimeout(() => {
+    switchApp('w');
+    activeWorkerId = 'w6';
+    renderWorkerHome();
+    showToast('📱 Bilal A.: new job assigned in Yas Island, Abu Dhabi');
+  }, 7500);
+
+  // Step 5 — Worker marks "On the way"
+  setTimeout(() => {
+    TAP.updateBookingStatus(1006, 'on_way');
+    renderWorkerHome();
+    showToast('🚗 Bilal A. is on the way — ETA 12 min');
+  }, 10000);
+
+  // Step 6 — Customer tracks live
+  setTimeout(() => {
+    switchApp('c');
+    openTrackingForBooking(1006);
+    showToast('📍 Customer tracking Bilal A. live on map!');
+  }, 12500);
+
+  // Reset button
+  setTimeout(() => {
+    if (btn) { btn.textContent = '▶ Demo'; btn.style.opacity = ''; btn.disabled = false; }
+    activeWorkerId = 'w1';
+  }, 16000);
+}
 </script>
 </body>
 </html>
