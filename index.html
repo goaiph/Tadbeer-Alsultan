@@ -782,12 +782,15 @@ html,body{
 }
 .placement-scroll::-webkit-scrollbar{display:none;}
 .placement-chip{
-  min-width:84px;padding:14px var(--s3);
+  min-width:110px;flex-shrink:0;overflow:hidden;
   background:var(--card);border:1px solid var(--border);border-radius:var(--r-md);
-  box-shadow:var(--sh-card);cursor:pointer;transition:all .2s;text-align:center;flex-shrink:0;
+  box-shadow:var(--sh-card);cursor:pointer;transition:all .2s;
+  display:flex;flex-direction:column;
 }
 .placement-chip:active{transform:scale(.97);}
-.placement-chip .pc-icon{margin-bottom:6px;}
+.placement-chip .pc-img{height:90px;width:100%;overflow:hidden;}
+.placement-chip .pc-img img{width:100%;height:100%;object-fit:cover;}
+.placement-chip .pc-body{padding:8px var(--s3) 10px;}
 .placement-chip .pc-name{font-size:var(--text-sm);font-weight:var(--font-weight-bold);color:var(--ink);font-family:var(--font-family-heading);letter-spacing:var(--ls-sm);}
 .placement-chip .pc-price{font-size:var(--text-xs);color:var(--ink2);font-family:var(--font-family-body);margin-top:2px;}
 
@@ -1147,24 +1150,24 @@ hr.divider{border:none;border-top:1px solid var(--border);margin:var(--s4) 0;}
         </div>
         <div class="placement-scroll">
           <div class="placement-chip" onclick="cGo('c-placement','c-home')">
-            <div class="pc-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="4" stroke="#1A7A46" stroke-width="1.8"/><path d="M6 20c0-3.3 2.7-6 6-6s6 2.7 6 6" stroke="#1A7A46" stroke-width="1.8" stroke-linecap="round"/><path d="M9 10c-.5.5-.8 1.2-.8 2" stroke="#1A7A46" stroke-width="1.5" stroke-linecap="round"/></svg></div>
-            <div class="pc-name">Nanny</div><div class="pc-price">AED 2K/mo</div>
+            <div class="pc-img"><img src="https://images.unsplash.com/photo-1594824476967-48c8b964273f?w=220&h=180&fit=crop&q=80" loading="lazy"></div>
+            <div class="pc-body"><div class="pc-name">Nanny</div><div class="pc-price">AED 2K/mo</div></div>
           </div>
           <div class="placement-chip" onclick="cGo('c-placement','c-home')">
-            <div class="pc-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none"><path d="M6 2h12v5a6 6 0 01-12 0V2z" stroke="#C8921A" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M6 7H3M18 7h3M12 13v8M9 21h6" stroke="#C8921A" stroke-width="1.8" stroke-linecap="round"/></svg></div>
-            <div class="pc-name">Cook</div><div class="pc-price">AED 1.8K/mo</div>
+            <div class="pc-img"><img src="https://images.unsplash.com/photo-1577219491135-ce391730fb2c?w=220&h=180&fit=crop&q=80" loading="lazy"></div>
+            <div class="pc-body"><div class="pc-name">Cook</div><div class="pc-price">AED 1.8K/mo</div></div>
           </div>
           <div class="placement-chip" onclick="cGo('c-placement','c-home')">
-            <div class="pc-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none"><rect x="2" y="8" width="20" height="10" rx="3" stroke="#0C1A28" stroke-width="1.8"/><path d="M6 8V6a2 2 0 012-2h8a2 2 0 012 2v2" stroke="#0C1A28" stroke-width="1.8"/><circle cx="7" cy="18" r="2" fill="#0C1A28"/><circle cx="17" cy="18" r="2" fill="#0C1A28"/></svg></div>
-            <div class="pc-name">Driver</div><div class="pc-price">AED 2.2K/mo</div>
+            <div class="pc-img"><img src="https://images.unsplash.com/photo-1449965408869-eaa3f722e40d?w=220&h=180&fit=crop&q=80" loading="lazy"></div>
+            <div class="pc-body"><div class="pc-name">Driver</div><div class="pc-price">AED 2.2K/mo</div></div>
           </div>
           <div class="placement-chip" onclick="cGo('c-placement','c-home')">
-            <div class="pc-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none"><path d="M3 6h13M3 12h9M3 18h13" stroke="#1A7A46" stroke-width="1.8" stroke-linecap="round"/><path d="M19 3l2 2-8 8-3 1 1-3 8-8z" stroke="#1A7A46" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-            <div class="pc-name">Housemaid</div><div class="pc-price">AED 2K/mo</div>
+            <div class="pc-img"><img src="https://images.unsplash.com/photo-1605774337664-7a846e9cdf17?w=220&h=180&fit=crop&q=80" loading="lazy"></div>
+            <div class="pc-body"><div class="pc-name">Housemaid</div><div class="pc-price">AED 2K/mo</div></div>
           </div>
           <div class="placement-chip" onclick="cGo('c-placement','c-home')">
-            <div class="pc-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="7" r="4" stroke="#C8921A" stroke-width="1.8"/><path d="M6 21v-1a6 6 0 0112 0v1" stroke="#C8921A" stroke-width="1.8" stroke-linecap="round"/><path d="M4 13c0 1.1.9 2 2 2s2-.9 2-2" stroke="#C8921A" stroke-width="1.8" stroke-linecap="round"/></svg></div>
-            <div class="pc-name">Elderly Carer</div><div class="pc-price">AED 2.5K/mo</div>
+            <div class="pc-img"><img src="https://images.unsplash.com/photo-1559757148-5c350d0d3c56?w=220&h=180&fit=crop&q=80" loading="lazy"></div>
+            <div class="pc-body"><div class="pc-name">Elderly Carer</div><div class="pc-price">AED 2.5K/mo</div></div>
           </div>
         </div>
 
