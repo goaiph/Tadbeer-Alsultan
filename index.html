@@ -2,7 +2,7 @@
 <html lang="en" data-astryx-theme="neutral">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <title>TAP — Tadbeer Alsultan Plus</title>
 <!-- Astryx Design System — CDN -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@astryxdesign/core/src/reset.css"/>
@@ -106,8 +106,8 @@
   --sh-navy:  0 4px 16px rgba(12,26,40,.18);
 
   /* ─ Fixed layout values ─ */
-  --nav-h:  68px;
-  --top-h:  48px;
+  --nav-h:  calc(68px + env(safe-area-inset-bottom, 0px));
+  --top-h:  calc(48px + env(safe-area-inset-top, 0px));
 
   /* ─ Fonts → Astryx font-family tokens ─ */
   --font-body:    var(--font-family-body);
@@ -172,7 +172,7 @@ html,body{
   box-shadow:0 0 0 1px rgba(255,255,255,.08),0 32px 80px rgba(0,0,0,.7),0 8px 24px rgba(0,0,0,.4);
 }
 @media(max-width:430px){
-  #phone{border-radius:0;max-height:100vh;}
+  #phone{border-radius:0;height:100dvh;max-height:100dvh;}
 }
 
 /* ═══════════════════════════════════════
@@ -182,7 +182,8 @@ html,body{
   position:absolute;top:0;left:0;right:0;z-index:200;
   height:var(--top-h);background:var(--navy);
   display:flex;align-items:center;justify-content:space-between;
-  padding:0 var(--s3);gap:var(--s2);
+  padding:env(safe-area-inset-top, 0px) var(--s3) 0;gap:var(--s2);
+  box-sizing:border-box;
 }
 #app-topbar .logo{
   font-size:var(--text-md);font-weight:var(--font-weight-bold);color:#fff;letter-spacing:-.4px;
@@ -260,6 +261,8 @@ html,body{
   display:flex;align-items:center;justify-content:space-around;
   z-index:100;
   box-shadow:0 -4px 20px rgba(0,0,0,.06);
+  padding-bottom:env(safe-area-inset-bottom, 0px);
+  box-sizing:border-box;
 }
 .c-nav-btn{
   display:flex;flex-direction:column;align-items:center;gap:3px;
@@ -292,6 +295,8 @@ html,body{
   display:flex;align-items:center;justify-content:space-around;
   z-index:100;
   box-shadow:0 -4px 20px rgba(0,0,0,.06);
+  padding-bottom:env(safe-area-inset-bottom, 0px);
+  box-sizing:border-box;
 }
 .w-nav-btn{
   display:flex;flex-direction:column;align-items:center;gap:3px;
@@ -965,56 +970,8 @@ hr.divider{border:none;border-top:1px solid var(--border);margin:var(--s4) 0;}
           </div>
         </div>
 
-        <!-- ACTIVE BOOKING BANNER (populated by JS) -->
-        <div id="home-active-strip" style="margin:var(--s3) var(--s4) 0;display:none;"></div>
 
-        <!-- CREDITS BAR -->
-        <div class="credits-bar">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><polygon points="12,2 15,9 22,9 16.5,14 18.5,21 12,17 5.5,21 7.5,14 2,9 9,9" fill="#C8921A"/></svg>
-          <div class="credits-info">
-            <div class="credits-title">TAP Credits</div>
-            <div class="credits-pts">340 pts</div>
-            <div class="credits-track"><div class="credits-fill"></div></div>
-          </div>
-          <div class="credits-redeem">160 pts to next reward</div>
-        </div>
 
-        <!-- PROMO BANNER -->
-        <div style="margin:var(--s3) var(--s4) 0;">
-          <div style="background:linear-gradient(135deg,#0C1A28,#1a3a5c);border-radius:var(--r-md);padding:var(--s4);display:flex;align-items:center;gap:var(--s4);overflow:hidden;position:relative;">
-            <div style="position:absolute;right:-18px;top:-18px;width:90px;height:90px;border-radius:50%;background:rgba(255,255,255,.04);pointer-events:none;"></div>
-            <div style="position:absolute;right:28px;bottom:-28px;width:72px;height:72px;border-radius:50%;background:rgba(200,146,26,.1);pointer-events:none;"></div>
-            <div style="flex:1;min-width:0;">
-              <div style="font-size:9px;color:var(--gold);text-transform:uppercase;letter-spacing:1px;font-weight:var(--font-weight-bold);margin-bottom:5px;">Limited Offer</div>
-              <div style="font-size:16px;font-weight:var(--font-weight-bold);color:#fff;line-height:1.3;margin-bottom:5px;">Get 20% off<br>your next booking</div>
-              <div style="font-size:11px;color:rgba(255,255,255,.55);">Use code <span style="color:var(--gold);font-weight:var(--font-weight-bold);">UAE20</span> at checkout</div>
-            </div>
-            <button onclick="showToast('✓ Code UAE20 saved — apply it at checkout!')" style="background:var(--gold);border:none;border-radius:var(--r-sm);padding:9px 14px;font-size:12px;font-weight:var(--font-weight-bold);color:#fff;cursor:pointer;white-space:nowrap;flex-shrink:0;">Claim →</button>
-          </div>
-          <div style="display:flex;justify-content:center;gap:5px;margin-top:8px;">
-            <div style="width:18px;height:4px;border-radius:2px;background:var(--green);"></div>
-            <div style="width:6px;height:4px;border-radius:2px;background:var(--border);"></div>
-            <div style="width:6px;height:4px;border-radius:2px;background:var(--border);"></div>
-          </div>
-        </div>
-
-        <!-- TRUST STRIP -->
-        <div style="display:flex;align-items:center;justify-content:center;gap:14px;margin:var(--s3) var(--s4) 0;padding:10px var(--s3);background:var(--surface);border-radius:var(--r-md);border:1px solid var(--border);">
-          <div style="display:flex;align-items:center;gap:4px;">
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" fill="var(--green)"/></svg>
-            <span style="font-size:10px;color:var(--ink2);font-weight:var(--font-weight-semibold);">Verified</span>
-          </div>
-          <div style="width:1px;height:12px;background:var(--border);"></div>
-          <div style="display:flex;align-items:center;gap:4px;">
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" fill="var(--green)"/><path d="M8 12l3 3 5-5" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            <span style="font-size:10px;color:var(--ink2);font-weight:var(--font-weight-semibold);">Insured</span>
-          </div>
-          <div style="width:1px;height:12px;background:var(--border);"></div>
-          <div style="display:flex;align-items:center;gap:4px;">
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><rect x="3" y="11" width="18" height="11" rx="2" fill="var(--green)"/><path d="M7 11V7a5 5 0 0110 0v4" stroke="var(--green)" stroke-width="2" stroke-linecap="round"/></svg>
-            <span style="font-size:10px;color:var(--ink2);font-weight:var(--font-weight-semibold);">Background Checked</span>
-          </div>
-        </div>
 
         <!-- CATEGORIES -->
         <div class="cat-scroll" style="margin-top:var(--s4);">
@@ -1035,7 +992,7 @@ hr.divider{border:none;border-top:1px solid var(--border);margin:var(--s4) 0;}
           <div class="svc-card" onclick="goSvcSelect('Home Cleaning')" style="position:relative;">
             <div style="position:absolute;top:8px;left:8px;z-index:1;background:var(--green);color:#fff;font-size:9px;font-weight:var(--font-weight-bold);padding:2px 7px;border-radius:var(--r-pill);letter-spacing:.3px;">POPULAR</div>
             <div class="svc-card-img">
-              <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=300&h=220&fit=crop&q=80" style="width:100%;height:100%;object-fit:cover;" loading="lazy">
+              <img src="https://images.unsplash.com/photo-1581578731548-c64695cc6952?w=300&h=220&fit=crop&q=80" style="width:100%;height:100%;object-fit:cover;" loading="lazy">
             </div>
             <div class="svc-card-body">
               <div class="svc-card-name">Home Cleaning</div>
@@ -1055,7 +1012,7 @@ hr.divider{border:none;border-top:1px solid var(--border);margin:var(--s4) 0;}
           </div>
           <div class="svc-card" onclick="cGo('c-svc-detail','c-home');setSvcName('Pest Control')">
             <div class="svc-card-img">
-              <img src="https://images.unsplash.com/photo-1585771724684-38269d6639fd?w=300&h=220&fit=crop&q=80" style="width:100%;height:100%;object-fit:cover;" loading="lazy">
+              <img src="https://loremflickr.com/300/220/pest,exterminator,termite?lock=3" style="width:100%;height:100%;object-fit:cover;" loading="lazy">
             </div>
             <div class="svc-card-body">
               <div class="svc-card-name">Pest Control</div>
@@ -1143,6 +1100,25 @@ hr.divider{border:none;border-top:1px solid var(--border);margin:var(--s4) 0;}
           </div>
         </div>
 
+        <!-- PROMO BANNER -->
+        <div style="margin:var(--s4) var(--s4) 0;">
+          <div style="background:linear-gradient(135deg,#0C1A28,#1a3a5c);border-radius:var(--r-md);padding:var(--s4);display:flex;align-items:center;gap:var(--s4);overflow:hidden;position:relative;">
+            <div style="position:absolute;right:-18px;top:-18px;width:90px;height:90px;border-radius:50%;background:rgba(255,255,255,.04);pointer-events:none;"></div>
+            <div style="position:absolute;right:28px;bottom:-28px;width:72px;height:72px;border-radius:50%;background:rgba(200,146,26,.1);pointer-events:none;"></div>
+            <div style="flex:1;min-width:0;">
+              <div style="font-size:9px;color:var(--gold);text-transform:uppercase;letter-spacing:1px;font-weight:var(--font-weight-bold);margin-bottom:5px;">Limited Offer</div>
+              <div style="font-size:16px;font-weight:var(--font-weight-bold);color:#fff;line-height:1.3;margin-bottom:5px;">Get 20% off<br>your next booking</div>
+              <div style="font-size:11px;color:rgba(255,255,255,.55);">Use code <span style="color:var(--gold);font-weight:var(--font-weight-bold);">UAE20</span> at checkout</div>
+            </div>
+            <button onclick="showToast('✓ Code UAE20 saved — apply it at checkout!')" style="background:var(--gold);border:none;border-radius:var(--r-sm);padding:9px 14px;font-size:12px;font-weight:var(--font-weight-bold);color:#fff;cursor:pointer;white-space:nowrap;flex-shrink:0;">Claim →</button>
+          </div>
+          <div style="display:flex;justify-content:center;gap:5px;margin-top:8px;">
+            <div style="width:18px;height:4px;border-radius:2px;background:var(--green);"></div>
+            <div style="width:6px;height:4px;border-radius:2px;background:var(--border);"></div>
+            <div style="width:6px;height:4px;border-radius:2px;background:var(--border);"></div>
+          </div>
+        </div>
+
         <!-- LONG-TERM PLACEMENTS -->
         <div class="section-hdr" style="margin-top:var(--s4);">
           <h3>Long-term Placements</h3>
@@ -1189,7 +1165,7 @@ hr.divider{border:none;border-top:1px solid var(--border);margin:var(--s4) 0;}
         </div>
         <div class="svc-select-grid">
           <div class="svc-select-card" onclick="cGo('c-svc-detail','c-svc-select');setSvcName('Home Cleaning')">
-            <div class="svc-select-img"><img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=300&h=200&fit=crop&q=80" loading="lazy"></div>
+            <div class="svc-select-img"><img src="https://images.unsplash.com/photo-1581578731548-c64695cc6952?w=300&h=200&fit=crop&q=80" loading="lazy"></div>
             <div class="svc-select-body">
               <div class="svc-name">Home Cleaning</div>
               <div class="svc-from">From AED 60/hr</div>
@@ -1203,7 +1179,7 @@ hr.divider{border:none;border-top:1px solid var(--border);margin:var(--s4) 0;}
             </div>
           </div>
           <div class="svc-select-card" onclick="cGo('c-svc-detail','c-svc-select');setSvcName('House Keeping')">
-            <div class="svc-select-img"><img src="https://images.unsplash.com/photo-1527515545081-5db817172677?w=300&h=200&fit=crop&q=80" loading="lazy"></div>
+            <div class="svc-select-img"><img src="https://images.unsplash.com/photo-1631049552240-59c37f38802b?w=300&h=200&fit=crop&q=80" loading="lazy"></div>
             <div class="svc-select-body">
               <div class="svc-name">House Keeping</div>
               <div class="svc-from">From AED 55/hr</div>
@@ -1251,7 +1227,7 @@ hr.divider{border:none;border-top:1px solid var(--border);margin:var(--s4) 0;}
       </div>
       <div class="screen-scroll-nb">
         <div style="height:220px;overflow:hidden;position:relative;">
-          <img id="svc-detail-hero-img" src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&h=440&fit=crop&q=80" style="width:100%;height:100%;object-fit:cover;" loading="lazy">
+          <img id="svc-detail-hero-img" src="https://images.unsplash.com/photo-1581578731548-c64695cc6952?w=600&h=440&fit=crop&q=80" style="width:100%;height:100%;object-fit:cover;" loading="lazy">
           <div style="position:absolute;inset:0;background:linear-gradient(to bottom,transparent 40%,rgba(0,0,0,.45));"></div>
         </div>
         <div style="padding:var(--s4);">
@@ -2899,14 +2875,14 @@ function setSvcName(name) {
   document.getElementById('svc-detail-name').textContent = name;
   // update hero photo
   const svcPhotos = {
-    'Home Cleaning':          'photo-1558618666-fcd25c85cd64',
+    'Home Cleaning':          'photo-1581578731548-c64695cc6952',
     'Furniture Cleaning':     'photo-1555041469-a586c61ea9bc',
-    'House Keeping':          'photo-1527515545081-5db817172677',
+    'House Keeping':          'photo-1631049552240-59c37f38802b',
     'Deep Cleaning':          'photo-1628177142898-93e36e4e3a50',
     'Laundry & Dry Cleaning': 'photo-1567113463300-102a7eb3cb26',
     'Shoes Cleaning':         'photo-1542291026-7eec264c27ff',
     'Car Wash at Home':       'photo-1520340356584-f9917d1eea6f',
-    'Pest Control':           'photo-1585771724684-38269d6639fd',
+    'Pest Control':           'https://loremflickr.com/600/440/pest,exterminator,termite?lock=3',
     'Salon & Spa':            'photo-1570172619644-dfd03ed5d881',
     'AC Repair':              'photo-1621905252507-b35492cc74b4',
     'Handyman':               'photo-1504307651254-35680f356dfd',
@@ -2914,7 +2890,7 @@ function setSvcName(name) {
   const heroImg = document.getElementById('svc-detail-hero-img');
   if (heroImg) {
     const photoId = svcPhotos[name] || svcPhotos['Home Cleaning'];
-    heroImg.src = 'https://images.unsplash.com/' + photoId + '?w=600&h=440&fit=crop&q=80';
+    heroImg.src = photoId.startsWith('http') ? photoId : 'https://images.unsplash.com/' + photoId + '?w=600&h=440&fit=crop&q=80';
   }
   // update price
   const priceEl = document.getElementById('svc-detail-price');
