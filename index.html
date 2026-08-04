@@ -879,6 +879,44 @@ hr.divider{border:none;border-top:1px solid var(--border);margin:var(--s4) 0;}
 .q-meta{display:flex;align-items:center;gap:5px;font-size:11px;color:var(--ink2);margin-bottom:5px;}
 .q-worker-chip{display:inline-flex;align-items:center;gap:5px;background:var(--green-light);color:var(--green);border-radius:var(--r-pill);font-size:11px;font-weight:var(--font-weight-semibold);padding:4px 10px;margin-top:4px;}
 .q-actions{display:flex;gap:8px;margin-top:12px;}
+/* ─── HOSPITALITY SCREEN ─── */
+.hosp-hero{position:relative;margin:var(--s4);border-radius:var(--r-md);overflow:hidden;height:210px;}
+.hosp-hero img{width:100%;height:100%;object-fit:cover;}
+.hosp-hero-overlay{position:absolute;inset:0;background:linear-gradient(to left,rgba(8,22,40,.88) 38%,rgba(8,22,40,.25) 100%);}
+.hosp-hero-text{position:absolute;right:16px;top:50%;transform:translateY(-50%);text-align:right;max-width:58%;}
+.hosp-hero-title{font-size:17px;font-weight:var(--font-weight-bold);color:#fff;line-height:1.25;font-family:var(--font-family-heading);margin-bottom:6px;}
+.hosp-hero-desc{font-size:10px;color:rgba(255,255,255,.78);line-height:1.5;margin-bottom:10px;}
+.hosp-hero-badge{display:flex;align-items:center;gap:4px;font-size:9px;color:var(--gold);font-weight:var(--font-weight-bold);margin-bottom:3px;justify-content:flex-end;}
+.hosp-section-hdr{display:flex;align-items:center;justify-content:space-between;padding:14px var(--s4) 8px;}
+.hosp-section-hdr h3{font-size:14px;font-weight:var(--font-weight-bold);color:var(--ink);font-family:var(--font-family-heading);margin:0;}
+.hosp-section-hdr span{font-size:18px;}
+.hosp-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:var(--s2);padding:0 var(--s4) var(--s3);}
+.hosp-card{position:relative;border-radius:var(--r-md);overflow:hidden;height:115px;cursor:pointer;flex-direction:unset;align-items:unset;gap:unset;padding:0;}
+.hosp-card img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .3s;}
+.hosp-card:active img{transform:scale(1.04);}
+.hosp-card-overlay{position:absolute;inset:0;background:linear-gradient(to bottom,transparent 20%,rgba(0,0,0,.72) 100%);}
+.hosp-card-name{position:absolute;bottom:9px;left:10px;right:10px;color:#fff;font-size:11px;font-weight:700;line-height:1.3;text-shadow:0 1px 3px rgba(0,0,0,.4);}
+.hosp-add-row{display:flex;gap:10px;overflow-x:auto;padding:0 var(--s4) var(--s4);scrollbar-width:none;}
+.hosp-add-row::-webkit-scrollbar{display:none;}
+.hosp-add-chip{flex-shrink:0;position:relative;border-radius:var(--r-md);overflow:hidden;width:100px;height:80px;cursor:pointer;}
+.hosp-add-chip img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .3s;}
+.hosp-add-chip:active img{transform:scale(1.05);}
+.hosp-add-overlay{position:absolute;inset:0;background:linear-gradient(to bottom,transparent 15%,rgba(0,0,0,.75) 100%);}
+.hosp-add-name{position:absolute;bottom:7px;left:7px;right:7px;color:#fff;font-size:9.5px;font-weight:700;line-height:1.3;text-shadow:0 1px 2px rgba(0,0,0,.4);}
+.hosp-trust{display:grid;grid-template-columns:repeat(4,1fr);background:var(--surface);border:1px solid var(--border);border-radius:var(--r-md);margin:0 var(--s4) var(--s4);}
+.hosp-trust-item{padding:12px 4px;text-align:center;border-right:1px solid var(--border);}
+.hosp-trust-item:last-child{border-right:none;}
+.hosp-trust-icon{width:22px;height:22px;border-radius:50%;background:var(--green-light);display:flex;align-items:center;justify-content:center;margin:0 auto 5px;}
+.hosp-trust-icon svg{width:12px;height:12px;stroke:var(--green);}
+.hosp-trust-lbl{font-size:8px;color:var(--ink2);font-weight:var(--font-weight-semibold);line-height:1.3;}
+/* home promo card */
+.hosp-promo-card{margin:var(--s4) var(--s4) 0;border-radius:var(--r-md);overflow:hidden;position:relative;height:110px;cursor:pointer;}
+.hosp-promo-card img{width:100%;height:100%;object-fit:cover;}
+.hosp-promo-card-overlay{position:absolute;inset:0;background:linear-gradient(to right,rgba(8,22,40,.9) 45%,rgba(8,22,40,.3) 100%);}
+.hosp-promo-card-text{position:absolute;left:16px;top:50%;transform:translateY(-50%);}
+.hosp-promo-label{font-size:9px;color:var(--gold);font-weight:var(--font-weight-bold);text-transform:uppercase;letter-spacing:.08em;margin-bottom:4px;}
+.hosp-promo-title{font-size:15px;font-weight:var(--font-weight-bold);color:#fff;font-family:var(--font-family-heading);line-height:1.2;margin-bottom:6px;}
+.hosp-promo-btn{display:inline-block;background:var(--gold);color:#fff;font-size:10px;font-weight:var(--font-weight-bold);padding:4px 10px;border-radius:var(--r-pill);}
 /* ─── HOME SCREEN ─── */
 .home-trust{display:flex;align-items:center;justify-content:center;gap:14px;padding:10px var(--s4) 0;}
 .home-trust-item{display:flex;align-items:center;gap:4px;font-size:10px;color:rgba(255,255,255,.72);font-weight:var(--font-weight-semibold);}
@@ -1110,7 +1148,7 @@ hr.divider{border:none;border-top:1px solid var(--border);margin:var(--s4) 0;}
           <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px;">
             <div>
               <div style="font-size:13px;color:rgba(255,255,255,.65);margin-bottom:3px;">Good morning 👋</div>
-              <h1 style="margin:0;font-size:24px;line-height:1.2;">Sarah Al Zaabi</h1>
+              <h1 style="margin:0;font-size:24px;line-height:1.2;">Aiah Manbi</h1>
             </div>
             <div style="width:42px;height:42px;border-radius:50%;background:rgba(255,255,255,.18);border:2px solid rgba(255,255,255,.3);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:14px;font-weight:700;color:#fff;letter-spacing:-.5px;">SA</div>
           </div>
@@ -1201,6 +1239,21 @@ hr.divider{border:none;border-top:1px solid var(--border);margin:var(--s4) 0;}
               <div class="svc-card-price">From AED 70/hr</div>
               <div style="display:flex;align-items:center;gap:3px;margin-top:3px;"><span style="color:#F5A623;font-size:10px;">★</span><span style="font-size:10px;color:var(--ink2);">4.7 · 1.1K</span></div>
             </div>
+          </div>
+        </div>
+
+        <!-- HOSPITALITY PROMO CARD -->
+        <div class="section-hdr" style="margin-top:var(--s4);">
+          <h3>Hospitality & Serving</h3>
+          <button class="see-all" onclick="cGo('c-hospitality','c-home')">Explore</button>
+        </div>
+        <div class="hosp-promo-card" onclick="cGo('c-hospitality','c-home')">
+          <img src="https://images.unsplash.com/photo-1559329007-40df8a9345d8?w=600&h=220&fit=crop&q=80" loading="lazy" alt="Hospitality">
+          <div class="hosp-promo-card-overlay"></div>
+          <div class="hosp-promo-card-text">
+            <div class="hosp-promo-label">New Category</div>
+            <div class="hosp-promo-title">Hospitality &<br>Serving Services</div>
+            <div class="hosp-promo-btn">Explore →</div>
           </div>
         </div>
 
@@ -1300,6 +1353,173 @@ hr.divider{border:none;border-top:1px solid var(--border);margin:var(--s4) 0;}
         </div>
 
         <div style="height:var(--nav-h)"></div>
+      </div>
+    </section>
+
+    <!-- HOSPITALITY & SERVING SERVICES -->
+    <section class="screen" id="c-hospitality">
+      <div class="screen-header">
+        <button class="back-btn" onclick="cBack()">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M19 12H5M5 12l7 7M5 12l7-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+        <h2>Hospitality & Serving</h2>
+      </div>
+      <div class="screen-scroll-nb">
+
+        <!-- Hero Banner -->
+        <div class="hosp-hero">
+          <img src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=700&h=420&fit=crop&q=80" loading="lazy" alt="Hospitality">
+          <div class="hosp-hero-overlay"></div>
+          <div class="hosp-hero-text">
+            <div class="hosp-hero-title">Hospitality &<br>Serving Services</div>
+            <div class="hosp-hero-desc">Elegant hospitality that reflects your taste and suits your occasion. A professional team ready to serve your guests with excellence.</div>
+            <div class="hosp-hero-badge">👥 Trained & Qualified Team</div>
+            <div class="hosp-hero-badge">⭐ Professional in Every Detail</div>
+            <div class="hosp-hero-badge">🛎️ Premium Service for Your Guests</div>
+          </div>
+        </div>
+
+        <!-- Main Services Grid -->
+        <div class="hosp-section-hdr">
+          <h3>Hospitality & Serving Services</h3>
+          <span>🛎️</span>
+        </div>
+        <div class="hosp-grid">
+          <div class="hosp-card" onclick="cGo('c-svc-detail','c-hospitality');setSvcName('Juices & Beverages Serving')">
+            <img src="https://images.unsplash.com/photo-1544145945-f90425340c7e?w=300&h=230&fit=crop&q=80" loading="lazy" alt="Juices & Beverages">
+            <div class="hosp-card-overlay"></div>
+            <div class="hosp-card-name">Juices & Beverages Serving</div>
+          </div>
+          <div class="hosp-card" onclick="cGo('c-svc-detail','c-hospitality');setSvcName('Coffee & Tea Serving')">
+            <img src="https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=300&h=230&fit=crop&q=80" loading="lazy" alt="Coffee & Tea">
+            <div class="hosp-card-overlay"></div>
+            <div class="hosp-card-name">Coffee & Tea Serving</div>
+          </div>
+          <div class="hosp-card" onclick="cGo('c-svc-detail','c-hospitality');setSvcName('Guest Reception')">
+            <img src="https://images.unsplash.com/photo-1566073771259-6a8506099945?w=300&h=230&fit=crop&q=80" loading="lazy" alt="Guest Reception">
+            <div class="hosp-card-overlay"></div>
+            <div class="hosp-card-name">Guest Reception</div>
+          </div>
+          <div class="hosp-card" onclick="cGo('c-svc-detail','c-hospitality');setSvcName('Food Serving Service')">
+            <img src="https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=300&h=230&fit=crop&q=80" loading="lazy" alt="Food Serving">
+            <div class="hosp-card-overlay"></div>
+            <div class="hosp-card-name">Food Serving Service</div>
+          </div>
+          <div class="hosp-card" onclick="cGo('c-svc-detail','c-hospitality');setSvcName('Buffet Setup')">
+            <img src="https://images.unsplash.com/photo-1555244162-803834f70033?w=300&h=230&fit=crop&q=80" loading="lazy" alt="Buffet Setup">
+            <div class="hosp-card-overlay"></div>
+            <div class="hosp-card-name">Buffet Setup</div>
+          </div>
+          <div class="hosp-card" onclick="cGo('c-svc-detail','c-hospitality');setSvcName('Table Arrangement & Styling')">
+            <img src="https://images.unsplash.com/photo-1519225421980-715cb0215aed?w=300&h=230&fit=crop&q=80" loading="lazy" alt="Table Styling">
+            <div class="hosp-card-overlay"></div>
+            <div class="hosp-card-name">Table Arrangement & Styling</div>
+          </div>
+          <div class="hosp-card" onclick="cGo('c-svc-detail','c-hospitality');setSvcName('Hostesses')">
+            <img src="https://images.unsplash.com/photo-1523580494863-6f3031224c94?w=300&h=230&fit=crop&q=80" loading="lazy" alt="Hostesses">
+            <div class="hosp-card-overlay"></div>
+            <div class="hosp-card-name">Hostesses</div>
+          </div>
+          <div class="hosp-card" onclick="cGo('c-svc-detail','c-hospitality');setSvcName('Corporate Hospitality')">
+            <img src="https://images.unsplash.com/photo-1511578314322-379afb476865?w=300&h=230&fit=crop&q=80" loading="lazy" alt="Corporate Hospitality">
+            <div class="hosp-card-overlay"></div>
+            <div class="hosp-card-name">Corporate Hospitality</div>
+          </div>
+          <div class="hosp-card" onclick="cGo('c-svc-detail','c-hospitality');setSvcName('Event Hospitality')">
+            <img src="https://images.unsplash.com/photo-1464366400600-7168b8af9bc3?w=300&h=230&fit=crop&q=80" loading="lazy" alt="Event Hospitality">
+            <div class="hosp-card-overlay"></div>
+            <div class="hosp-card-name">Event Hospitality</div>
+          </div>
+          <div class="hosp-card" onclick="cGo('c-svc-detail','c-hospitality');setSvcName('Post-Event Cleaning')">
+            <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=300&h=230&fit=crop&q=80" loading="lazy" alt="Post-Event Cleaning">
+            <div class="hosp-card-overlay"></div>
+            <div class="hosp-card-name">Post-Event Cleaning & Arrangement</div>
+          </div>
+          <div class="hosp-card" onclick="cGo('c-svc-detail','c-hospitality');setSvcName('VIP Service')">
+            <img src="https://images.unsplash.com/photo-1600891964599-f61ba0e24092?w=300&h=230&fit=crop&q=80" loading="lazy" alt="VIP Service">
+            <div class="hosp-card-overlay"></div>
+            <div class="hosp-card-name">VIP Service</div>
+          </div>
+          <div class="hosp-card" onclick="cGo('c-svc-detail','c-hospitality');setSvcName('Coffee & Tea Attendants')">
+            <img src="https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=300&h=230&fit=crop&q=80" loading="lazy" alt="Coffee & Tea Attendants">
+            <div class="hosp-card-overlay"></div>
+            <div class="hosp-card-name">Coffee & Tea Attendants</div>
+          </div>
+        </div>
+
+        <!-- Additional Services -->
+        <div class="hosp-section-hdr">
+          <h3>Additional Services</h3>
+          <span>⭐</span>
+        </div>
+        <div class="hosp-add-row">
+          <div class="hosp-add-chip" onclick="cGo('c-svc-detail','c-hospitality');setSvcName('Hospitality Supervisor')">
+            <img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?w=200&h=160&fit=crop&q=80" loading="lazy" alt="Hospitality Supervisor">
+            <div class="hosp-add-overlay"></div>
+            <div class="hosp-add-name">Hospitality Supervisor</div>
+          </div>
+          <div class="hosp-add-chip" onclick="cGo('c-svc-detail','c-hospitality');setSvcName('Home Event Service')">
+            <img src="https://images.unsplash.com/photo-1529543544282-ea669407fca3?w=200&h=160&fit=crop&q=80" loading="lazy" alt="Home Event Service">
+            <div class="hosp-add-overlay"></div>
+            <div class="hosp-add-name">Home Event Service</div>
+          </div>
+          <div class="hosp-add-chip" onclick="cGo('c-svc-detail','c-hospitality');setSvcName('Hospitality Table Styling')">
+            <img src="https://images.unsplash.com/photo-1545048702-79362596cdc9?w=200&h=160&fit=crop&q=80" loading="lazy" alt="Table Styling">
+            <div class="hosp-add-overlay"></div>
+            <div class="hosp-add-name">Hospitality Table Styling</div>
+          </div>
+          <div class="hosp-add-chip" onclick="cGo('c-svc-detail','c-hospitality');setSvcName('Coffee Corner Setup')">
+            <img src="https://images.unsplash.com/photo-1442512595331-e89e73853f31?w=200&h=160&fit=crop&q=80" loading="lazy" alt="Coffee Corner">
+            <div class="hosp-add-overlay"></div>
+            <div class="hosp-add-name">Coffee Corner Setup</div>
+          </div>
+          <div class="hosp-add-chip" onclick="cGo('c-svc-detail','c-hospitality');setSvcName('Dessert Styling')">
+            <img src="https://images.unsplash.com/photo-1488477304112-4944851de03d?w=200&h=160&fit=crop&q=80" loading="lazy" alt="Dessert Styling">
+            <div class="hosp-add-overlay"></div>
+            <div class="hosp-add-name">Dessert Styling</div>
+          </div>
+          <div class="hosp-add-chip" onclick="cGo('c-svc-detail','c-hospitality');setSvcName('Hospitality Tools Rental')">
+            <img src="https://images.unsplash.com/photo-1566665797739-1674de7a421a?w=200&h=160&fit=crop&q=80" loading="lazy" alt="Hospitality Tools">
+            <div class="hosp-add-overlay"></div>
+            <div class="hosp-add-name">Hospitality Tools Rental</div>
+          </div>
+        </div>
+
+        <!-- Trust Bar -->
+        <div class="hosp-trust">
+          <div class="hosp-trust-item">
+            <div class="hosp-trust-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            </div>
+            <div class="hosp-trust-lbl">Memorable Experience</div>
+          </div>
+          <div class="hosp-trust-item">
+            <div class="hosp-trust-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+            </div>
+            <div class="hosp-trust-lbl">Qualified Team</div>
+          </div>
+          <div class="hosp-trust-item">
+            <div class="hosp-trust-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            </div>
+            <div class="hosp-trust-lbl">On-Time Commitment</div>
+          </div>
+          <div class="hosp-trust-item">
+            <div class="hosp-trust-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+            </div>
+            <div class="hosp-trust-lbl">Quality Guarantee</div>
+          </div>
+        </div>
+
+        <!-- Book Button -->
+        <div style="padding:0 var(--s4) var(--s6);">
+          <button class="btn-primary" style="display:flex;align-items:center;justify-content:center;gap:10px;font-size:15px;height:52px;" onclick="cGo('c-svc-detail','c-hospitality');setSvcName('Coffee & Tea Serving')">
+            <span style="font-size:18px;">🛎️</span> Book Hospitality Service
+          </button>
+        </div>
+
       </div>
     </section>
 
