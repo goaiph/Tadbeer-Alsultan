@@ -879,6 +879,61 @@ hr.divider{border:none;border-top:1px solid var(--border);margin:var(--s4) 0;}
 .q-meta{display:flex;align-items:center;gap:5px;font-size:11px;color:var(--ink2);margin-bottom:5px;}
 .q-worker-chip{display:inline-flex;align-items:center;gap:5px;background:var(--green-light);color:var(--green);border-radius:var(--r-pill);font-size:11px;font-weight:var(--font-weight-semibold);padding:4px 10px;margin-top:4px;}
 .q-actions{display:flex;gap:8px;margin-top:12px;}
+/* ─── HOME SCREEN ─── */
+.home-trust{display:flex;align-items:center;justify-content:center;gap:14px;padding:10px var(--s4) 0;}
+.home-trust-item{display:flex;align-items:center;gap:4px;font-size:10px;color:rgba(255,255,255,.72);font-weight:var(--font-weight-semibold);}
+.home-trust-dot{width:3px;height:3px;border-radius:50%;background:rgba(255,255,255,.3);}
+.has-active-strip{margin:var(--s3) var(--s4) 0;}
+.active-strip-card{background:var(--surface);border-radius:14px;padding:13px 14px;display:flex;align-items:center;gap:12px;cursor:pointer;border:1.5px solid var(--green);position:relative;overflow:hidden;}
+.active-strip-card::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(26,122,70,.06) 0%,transparent 60%);pointer-events:none;}
+.active-strip-pulse{position:absolute;top:12px;right:12px;width:8px;height:8px;border-radius:50%;background:var(--green);}
+.active-strip-pulse::after{content:'';position:absolute;inset:-3px;border-radius:50%;border:2px solid var(--green);opacity:.4;animation:pulse-ring 1.5s ease infinite;}
+@keyframes pulse-ring{0%{transform:scale(1);opacity:.4;}100%{transform:scale(1.8);opacity:0;}}
+.quick-svcs{display:flex;gap:10px;overflow-x:auto;padding:var(--s2) var(--s4) var(--s3);scrollbar-width:none;-ms-overflow-style:none;}
+.quick-svc{flex-shrink:0;display:flex;flex-direction:column;align-items:center;gap:6px;cursor:pointer;}
+.quick-svc-icon{width:56px;height:56px;border-radius:16px;background:var(--surface);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:26px;transition:transform .15s;}
+.quick-svc:active .quick-svc-icon{transform:scale(.93);}
+.quick-svc-label{font-size:10px;color:var(--ink2);font-weight:var(--font-weight-semibold);white-space:nowrap;}
+/* ─── BOOKING STEPS ─── */
+.bk-ticket{background:var(--card);border-radius:var(--r-md);border:1px solid var(--border);margin-bottom:var(--s3);overflow:hidden;}
+.bk-ticket-row{display:flex;align-items:center;gap:12px;padding:13px 14px;border-bottom:1px solid var(--border);}
+.bk-ticket-row:last-child{border-bottom:none;}
+.bk-ticket-icon{width:36px;height:36px;border-radius:10px;background:var(--green-light);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:18px;}
+.bk-ticket-lbl{font-size:10px;color:var(--ink2);font-weight:var(--font-weight-semibold);text-transform:uppercase;letter-spacing:.05em;margin-bottom:2px;}
+.bk-ticket-val{font-size:13px;font-weight:var(--font-weight-semibold);color:var(--ink);}
+.bk-ticket-sub{font-size:11px;color:var(--ink2);margin-top:1px;}
+.time-group-lbl{font-size:11px;font-weight:var(--font-weight-bold);color:var(--ink3);text-transform:uppercase;letter-spacing:.06em;margin:var(--s3) 0 var(--s2);}
+.wn-wrap{display:flex;flex-direction:column;gap:0;width:100%;text-align:left;margin-bottom:var(--s4);}
+.wn-row{display:flex;align-items:flex-start;gap:12px;position:relative;padding:8px 0;}
+.wn-row:not(:last-child)::after{content:'';position:absolute;left:11px;top:28px;bottom:-8px;width:2px;background:var(--border);}
+.wn-dot{width:24px;height:24px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#fff;}
+.wn-dot.done{background:var(--green);}
+.wn-dot.next{background:var(--navy);}
+.wn-dot.soon{background:var(--border);color:var(--ink2);}
+.wn-title{font-size:13px;font-weight:var(--font-weight-bold);color:var(--ink);}
+.wn-sub{font-size:11px;color:var(--ink2);margin-top:1px;}
+/* ─── CUSTOMER BOOKINGS ─── */
+.cb-filters{display:flex;gap:6px;padding:var(--s3) var(--s4);background:var(--bg);border-bottom:1px solid var(--border);}
+.cb-filter{flex:1;font-size:11px;font-weight:var(--font-weight-semibold);padding:6px 0;border:1.5px solid var(--border);border-radius:var(--r-pill);background:var(--surface);color:var(--ink2);cursor:pointer;}
+.cb-filter.active{background:var(--navy);border-color:var(--navy);color:#fff;}
+.cb-card{margin-bottom:var(--s3);padding:16px;}
+.cb-card-top{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:10px;}
+.cb-svc-row{display:flex;align-items:center;gap:9px;}
+.cb-svc-icon{font-size:22px;line-height:1;}
+.cb-svc-name{font-size:14px;font-weight:var(--font-weight-bold);color:var(--ink);font-family:var(--font-family-heading);}
+.cb-ref{font-size:10px;color:var(--ink3);letter-spacing:.03em;margin-top:2px;}
+.cb-meta{display:flex;align-items:center;gap:5px;font-size:11px;color:var(--ink2);margin-bottom:5px;}
+.cb-divider{border:none;border-top:1px solid var(--border);margin:10px 0;}
+.cb-price-row{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:4px;}
+.cb-price{font-size:18px;font-weight:var(--font-weight-bold);color:var(--ink);font-family:var(--font-family-heading);letter-spacing:-.02em;}
+.cb-hours{font-size:11px;color:var(--ink2);}
+.cb-worker-chip{display:inline-flex;align-items:center;gap:5px;background:var(--green-light);color:var(--green);border-radius:var(--r-pill);font-size:11px;font-weight:var(--font-weight-semibold);padding:4px 10px;margin-top:6px;}
+.cb-actions{display:flex;gap:8px;margin-top:12px;}
+.cb-stars{color:var(--gold);font-size:13px;letter-spacing:1px;}
+.cb-empty{text-align:center;padding:52px 24px;}
+.cb-empty-icon{font-size:44px;margin-bottom:14px;}
+.cb-empty-title{font-size:16px;font-weight:var(--font-weight-bold);color:var(--ink);margin-bottom:6px;}
+.cb-empty-sub{font-size:13px;color:var(--ink2);}
 /* ─── WORKER MANAGEMENT ─── */
 .wm-summary{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;padding:var(--s3) var(--s4) 0;}
 .wm-stat-box{background:var(--card);border-radius:12px;padding:12px 8px;text-align:center;border:1px solid var(--border);}
@@ -1068,20 +1123,17 @@ hr.divider{border:none;border-top:1px solid var(--border);margin:var(--s4) 0;}
             <svg width="16" height="16" fill="none" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8" stroke="rgba(255,255,255,.7)" stroke-width="2"/><path d="M21 21l-4.35-4.35" stroke="rgba(255,255,255,.7)" stroke-width="2" stroke-linecap="round"/></svg>
             Search for a service...
           </div>
+          <div class="home-trust">
+            <div class="home-trust-item"><span style="color:var(--gold);">★</span> 4.9 Rating</div>
+            <div class="home-trust-dot"></div>
+            <div class="home-trust-item">120+ Professionals</div>
+            <div class="home-trust-dot"></div>
+            <div class="home-trust-item">UAE-Wide</div>
+          </div>
         </div>
 
 
 
-
-        <!-- CATEGORIES -->
-        <div class="cat-scroll" style="margin-top:var(--s4);">
-          <button class="pill-btn active">All</button>
-          <button class="pill-btn">Cleaning</button>
-          <button class="pill-btn">Laundry</button>
-          <button class="pill-btn">Maintenance</button>
-          <button class="pill-btn">Wellness</button>
-          <button class="pill-btn">Childcare</button>
-        </div>
 
         <!-- ON-DEMAND SERVICES -->
         <div class="section-hdr">
@@ -1102,7 +1154,7 @@ hr.divider{border:none;border-top:1px solid var(--border);margin:var(--s4) 0;}
           </div>
           <div class="svc-card" onclick="cGo('c-svc-select','c-home');setSvc('Laundry')">
             <div class="svc-card-img">
-              <img src="https://images.unsplash.com/photo-1567113463300-102a7eb3cb26?w=300&h=220&fit=crop&q=80" style="width:100%;height:100%;object-fit:cover;" loading="lazy">
+              <img src="https://images.unsplash.com/photo-1582735689369-4fe89db7114c?w=300&h=220&fit=crop&q=80" style="width:100%;height:100%;object-fit:cover;" loading="lazy">
             </div>
             <div class="svc-card-body">
               <div class="svc-card-name">Laundry & Shoe</div>
@@ -1112,7 +1164,7 @@ hr.divider{border:none;border-top:1px solid var(--border);margin:var(--s4) 0;}
           </div>
           <div class="svc-card" onclick="cGo('c-svc-detail','c-home');setSvcName('Pest Control')">
             <div class="svc-card-img">
-              <img src="https://loremflickr.com/300/220/pest,exterminator,termite?lock=3" style="width:100%;height:100%;object-fit:cover;" loading="lazy">
+              <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=300&h=220&fit=crop&q=80" style="width:100%;height:100%;object-fit:cover;" loading="lazy">
             </div>
             <div class="svc-card-body">
               <div class="svc-card-name">Pest Control</div>
@@ -1773,15 +1825,18 @@ hr.divider{border:none;border-top:1px solid var(--border);margin:var(--s4) 0;}
           <div class="form-group">
             <label>Area / District</label>
             <select>
-              <option>Al-Mansour</option>
-              <option>Al-Karrada</option>
-              <option>Al-Khalidiya</option>
-              <option>Al-Jadriya</option>
-              <option>Al-Zayouna</option>
-              <option>Al-Amariya</option>
-              <option>Kadhimiya</option>
-              <option>Al-Arasat</option>
-              <option>Sadr City</option>
+              <option>Al Khalidiyah</option>
+              <option>Al Reem Island</option>
+              <option>Yas Island</option>
+              <option>Al Bateen</option>
+              <option>Al Mushrif</option>
+              <option>Al Nahyan</option>
+              <option>Mohammed Bin Zayed City</option>
+              <option>Corniche Area</option>
+              <option>Al Karamah</option>
+              <option>Saadiyat Island</option>
+              <option>Al Muroor</option>
+              <option>Khalifa City</option>
             </select>
           </div>
           <!-- Existing address or new -->
@@ -1840,16 +1895,27 @@ hr.divider{border:none;border-top:1px solid var(--border);margin:var(--s4) 0;}
         <div style="padding:var(--s4);">
           <div style="font-size:15px;font-weight:var(--font-weight-bold);color:var(--ink);margin-bottom:var(--s3);">Which day would you like us to come?</div>
           <div class="date-scroll" id="date-pills"></div>
-          <div style="font-size:15px;font-weight:var(--font-weight-bold);color:var(--ink);margin:var(--s4) 0 var(--s3);">What time would you like us to arrive?</div>
+          <div style="font-size:15px;font-weight:var(--font-weight-bold);color:var(--ink);margin:var(--s4) 0 var(--s2);">What time would you like us to arrive?</div>
+          <div class="time-group-lbl">🌅 Morning</div>
           <div class="time-grid">
-            <div class="time-slot active" onclick="selectTime(this)">9:00 AM – 9:30 AM</div>
-            <div class="time-slot" onclick="selectTime(this)">10:00 AM – 10:30 AM</div>
-            <div class="time-slot" onclick="selectTime(this)">11:00 AM – 11:30 AM</div>
-            <div class="time-slot" onclick="selectTime(this)">12:00 PM – 12:30 PM</div>
-            <div class="time-slot" onclick="selectTime(this)">1:00 PM – 1:30 PM</div>
-            <div class="time-slot" onclick="selectTime(this)">2:00 PM – 2:30 PM</div>
-            <div class="time-slot" onclick="selectTime(this)">3:00 PM – 3:30 PM</div>
-            <div class="time-slot" onclick="selectTime(this)">5:00 PM – 5:30 PM</div>
+            <div class="time-slot active" onclick="selectTime(this)">9:00 AM</div>
+            <div class="time-slot" onclick="selectTime(this)">10:00 AM</div>
+            <div class="time-slot" onclick="selectTime(this)">11:00 AM</div>
+            <div class="time-slot" onclick="selectTime(this)">11:30 AM</div>
+          </div>
+          <div class="time-group-lbl">☀️ Afternoon</div>
+          <div class="time-grid">
+            <div class="time-slot" onclick="selectTime(this)">12:00 PM</div>
+            <div class="time-slot" onclick="selectTime(this)">1:00 PM</div>
+            <div class="time-slot" onclick="selectTime(this)">2:00 PM</div>
+            <div class="time-slot" onclick="selectTime(this)">3:00 PM</div>
+          </div>
+          <div class="time-group-lbl">🌆 Evening</div>
+          <div class="time-grid">
+            <div class="time-slot" onclick="selectTime(this)">5:00 PM</div>
+            <div class="time-slot" onclick="selectTime(this)">6:00 PM</div>
+            <div class="time-slot" onclick="selectTime(this)">7:00 PM</div>
+            <div class="time-slot" onclick="selectTime(this)">8:00 PM</div>
           </div>
           <div style="margin-top:var(--s4);display:flex;align-items:flex-start;gap:var(--s2);">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" style="flex-shrink:0;margin-top:1px;"><circle cx="12" cy="12" r="10" stroke="#8A9AAB" stroke-width="2"/><path d="M12 8v1M12 11v5" stroke="#8A9AAB" stroke-width="2" stroke-linecap="round"/></svg>
@@ -1878,21 +1944,29 @@ hr.divider{border:none;border-top:1px solid var(--border);margin:var(--s4) 0;}
       </div>
       <div style="overflow-y:auto;height:calc(100% - 140px);padding-bottom:120px;">
         <div style="padding:var(--s4);">
-          <!-- Booking summary -->
-          <div class="card section-pad" style="margin-bottom:var(--s3);">
-            <div style="font-size:14px;font-weight:var(--font-weight-bold);color:var(--ink);margin-bottom:var(--s3);">Booking Details</div>
-            <div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--border);">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M3 12L12 3l9 9" stroke="#1A7A46" stroke-width="2" stroke-linecap="round"/><path d="M5 10v9a1 1 0 001 1h4v-4h4v4h4a1 1 0 001-1v-9" stroke="#1A7A46" stroke-width="2" stroke-linecap="round"/></svg>
-              <div><div style="font-size:13px;font-weight:var(--font-weight-semibold);color:var(--green);" id="review-svc">Home Cleaning</div><div style="font-size:12px;color:var(--ink2);">5 hrs · 1 cleaner · Materials included</div></div>
-              <svg style="margin-left:auto;" width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M9 18l6-6-6-6" stroke="#8A9AAB" stroke-width="2" stroke-linecap="round"/></svg>
+          <!-- Booking summary ticket -->
+          <div class="bk-ticket">
+            <div class="bk-ticket-row">
+              <div class="bk-ticket-icon">🏠</div>
+              <div style="flex:1;min-width:0;">
+                <div class="bk-ticket-lbl">Service</div>
+                <div class="bk-ticket-val" id="review-svc">Home Cleaning</div>
+                <div class="bk-ticket-sub">5 hrs · 1 cleaner · Materials included</div>
+              </div>
             </div>
-            <div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--border);">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><rect x="3" y="4" width="18" height="18" rx="2" stroke="#1A7A46" stroke-width="2"/><path d="M16 2v4M8 2v4M3 10h18" stroke="#1A7A46" stroke-width="2" stroke-linecap="round"/></svg>
-              <div style="font-size:13px;font-weight:var(--font-weight-semibold);color:var(--green);">Thu, Jul 31 · 9:00 AM – 9:30 AM</div>
+            <div class="bk-ticket-row">
+              <div class="bk-ticket-icon">📅</div>
+              <div style="flex:1;">
+                <div class="bk-ticket-lbl">Date & Time</div>
+                <div class="bk-ticket-val">Thu, Jul 31 · 9:00 AM</div>
+              </div>
             </div>
-            <div style="display:flex;align-items:center;gap:10px;padding:8px 0;">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z" stroke="#1A7A46" stroke-width="2"/><circle cx="12" cy="9" r="2.5" stroke="#1A7A46" stroke-width="2"/></svg>
-              <div style="font-size:13px;font-weight:var(--font-weight-semibold);color:var(--green);">Al Khalidiyah, Abu Dhabi, UAE</div>
+            <div class="bk-ticket-row">
+              <div class="bk-ticket-icon">📍</div>
+              <div style="flex:1;">
+                <div class="bk-ticket-lbl">Location</div>
+                <div class="bk-ticket-val">Al Khalidiyah, Abu Dhabi, UAE</div>
+              </div>
             </div>
           </div>
           <!-- Map preview -->
@@ -1966,22 +2040,57 @@ hr.divider{border:none;border-top:1px solid var(--border);margin:var(--s4) 0;}
 
     <!-- BOOKING CONFIRMED -->
     <section class="screen" id="c-confirmed">
-      <div class="screen-scroll-nb" style="display:flex;flex-direction:column;align-items:center;padding:var(--s7) var(--s4);text-align:center;">
-        <div class="confirm-circle">
-          <svg width="40" height="40" viewBox="0 0 40 40" fill="none"><path d="M10 20l7 7 13-14" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <div class="screen-scroll-nb">
+        <div style="display:flex;flex-direction:column;align-items:center;padding:var(--s6) var(--s4) var(--s4);text-align:center;">
+          <div class="confirm-circle">
+            <svg width="40" height="40" viewBox="0 0 40 40" fill="none"><path d="M10 20l7 7 13-14" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <h1 style="font-size:22px;font-weight:var(--font-weight-bold);color:var(--ink);margin-bottom:6px;font-family:var(--font-family-heading);">Booking Confirmed!</h1>
+          <p style="font-size:13px;color:var(--ink2);margin-bottom:var(--s4);line-height:1.6;">Your request is in — a professional will be assigned shortly.</p>
         </div>
-        <h1 style="font-size:24px;font-weight:var(--font-weight-bold);color:var(--ink);margin-bottom:var(--s2);font-family:var(--font-family-heading);letter-spacing:var(--ls-2xl);">Booking Confirmed!</h1>
-        <p style="font-size:14px;color:var(--ink2);margin-bottom:var(--s6);max-width:280px;line-height:1.6;">Your professional is being dispatched. You'll receive a confirmation shortly.</p>
-        <div id="confirmed-summary" class="card section-pad" style="width:100%;margin-bottom:var(--s4);text-align:left;"></div>
-        <div style="background:linear-gradient(90deg,var(--gold),var(--gold-mid));border-radius:var(--r-md);padding:var(--s4);width:100%;margin-bottom:var(--s6);display:flex;align-items:center;gap:var(--s3);">
-          <svg width="32" height="32" viewBox="0 0 24 24" fill="#fff"><polygon points="12,2 15,9 22,9 16.5,14 18.5,21 12,17 5.5,21 7.5,14 2,9 9,9"/></svg>
-          <div style="text-align:left;color:#fff;">
-            <div style="font-size:14px;font-weight:var(--font-weight-bold);">You earned <span id="confirmed-credits">136 TAP Credits!</span></div>
-            <div style="font-size:12px;opacity:.85;margin-top:2px;">Pending admin dispatch</div>
+
+        <!-- Booking summary ticket -->
+        <div id="confirmed-summary" style="margin:0 var(--s4) var(--s3);"></div>
+
+        <!-- TAP credits -->
+        <div style="margin:0 var(--s4) var(--s4);background:linear-gradient(135deg,var(--gold),var(--gold-mid));border-radius:var(--r-md);padding:14px var(--s4);display:flex;align-items:center;gap:var(--s3);">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="#fff"><polygon points="12,2 15,9 22,9 16.5,14 18.5,21 12,17 5.5,21 7.5,14 2,9 9,9"/></svg>
+          <div style="color:#fff;">
+            <div style="font-size:13px;font-weight:var(--font-weight-bold);">You earned <span id="confirmed-credits">136</span> TAP Credits</div>
+            <div style="font-size:11px;opacity:.85;margin-top:2px;">Redeemable on your next booking</div>
           </div>
         </div>
-        <button class="btn-primary" style="margin-bottom:var(--s3);display:flex;align-items:center;justify-content:center;gap:8px;" onclick="cNavTo('c-bookings')"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="18" height="18" rx="2" stroke="#fff" stroke-width="2"/><path d="M7 8h10M7 12h6M7 16h8" stroke="#fff" stroke-width="2" stroke-linecap="round"/></svg> View My Bookings</button>
-        <button class="btn-ghost" onclick="cNavTo('c-home')">Back to Home</button>
+
+        <!-- What happens next -->
+        <div style="margin:0 var(--s4) var(--s4);">
+          <div style="font-size:12px;font-weight:var(--font-weight-bold);color:var(--ink2);text-transform:uppercase;letter-spacing:.06em;margin-bottom:var(--s3);">What happens next</div>
+          <div class="wn-wrap">
+            <div class="wn-row">
+              <div class="wn-dot done">✓</div>
+              <div><div class="wn-title">Booking received</div><div class="wn-sub">Your request is in our system</div></div>
+            </div>
+            <div class="wn-row">
+              <div class="wn-dot next">2</div>
+              <div><div class="wn-title">Admin assigns a worker</div><div class="wn-sub">Usually within 15–30 minutes</div></div>
+            </div>
+            <div class="wn-row">
+              <div class="wn-dot soon">3</div>
+              <div><div class="wn-title">Worker heads to you</div><div class="wn-sub">You'll get a notification when they're on the way</div></div>
+            </div>
+            <div class="wn-row">
+              <div class="wn-dot soon">4</div>
+              <div><div class="wn-title">Service completed</div><div class="wn-sub">Rate your experience and earn bonus credits</div></div>
+            </div>
+          </div>
+        </div>
+
+        <div style="padding:0 var(--s4) var(--s6);display:flex;flex-direction:column;gap:var(--s2);">
+          <button class="btn-primary" style="display:flex;align-items:center;justify-content:center;gap:8px;" onclick="cNavTo('c-bookings')">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="18" height="18" rx="2" stroke="#fff" stroke-width="2"/><path d="M7 8h10M7 12h6M7 16h8" stroke="#fff" stroke-width="2" stroke-linecap="round"/></svg>
+            View My Bookings
+          </button>
+          <button class="btn-ghost" onclick="cNavTo('c-home')">Back to Home</button>
+        </div>
       </div>
     </section>
 
@@ -2038,7 +2147,12 @@ hr.divider{border:none;border-top:1px solid var(--border);margin:var(--s4) 0;}
       <div class="screen-header">
         <h2>My Bookings</h2>
       </div>
-      <div class="screen-scroll">
+      <div class="cb-filters">
+        <button class="cb-filter active" id="cbf-all"       onclick="setCustomerBookingFilter('all')">All</button>
+        <button class="cb-filter"        id="cbf-active"    onclick="setCustomerBookingFilter('active')">Active</button>
+        <button class="cb-filter"        id="cbf-completed" onclick="setCustomerBookingFilter('completed')">Completed</button>
+      </div>
+      <div class="screen-scroll-nb">
         <div style="padding:var(--s4);" id="customer-bookings-list">
           <div style="text-align:center;padding:40px;color:var(--ink2);">Loading...</div>
         </div>
@@ -3372,60 +3486,143 @@ function renderConfirmedScreen() {
   if (!b) return;
   const el = document.getElementById('confirmed-summary');
   if (!el) return;
-  const credits = Math.round(b.totalPrice / 1000);
+  const credits = Math.round(b.totalPrice * 0.45);
+  const svcIcon = {'Home Cleaning':'🧹','Deep Cleaning':'🫧','Laundry & Ironing':'👕','AC Maintenance':'❄️','Plumbing':'🔧','Electrical':'⚡','Painting':'🎨','Pest Control':'🐛','Salon & Spa':'💅','Baby Sitting':'👶','Drivers':'🚗','Shoe Cleaning':'👟'};
   el.innerHTML = `
-    <div class="summary-row"><span class="sum-label">Booking Ref</span><span class="sum-val" style="color:var(--green);font-family:var(--font-family-heading);">${b.ref}</span></div>
-    <div class="summary-row"><span class="sum-label">Service</span><span class="sum-val">${b.service}</span></div>
-    <div class="summary-row"><span class="sum-label">Date & Time</span><span class="sum-val">${b.date} · ${b.time}</span></div>
-    <div class="summary-row"><span class="sum-label">Total Paid</span><span class="sum-val" style="color:var(--green);">AED ${b.totalPrice.toLocaleString()}</span></div>
-    <div class="summary-row" style="border:none;"><span class="sum-label">Status</span><span class="badge badge-gold">Pending Dispatch</span></div>
+    <div style="background:var(--green-light);border:1.5px solid rgba(26,122,70,.2);border-radius:var(--r-md);padding:14px 16px;margin-bottom:var(--s3);display:flex;align-items:center;justify-content:space-between;">
+      <div>
+        <div style="font-size:10px;color:var(--green);font-weight:var(--font-weight-bold);text-transform:uppercase;letter-spacing:.06em;margin-bottom:3px;">Booking Reference</div>
+        <div style="font-size:22px;font-weight:var(--font-weight-bold);color:var(--green);font-family:var(--font-family-heading);letter-spacing:.04em;">${b.ref}</div>
+      </div>
+      <span class="q-status-pill" style="background:rgba(245,158,11,.1);color:#B45309;"><span class="q-dot" style="background:#F59E0B;"></span>Pending Dispatch</span>
+    </div>
+    <div class="bk-ticket">
+      <div class="bk-ticket-row">
+        <div class="bk-ticket-icon">${svcIcon[b.service]||'🏠'}</div>
+        <div style="flex:1;min-width:0;">
+          <div class="bk-ticket-lbl">Service</div>
+          <div class="bk-ticket-val">${b.service}</div>
+          <div class="bk-ticket-sub">${b.hours} hrs · ${b.address}</div>
+        </div>
+      </div>
+      <div class="bk-ticket-row">
+        <div class="bk-ticket-icon">📅</div>
+        <div style="flex:1;">
+          <div class="bk-ticket-lbl">Date & Time</div>
+          <div class="bk-ticket-val">${b.date} · ${b.time}</div>
+        </div>
+      </div>
+      <div class="bk-ticket-row">
+        <div class="bk-ticket-icon">💳</div>
+        <div style="flex:1;display:flex;align-items:center;justify-content:space-between;">
+          <div><div class="bk-ticket-lbl">Total Paid</div><div class="bk-ticket-val" style="color:var(--green);">AED ${b.totalPrice.toLocaleString()}</div></div>
+        </div>
+      </div>
+    </div>
   `;
   const credEl = document.getElementById('confirmed-credits');
-  if (credEl) credEl.textContent = credits + ' TAP Credits!';
+  if (credEl) credEl.textContent = credits;
 }
 
 /* ═══════════════════════════════════════
    CUSTOMER BOOKINGS LIST
 ═══════════════════════════════════════ */
+let customerBookingFilter = 'all';
+
+function setCustomerBookingFilter(f) {
+  customerBookingFilter = f;
+  ['all','active','completed'].forEach(id => {
+    const btn = document.getElementById('cbf-' + id);
+    if (btn) btn.classList.toggle('active', id === f);
+  });
+  renderCustomerBookings();
+}
+
 function renderCustomerBookings() {
   const el = document.getElementById('customer-bookings-list');
   if (!el) return;
-  const bookings = TAP.getAllBookings();
+
+  const svcIcon = {
+    'Home Cleaning':'🧹','Deep Cleaning':'🫧','Laundry & Ironing':'👕',
+    'AC Maintenance':'❄️','Plumbing':'🔧','Electrical':'⚡','Painting':'🎨',
+    'Pest Control':'🐛','Salon & Spa':'💅','Baby Sitting':'👶',
+    'Drivers':'🚗','Shoe Cleaning':'👟',
+  };
+
+  const statusMeta = {
+    pending:     { label:'Awaiting Dispatch', dot:'var(--gold)',   bg:'rgba(245,158,11,.09)', color:'#B45309'      },
+    assigned:    { label:'Worker Assigned',   dot:'var(--green)',  bg:'rgba(26,122,70,.09)',  color:'var(--green)' },
+    on_way:      { label:'Worker En Route',   dot:'var(--green)',  bg:'rgba(26,122,70,.09)',  color:'var(--green)' },
+    in_progress: { label:'In Progress',       dot:'#3B82F6',       bg:'rgba(59,130,246,.09)', color:'#1D4ED8'      },
+    completed:   { label:'Completed',         dot:'var(--ink3)',   bg:'var(--surface)',       color:'var(--ink2)'  },
+    reviewed:    { label:'Reviewed',          dot:'var(--gold)',   bg:'rgba(245,158,11,.06)', color:'#B45309'      },
+    cancelled:   { label:'Cancelled',         dot:'var(--danger)', bg:'rgba(220,53,69,.07)',  color:'var(--danger)'},
+  };
+
+  const activeStatuses  = ['pending','assigned','on_way','in_progress'];
+  const doneStatuses    = ['completed','reviewed','cancelled'];
+
+  let bookings = TAP.getAllBookings();
+  if (customerBookingFilter === 'active')    bookings = bookings.filter(b => activeStatuses.includes(b.status));
+  if (customerBookingFilter === 'completed') bookings = bookings.filter(b => doneStatuses.includes(b.status));
+
   if (!bookings.length) {
-    el.innerHTML = `<div style="text-align:center;padding:40px 20px;color:var(--ink2);">
-      <div style="font-size:40px;margin-bottom:12px;">📋</div>
-      <div style="font-size:16px;font-weight:var(--font-weight-bold);color:var(--ink);">No bookings yet</div>
-      <div style="font-size:13px;margin-top:6px;">Your bookings will appear here</div>
+    el.innerHTML = `<div class="cb-empty">
+      <div class="cb-empty-icon">📋</div>
+      <div class="cb-empty-title">No bookings here</div>
+      <div class="cb-empty-sub">${customerBookingFilter === 'active' ? 'You have no active bookings right now.' : customerBookingFilter === 'completed' ? 'No completed bookings yet.' : 'Your bookings will appear here once you book a service.'}</div>
     </div>`;
     return;
   }
-  const statusLabels = {
-    pending:'Awaiting Dispatch', assigned:'Confirmed', on_way:'Worker En Route',
-    in_progress:'In Progress', completed:'Completed', reviewed:'Reviewed',
-  };
-  const statusClasses = {
-    pending:'badge-gold', assigned:'badge-green', on_way:'badge-green',
-    in_progress:'badge-green', completed:'badge-navy', reviewed:'badge-navy',
-  };
-  el.innerHTML = bookings.map(b => `
-    <div class="card section-pad" style="margin-bottom:var(--s3);">
-      <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:var(--s2);">
-        <div>
-          <div style="font-size:var(--text-base);font-weight:var(--font-weight-bold);color:var(--ink);font-family:var(--font-family-heading);">${b.service}</div>
-          <div style="font-size:var(--text-xs);color:var(--ink2);margin-top:3px;">${b.ref} · ${b.date}</div>
+
+  el.innerHTML = bookings.map(b => {
+    const sm   = statusMeta[b.status] || statusMeta.completed;
+    const icon = svcIcon[b.service] || '🏠';
+    const isActive = activeStatuses.includes(b.status);
+
+    return `
+    <div class="card cb-card" style="border-left:4px solid ${sm.dot};">
+      <!-- top: service + status -->
+      <div class="cb-card-top">
+        <div class="cb-svc-row">
+          <span class="cb-svc-icon">${icon}</span>
+          <div>
+            <div class="cb-svc-name">${b.service}</div>
+            <div class="cb-ref">${b.ref}</div>
+          </div>
         </div>
-        <span class="badge ${statusClasses[b.status]||'badge-navy'}">${statusLabels[b.status]||b.status}</span>
+        <span class="q-status-pill" style="background:${sm.bg};color:${sm.color};">
+          <span class="q-dot" style="background:${sm.dot};"></span>${sm.label}
+        </span>
       </div>
-      <div style="font-size:var(--text-sm);color:var(--ink2);margin-bottom:var(--s3);">${b.hours} hrs · ${b.address}${b.workerName ? ' · ' + b.workerName : ''}</div>
-      <div style="font-size:var(--text-base);font-weight:var(--font-weight-bold);color:var(--ink);font-family:var(--font-family-heading);margin-bottom:var(--s3);">AED ${b.totalPrice.toLocaleString()}</div>
-      <div style="display:flex;gap:var(--s2);">
-        ${['on_way','in_progress'].includes(b.status) ? `<button class="btn-primary" style="height:38px;font-size:var(--text-sm);flex:1;" onclick="openTrackingForBooking(${b.id})">Track live</button>` : ''}
-        ${b.status === 'completed' ? `<button class="btn-primary" style="height:38px;font-size:var(--text-sm);flex:1;" onclick="openReviewForBooking(${b.id})">Leave review</button>` : ''}
-        ${b.status === 'reviewed' && b.rating ? `<div style="display:flex;align-items:center;gap:4px;">${'★'.repeat(b.rating)}${'☆'.repeat(5-b.rating)}<span style="font-size:12px;color:var(--ink2);margin-left:4px;">Reviewed</span></div>` : ''}
-        ${['pending','assigned'].includes(b.status) ? `<button class="btn-ghost" style="height:38px;font-size:var(--text-sm);flex:1;" onclick="cancelBooking(${b.id})">Cancel</button>` : ''}
+      <!-- meta: date + time -->
+      <div class="cb-meta">
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none"><rect x="3" y="4" width="18" height="18" rx="2" stroke="currentColor" stroke-width="2"/><line x1="16" y1="2" x2="16" y2="6" stroke="currentColor" stroke-width="2"/><line x1="8" y1="2" x2="8" y2="6" stroke="currentColor" stroke-width="2"/><line x1="3" y1="10" x2="21" y2="10" stroke="currentColor" stroke-width="2"/></svg>
+        <span>${b.date} · ${b.time} · ${b.hours} hrs</span>
       </div>
-    </div>
-  `).join('');
+      <!-- meta: address -->
+      <div class="cb-meta">
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5S10.62 6.5 12 6.5s2.5 1.12 2.5 2.5S13.38 11.5 12 11.5z" fill="currentColor"/></svg>
+        <span>${b.address}</span>
+      </div>
+      <!-- worker chip -->
+      ${b.workerName ? `<div class="cb-worker-chip"><svg width="11" height="11" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="4" fill="currentColor"/><path d="M4 20c0-4 3.58-7 8-7s8 3 8 7" stroke="currentColor" stroke-width="2" fill="none"/></svg>${b.workerName}</div>` : ''}
+      <!-- price -->
+      <hr class="cb-divider">
+      <div class="cb-price-row">
+        <span class="cb-price">AED ${b.totalPrice.toLocaleString()}</span>
+        ${b.status === 'reviewed' && b.rating ? `<span class="cb-stars">${'★'.repeat(b.rating)}${'☆'.repeat(5-b.rating)}</span>` : ''}
+      </div>
+      <!-- actions -->
+      ${isActive || b.status === 'completed' || b.status === 'reviewed' ? `
+      <div class="cb-actions">
+        ${['on_way','in_progress'].includes(b.status) ? `<button class="btn-primary" style="flex:1;height:36px;font-size:12px;" onclick="openTrackingForBooking(${b.id})">Track Live</button>` : ''}
+        ${b.status === 'completed' ? `<button class="btn-primary" style="flex:1;height:36px;font-size:12px;" onclick="openReviewForBooking(${b.id})">Leave Review</button>` : ''}
+        ${['pending','assigned'].includes(b.status) ? `<button class="btn-ghost" style="flex:1;height:36px;font-size:12px;" onclick="cancelBooking(${b.id})">Cancel Booking</button>` : ''}
+        ${b.status === 'reviewed' ? `<div style="font-size:12px;color:var(--ink2);padding:8px 0;">Thank you for your review!</div>` : ''}
+      </div>` : ''}
+    </div>`;
+  }).join('');
 }
 
 function openTrackingForBooking(bookingId) {
@@ -4504,25 +4701,34 @@ function renderHomeActiveStrip() {
   const active = TAP.getAllBookings().find(b => ['on_way','in_progress','assigned'].includes(b.status));
   if (!active) { el.style.display = 'none'; return; }
   const w = TAP.getAllWorkers().find(x => x.id === active.workerId);
-  const statusMap = { assigned:'Worker assigned', on_way:'On the way', in_progress:'In progress' };
-  const statusColor = active.status === 'on_way' ? 'var(--green)' : active.status === 'in_progress' ? 'var(--gold)' : 'var(--navy-mid)';
+  const statusMeta = {
+    assigned:    { label:'Worker Assigned', color:'var(--navy)',  dot:'var(--navy)'  },
+    on_way:      { label:'En Route · ETA 12 min', color:'var(--green)', dot:'var(--green)' },
+    in_progress: { label:'In Progress',     color:'#B45309',      dot:'#F59E0B'      },
+  };
+  const sm = statusMeta[active.status] || statusMeta.assigned;
   const photoHtml = w && w.photo
-    ? `<img src="${w.photo}" style="width:38px;height:38px;border-radius:50%;object-fit:cover;border:2px solid ${statusColor};">`
-    : `<div style="width:38px;height:38px;border-radius:50%;background:var(--green-light);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;color:var(--green);">${w ? w.avatar : '?'}</div>`;
+    ? `<img src="${w.photo}" style="width:44px;height:44px;border-radius:50%;object-fit:cover;border:2px solid ${sm.dot};">`
+    : `<div style="width:44px;height:44px;border-radius:50%;background:var(--green-light);display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:700;color:var(--green);">${w ? w.avatar : '?'}</div>`;
+  const svcIcon = {'Home Cleaning':'🧹','Deep Cleaning':'🫧','Laundry & Ironing':'👕','AC Maintenance':'❄️','Plumbing':'🔧','Electrical':'⚡','Painting':'🎨','Pest Control':'🐛','Salon & Spa':'💅','Baby Sitting':'👶','Drivers':'🚗','Shoe Cleaning':'👟'};
   el.style.display = 'block';
   el.innerHTML = `
-    <div onclick="openTrackingForBooking(${active.id})" style="background:var(--surface);border:1.5px solid ${statusColor};border-radius:var(--r-md);padding:12px var(--s3);display:flex;align-items:center;gap:var(--s3);cursor:pointer;">
-      <div style="position:relative;flex-shrink:0;">
-        ${photoHtml}
-        <div style="position:absolute;bottom:0;right:0;width:10px;height:10px;border-radius:50%;background:${statusColor};border:2px solid var(--surface);"></div>
-      </div>
-      <div style="flex:1;min-width:0;">
-        <div style="font-size:12px;font-weight:var(--font-weight-bold);color:var(--ink);">${w ? w.name : 'Worker'} · ${active.service}</div>
-        <div style="font-size:11px;color:var(--ink2);margin-top:1px;">${active.address}</div>
-        <div style="font-size:11px;color:${statusColor};font-weight:var(--font-weight-semibold);margin-top:2px;">● ${statusMap[active.status]}${active.status==='on_way' ? ' · ETA 12 min' : ''}</div>
-      </div>
-      <div style="flex-shrink:0;">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M9 18l6-6-6-6" stroke="var(--ink2)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    <div class="has-active-strip">
+      <div class="active-strip-card" onclick="openTrackingForBooking(${active.id})">
+        <div class="active-strip-pulse"></div>
+        <div style="position:relative;flex-shrink:0;">
+          ${photoHtml}
+          <div style="position:absolute;bottom:0;right:0;width:11px;height:11px;border-radius:50%;background:${sm.dot};border:2px solid var(--surface);"></div>
+        </div>
+        <div style="flex:1;min-width:0;">
+          <div style="font-size:11px;font-weight:var(--font-weight-bold);color:${sm.color};text-transform:uppercase;letter-spacing:.04em;margin-bottom:2px;">${sm.label}</div>
+          <div style="font-size:13px;font-weight:var(--font-weight-bold);color:var(--ink);font-family:var(--font-family-heading);">${svcIcon[active.service]||'🏠'} ${active.service}</div>
+          <div style="font-size:11px;color:var(--ink2);margin-top:2px;">${w ? w.name : 'Your worker'} · ${active.address}</div>
+        </div>
+        <div style="flex-shrink:0;display:flex;flex-direction:column;align-items:flex-end;gap:4px;">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M9 18l6-6-6-6" stroke="var(--ink3)" stroke-width="2" stroke-linecap="round"/></svg>
+          <div style="font-size:9px;color:var(--ink3);text-transform:uppercase;letter-spacing:.04em;">Track</div>
+        </div>
       </div>
     </div>`;
 }
